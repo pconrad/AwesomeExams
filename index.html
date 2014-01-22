@@ -5,8 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>The Beginning of the Next Steps of Project Awesome</title>
+    <script src="bits.js"></script>
     <script src="random.js"></script>
-    <script src="orderOfOperations.js"></script>
+   <!-- <script src="orderOfOperations.js"></script> -->
 </head>
 
 <body>
@@ -17,7 +18,11 @@
     </header>
 
     <script>
-        generateOrderOfOperationsQuestion();
+      var rs = new RandomStream(0xABCD1234);
+      var a=[10,20,30,40,50];
+      window.alert("before a=" + a);
+      rs.shuffle(a);
+      window.alert("after a=" + a);
     </script>
 
 </body>

@@ -14,6 +14,8 @@ with a contract similar to that of the Random object in Java SE 7
 
 //Random creates a new random number generator using a single LongBitString seed. The seed is the initial value of the internal state of the pseudorandom number generator which is maintained by method next(int).
 function RandomStream(seed) {
+
+
         
     //Sets the seed of this random number generator using a single long seed. 
     //The general contract of setSeed is that it alters the state of this random number generator object so as to be in exactly the same state as if it had just been created with the argument seed as a seed. 
@@ -43,7 +45,7 @@ function RandomStream(seed) {
     }
     
     //Returns the next pseudorandom, uniformly distributed int value from this random number generator's sequence. 
-    //The general contract of nextInt is that one int value is pseudorandomly generated and returned. All 232 possible int values are produced with (approximately) equal probability.
+    //The general contract of nextInt is that one int value is pseudorandomly generated and returned. All 2^32 possible int values are produced with (approximately) equal probability.
     this.nextInt = function ()
 	{ 
          return this.next(32).combineBits(); //essentially just calls next with 32 bits
@@ -51,21 +53,46 @@ function RandomStream(seed) {
     
     //Returns a pseudorandom, uniformly distributed int value between 0 (inclusive) and the specified value (exclusive), drawn from this random number generator's sequence. 
     //The general contract of nextInt is that one int value in the specified range is pseudorandomly generated and returned. All n possible int values are produced with (approximately) equal probability.
-    this.nextIntRange = function (n) 
-	{
+    this.nextIntRange = function (n)  {
         if (n <= 0)
             return null;
-    
+	
         var logBase2 = Math.log(n) / Math.log(2);
         if (Math.floor(logBase2) == logBase2)
             return ((splitBits(n).times(this.next(31))).rightShift(31).combineBits());
         
-         var bits, val;
-         do {
+        var bits, val;
+        do {
             bits = this.next(31).combineBits();
             val = bits % n;
-         } while (bits - val + (n-1) < 0);
-         return val;
-    }
- 
+        } while (bits - val + (n-1) < 0);
+        return val;
+    };
+    
+    /* Shuffles array in place as a side effect.   Take that, 
+       you functional programming immutable data wienies! */
+
+    this.shuffle = function (someArray) {
+	/* I think, off the top of my head, that the following
+	   shuffle algorithm, due to Knuth, gives each permuatation
+	   with equal probability 1/n! TODO: get reference and check w/ proof
+
+	   for i = n-1 to 1 step by -1
+             choose j between 0 and i (inclusive)
+             swap i and j
+
+	*/
+	
+	for (var i=someArray.length; i>=1; i--) {
+	    // nextIntRange's param is "exclusive", so we add one
+	    var j = this.nextIntRange(i+1); 
+	    var temp=someArray[i];
+	    someArray[i]=someArray[j];
+	    someArray[j]=temp;
+	}
+	
+	// We shuffled in place, so nothing to return.
+	
+    };
+    
 }
