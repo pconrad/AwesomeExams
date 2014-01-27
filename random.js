@@ -20,11 +20,10 @@ function RandomStream(seed) {
     //Sets the seed of this random number generator using a single long seed. 
     //The general contract of setSeed is that it alters the state of this random number generator object so as to be in exactly the same state as if it had just been created with the argument seed as a seed. 
     //The method setSeed is implemented by class Random by atomically updating the seed.
-    this.setSeed = function(seed) 
-	{
+    this.setSeed = function(seed) {
         var splitSeed = splitBits(seed);
         this.currentSeed = (splitSeed.bitwiseXOr(splitBits(0x5DEECE66D))).bitwiseAnd(splitBits(0xffffffffffff));
-    }
+    };
 
     this.setSeed(seed); // constructor calls setSeed to initialize all attributes
     
@@ -33,8 +32,7 @@ function RandomStream(seed) {
    The method next is implemented by class Random by atomically updating the seed. */
 
     //This is a linear congruential pseudorandom number generator, as defined by D. H. Lehmer and described by Donald E. Knuth in The Art of Computer Programming, Volume 3: Seminumerical Algorithms, section 3.2.1. 
-    this.next = function(bits) 
-	{
+    this.next = function(bits) {
         this.currentSeed = this.currentSeed.times(splitBits(0x5DEECE66D));
         this.currentSeed = this.currentSeed.plus(splitBits(0xB));
         this.currentSeed = this.currentSeed.bitwiseAnd(splitBits(0xffffffffffff));
@@ -42,14 +40,13 @@ function RandomStream(seed) {
              return this.currentSeed.rightShift(48-bits);
         else
              return null; //this shouldn't happen
-    }
+    };
     
     //Returns the next pseudorandom, uniformly distributed int value from this random number generator's sequence. 
     //The general contract of nextInt is that one int value is pseudorandomly generated and returned. All 2^32 possible int values are produced with (approximately) equal probability.
-    this.nextInt = function ()
-	{ 
+    this.nextInt = function () { 
          return this.next(32).combineBits(); //essentially just calls next with 32 bits
-    }
+    };
     
     //Returns a pseudorandom, uniformly distributed int value between 0 (inclusive) and the specified value (exclusive), drawn from this random number generator's sequence. 
     //The general contract of nextInt is that one int value in the specified range is pseudorandomly generated and returned. All n possible int values are produced with (approximately) equal probability.
@@ -69,30 +66,16 @@ function RandomStream(seed) {
         return val;
     };
     
-    /* Shuffles array in place as a side effect.   Take that, 
-       you functional programming immutable data wienies! */
-
+    //Shuffles an array in place, with each possible permutation having equal probability 1/n!
+    //This is a Fisher-Yates shuffle (also called a Knuth shuffle), described in The Art of Computer Programming 2, pp. 124-125:
+    //From i=n-1 downto 1: choose j from 0 to i inclusive, and swap a[i] with a[j].
     this.shuffle = function (someArray) {
-	/* I think, off the top of my head, that the following
-	   shuffle algorithm, due to Knuth, gives each permuatation
-	   with equal probability 1/n! TODO: get reference and check w/ proof
-
-	   for i = n-1 to 1 step by -1
-             choose j between 0 and i (inclusive)
-             swap i and j
-
-	*/
-	
-	for (var i=someArray.length; i>=1; i--) {
-	    // nextIntRange's param is "exclusive", so we add one
-	    var j = this.nextIntRange(i+1); 
-	    var temp=someArray[i];
-	    someArray[i]=someArray[j];
-	    someArray[j]=temp;
-	}
-	
-	// We shuffled in place, so nothing to return.
-	
+	    for(var i=someArray.length - 1; i>=1; i--) {
+	        var j = this.nextIntRange(i+1); // nextIntRange's param is "exclusive", so we add one
+	        var temp=someArray[i];
+	        someArray[i]=someArray[j];
+	        someArray[j]=temp;
+	    }
     };
     
-}
+};

@@ -7,7 +7,7 @@
     <title>The Beginning of the Next Steps of Project Awesome</title>
     <script src="bits.js"></script>
     <script src="random.js"></script>
-   <!-- <script src="orderOfOperations.js"></script> -->
+    <script src="questions.js"></script>
 </head>
 
 <body>
@@ -17,12 +17,13 @@
         <p>The Beginning of the Next Steps of Project Awesome.</p>
     </header>
 
+	<div id="questions"></div>
+    <div id="answers"></div>
+
     <script>
-      var rs = new RandomStream(0xABCD1234);
-      var a=[10,20,30,40,50];
-      window.alert("before a=" + a);
-      rs.shuffle(a);
-      window.alert("after a=" + a);
+        var rs = new RandomStream(0xABCD1234);
+        var question = new orderOfOperationsQuestion(rs);
+        question.view();		
     </script>
 
 </body>
