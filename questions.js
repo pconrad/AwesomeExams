@@ -8,33 +8,62 @@
 //Parameter randomStream should be an instance of the RandomStream class.
 function orderOfOperationsQuestion(randomStream)
 {
-    //Generate the three variables; make them distinct
-    var a, b, c;
-    a = randomStream.nextIntRange(8) + 2; //generate ints in [0 .. 7] and add 2 to get ints in [2 .. 9]
-    do {
-        b = randomStream.nextIntRange(8) + 2;
-    } while (b == a); //If we generated the same value as a, try again
-    do {
-        c = randomStream.nextIntRange(8) + 2;
-    } while (c == a || c == b); //If we generated the same value as a or b, try again
+    //Generate the three variables
+    
+    this.a = randomStream.nextIntRange(8) + 2; //generate ints in [0 .. 7] and add 2 to get ints in [2 .. 9]
+    this.b = randomStream.nextIntRange(9) + 1; // gen ints in [0..8], add 1 to get 1-9
+    this.c = randomStream.nextIntRange(8) + 2; // like a
+    
+    this.ops = [" + ", " * "];
+    randomStream.shuffle(this.ops);
+    
+    this.correctAnswer = 0;
+    
+    if (ops[0]==" + ") {
+      this.correctAnswer = a + b * c;     
+    } else {
+      this.correctAnswer = a * b + c;     
+    }
+    this.answers = [ (a*b + c), (a*(b+c)), (a+(b*c)), ((a+b)*c) ]; //all possible orderings
+    randomStream.shuffle(this.answers);
+     
 
+    // NOW!  the problem is a ops[0] b ops[1] c 
+   
     //Now, having your three numbers, generate & rander the text of a question involving them.
-    this.view = function() {
+   
+   
+    this.formatQuestions = function(format) {
+      switch (format) {
+         case "HTML": return this.formatQuestionsHTML();
+      }  
+      return "unknown format"; // TODO: consider exception
+    };
+    
+    this.formatAnswers = function(format) {
+      switch (format) {
+         case "HTML": return this.formatAnswersHTML();
+      }  
+      return "unknown format"; // TODO: consider exception
+    };
+
+
+    this.formatQuestionsHTML = function () {
         
         var header = "<h2>Order of Operations</h2>";
-
-        var ops = [" + ", " * "];
-        randomStream.shuffle(ops);
         var questionText = "<p>What is " + a + ops[0] + b + ops[1] + c + "?";
+        return header+questionText;
+    };
 
-        //Multiple-choice answers
-        var answers = [ (a*b + c), (a*(b+c)), (a+(b*c)), ((a+b)*c) ]; //all possible orderings
-        randomStream.shuffle(answers);
-        var answerText = "<p><strong>a) </strong>" + answers[0] + "<br><strong>b) </strong>" + answers[1] + "<br><strong>c) </strong>" + answers[2] + "<br><strong>d) </strong>" + answers[3] + "</p>";
+    this.formatAnswerHTML = function () {
+        return "<p><strong>a) </strong>" 
+           + answers[0] + "<br><strong>b) </strong>" 
+           + answers[1] + "<br><strong>c) </strong>" 
+           + answers[2] + "<br><strong>d) </strong>" 
+           + answers[3] + "</p>";
+    };
 
-        window.document.getElementById("questions").innerHTML += header+questionText; 
-        window.document.getElementById("answers").innerHTML += answerText;
-    }
+
 };
 
 //Questions to generate for CS8 (Python) material -- ideas:
