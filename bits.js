@@ -1,10 +1,13 @@
 /*
 
   bits.js
-  This is a library that will enable us to perform bitwise and shift operations on numbers that are larger than 32 bits.
-  It can handle unsigned numbers that are up to 62 bits. If we used all possible 64/2=32 bits, the leading sign bit would cause us problems (hence we use 32-1=31 bits maximum).
 
+  This is a library that will enable us to perform bitwise and shift operations on numbers that 
+  are larger than 32 bits. It can handle unsigned numbers that are up to 62 bits. 
   
+  If we used all possible 64/2=32 bits, the leading sign bit would cause us problems 
+  (hence we use 32-1=31 bits maximum).
+
   By default, it will split a 64 bit number into two, 32 bit numbers.   
   
   The number 32 can be changed, if desired. To do so, change the value of sizeOfSmallerNumbers. This would change the size of the two numbers we use to store the upper and lower bits of the original, larger number. Note that if you want to store a number of size x, the size of the two smaller numbers must be at least  the ceiling of x/2. If this number is changed, it must be less than 32 (and thus the greatest number we can store is 31*2=62). Otherwise, unwanted behavior may occur.
