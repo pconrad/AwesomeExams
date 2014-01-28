@@ -8,6 +8,7 @@
     <script src="bits.js"></script>
     <script src="random.js"></script>
     <script src="questions.js"></script>
+    <script src="purl/purl.js"></script>
 </head>
 
 <body>
@@ -17,13 +18,28 @@
         <p>The Beginning of the Next Steps of Project Awesome.</p>
     </header>
 
-    <div id="questions"></div>
-    <div id="answers"></div>
+    <div id="seed"></div>
+    <div id="question"></div>
+    <div id="answer"></div>
+
+    
 
     <script>
-        var rs = new RandomStream(0xABCD1234);
+
+        var url = purl(); // parse the current page URL
+
+	var seed = url.param("seed");
+	
+	if (seed==undefined) {
+	   var d = new Date();
+	   seed = "" + d.getMilliseconds() + d.getSeconds() + d.getMinutes() + d.getHours() + d.getMonth();
+	}
+
+        var rs = new RandomStream(seed);
         var question = new orderOfOperationsQuestion(rs);
-        question.view();		
+	window.document.getElementById("seed").innerHTML += ("<p>Seed=" + seed + "</p>");
+	window.document.getElementById("question").innerHTML += question.formatQuestion("HTML");
+        window.document.getElementById("answer").innerHTML += question.formatAnswer("HTML");
     </script>
 
 </body>
