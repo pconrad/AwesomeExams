@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>The Beginning of the Next Steps of Project Awesome</title>
+    <script src="bits.js"></script>
+    <script src="random.js"></script>
+    <script src="questions.js"></script>
+    <script src="https://github.com/allmarkedup/purl/blob/024fe048d407fc4c0a87ca9e0fd3b50cc5c2454f/purl.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>AwesomeNextSteps</h1>
+        <p>The Beginning of the Next Steps of Project Awesome.</p>
+    </header>
+
+    <div id="questions"></div>
+    <div id="answers"></div>
+
+    <script>
+        var url = purl(); //Parse the current URL
+        var seed = url.param("seed");
+        var num = url.param("numQuestions");
+
+        var rs = new RandomStream(seed);
+        var question = new orderOfOperationsQuestion(rs);
+        question.view();		
+    </script>
+
+</body>
+
+</html>
