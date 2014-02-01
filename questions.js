@@ -1,7 +1,7 @@
 /**
    Model object for an order of operations question
 
-   @author Phill Conrad and Evan Crook
+   @author Phill Conrad, Evan Crook, Kevin Malta
    @version AwesomeNextSteps Jan 2014
 */
 
@@ -42,14 +42,6 @@ function orderOfOperationsQuestion(randomStream)
       return "unknown format"; // TODO: consider exception
     };
     
-    this.formatAnswer = function(format) {
-      switch (format) {
-         case "HTML": return this.formatAnswerHTML();
-      }  
-      return "unknown format"; // TODO: consider exception
-    };
-
-
     this.formatQuestionHTML = function () {
 
 	//Generate the question text
