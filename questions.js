@@ -10,10 +10,15 @@ function orderOfOperationsQuestion(randomStream)
 {
     //Generate the three variables
     
-    this.a = randomStream.nextIntRange(8) + 2; //generate ints in [0 .. 7] and add 2 to get ints in [2 .. 9]
-    this.b = randomStream.nextIntRange(9) + 1; // gen ints in [0..8], add 1 to get 1-9
-    this.c = randomStream.nextIntRange(8) + 2; // like a
-    
+    //this.a = randomStream.nextIntRange(8) + 2; //generate ints in [0 .. 7] and add 2 to get ints in [2 .. 9]
+    //this.b = randomStream.nextIntRange(9) + 1; // gen ints in [0..8], add 1 to get 1-9
+    //this.c = randomStream.nextIntRange(8) + 2; // like a
+    var numbers = [2,3,4,5,6,7,8,9];
+    randomStream.shuffle(numbers);
+    this.a = numbers[0];
+    this.b = numbers[1];
+    this.c = numbers[2];    
+
     this.ops = [" + ", " * "];
     randomStream.shuffle(this.ops);
     
@@ -24,17 +29,11 @@ function orderOfOperationsQuestion(randomStream)
     } else {
       this.correctAnswer = this.a * this.b + this.c;     
     }
-    this.answerChoices = [ ( this.a *  this.b   + this.c) , 
-			   ( this.a * (this.b   + this.c) ), 
-			   ( this.a + (this.b   * this.c) ), 
-			   ((this.a +  this.b ) * this.c) ]; //all possible orderings
-    randomStream.shuffle(this.answerChoices);
-     
-
-    // NOW!  the problem is a this.ops[0] b this.ops[1] c 
-   
-    //Now, having your three numbers, generate & rander the text of a question involving them.
-   
+    this.answerChoices = [ (this.a *  this.b   + this.c), 
+			            ( this.a * (this.b   + this.c) ), 
+			            ( this.a + (this.b   * this.c) ), 
+			            ((this.a +  this.b ) * this.c) ]; //all possible orderings
+    randomStream.shuffle(this.answerChoices);   
    
     this.formatQuestion = function(format) {
       switch (format) {
@@ -52,20 +51,19 @@ function orderOfOperationsQuestion(randomStream)
 
 
     this.formatQuestionHTML = function () {
-        
-        var header = "<h2>Order of Operations</h2>";
-        var questionText = "<p>What is " + this.a + this.ops[0] + this.b + this.ops[1] + this.c + "?";
-        return header+questionText;
-    };
 
-    this.formatAnswerHTML = function () {
-        return "<p><strong>a) </strong>" 
+	//Generate the question text
+        var questionText = "<p>What is " + this.a + this.ops[0] + this.b + this.ops[1] + this.c + "?";
+
+	//Add the answer options
+        questionText += "<p><strong>a) </strong>" 
            + this.answerChoices[0] + "<br><strong>b) </strong>" 
            + this.answerChoices[1] + "<br><strong>c) </strong>" 
            + this.answerChoices[2] + "<br><strong>d) </strong>" 
            + this.answerChoices[3] + "</p>";
-    };
 
+	return questionText;
+    };
 
 };
 

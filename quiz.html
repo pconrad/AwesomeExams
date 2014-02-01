@@ -14,21 +14,28 @@
 <body>
 
     <header>
-        <h1>AwesomeNextSteps</h1>
-        <p>The Beginning of the Next Steps of Project Awesome.</p>
+        <h1>Order of Operations</h1>
     </header>
 
+    <div id="seed"></div>
     <div id="questions"></div>
     <div id="answers"></div>
+    
 
     <script>
-        var url = purl(); //Parse the current URL
+        var url = purl(); //Parse the current URL using the purl library
         var seed = url.param("seed");
         var num = url.param("numQuestions");
+        document.getElementById("seed").innerHTML = "<strong>Quiz number: </strong>" + seed + "<br>";
 
         var rs = new RandomStream(seed);
-        var question = new orderOfOperationsQuestion(rs);
-        question.view();		
+        for(i=0;i<num;i++)
+        {
+            var question = new orderOfOperationsQuestion(rs);
+            document.getElementById("questions").innerHTML += "<h3>Question " + (i+1) + ":</h3>" + question.formatQuestion("HTML") + "<br>";
+        }
+
+        	
     </script>
 
 </body>

@@ -14,10 +14,9 @@
         <p>The Beginning of the Next Steps of Project Awesome.</p>
     </header>
 
-    <!-- This is an HTML comment -->
-    <!-- To do here: Make a "Landing" page containing options to set up quiz -->
-    <!-- e.g: seed, # of questions, etc. -->
-    <!-- and a Submit button that, on click, GETs another page where the actual quiz will be set up -->
+    <!-- This is a "Landing" page, where the quiz can be set up -->
+    <!-- After setup, it will request quiz.html where the actual quiz is generated -->
+    <!-- We can also request other pages that will generate LaTEX from here as well -->
 
     <p>
     <h2>Set up your quiz:</h2>
@@ -25,9 +24,11 @@
     <form name="setup" action="quiz.html">
         To generate a specific quiz or retrieve a past quiz, enter a quiz number here. <br>
         Quiz numbers are in hexadecimal (0-9, A-F, e.g. 123ABC56F). <br>
-        The number of questions is pre-set for each quiz number. <br>
-        Leave "Quiz Number" blank if you wish to generate a random quiz with a specified number of questions. <br> <br>
-        Quiz number: <input type="text" name="seed"> <br>
+        Leave "Quiz Number" blank if you wish to generate a random quiz. <br> <br>
+        Quiz number: <input type="text" name="seed"> <br> <br>
+
+        Select the number of questions you wish your quiz to have. This is independent of the quiz number. <br>
+        The same quiz number will always yield the same questions. <br> <br>
         Number of questions: 
         <select name="numQuestions">
             <option value="5">5</option>
