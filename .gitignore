@@ -1,3 +1,13 @@
 # Emacs backup files
 *~
 
+# LaTeX files to be ignored by github
+
+*.dvi 
+*.aux 
+*.ps 
+*.blg 
+*.bbl 
+*.log 
+*.bak 
+*.pdf
