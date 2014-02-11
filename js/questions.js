@@ -59,6 +59,60 @@ function orderOfOperationsQuestion(randomStream)
 
 };
 
+
+
+
+function changeOfBaseQuestion(randomStream)
+{
+    
+    var number = randomStream.nextIntRange(240)+15;
+    //var baseArray = [[number, "decimal"],[number.toString(16), "hexadecimal"],[number.toString(2), "binary"]];
+   
+    var baseArray = [ {"base": "decimal", "value": number,"radix": 10}, {"base": "hexadecimal", "value": number.toString(16), "radix": 16}, {"base": "binary", "value": number.toString(2), "radix": 2} ];
+
+    randomStream.shuffle(baseArray);
+    
+    this.a = baseArray[0];
+    this.b = baseArray[1];
+
+    this.correctAnswer = this.b[value];
+
+    this.answerChoices = [this.b[value], (randomStream.nextIntRange(240)+15).toString(this.b[radix]), 
+			            (randomStream.nextIntRange(240)+15).toString(this.b[radix]), 
+			            (randomStream.nextIntRange(240)+15).toString(this.b[radix]) ]
+
+    randomStream.shuffle(this.answerChoices);
+
+    this.formatQuestion = function(fomat) {
+	switch (format) {
+	    case "HTML": return this.formatQuestionHTML();
+	}
+	return "unknown format";
+    };
+    this.formatQuestionHTML = function () {
+
+	var questionText = "<p>Convert " + this.a[value] + " from " + this.a[base] + " to " + this.b[base] + ".";
+    
+
+    questionText += "<p><strong>a) </strong>"
+            + this.answerChoices[0] + "<br><strong>b) </strong>"
+            + this.answerChoices[1] + "<br><strong>c) </strong>"
+            + this.answerChoices[2] + "<br><strong>d) </strong>"
+            + this.answerChoices[3] + "</p>";
+
+        return questionText;
+
+
+};
+
+
+
+
+
+
+
+
+
 //Questions to generate for CS8 (Python) material -- ideas:
 
 //Give a sample IDLE session, show commands, ask the student to provide what the output would be. 

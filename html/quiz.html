@@ -15,7 +15,7 @@
 
 <body>
 
-    <header>
+    <header> 
         <h1>Order of Operations</h1>
     </header>
 
@@ -33,7 +33,8 @@
         var rs = new RandomStream(seed);
         for(i=0;i<num;i++)
         {
-            var question = new orderOfOperationsQuestion(rs);
+		    var question = new changeOfBaseQuestion(rs);
+           // var question = new orderOfOperationsQuestion(rs);
             document.getElementById("questions").innerHTML += "<h3>Question " + (i+1) + ":</h3>" + question.formatQuestion("HTML") + "<br>";
         }
     </script>
