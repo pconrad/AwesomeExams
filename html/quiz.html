@@ -26,9 +26,9 @@
 
     <script>
         var url = purl(); //Parse the current URL using the purl library
-        var seed = url.param("seed");
+        var seed = parseInt(url.param("seed"),16);
         var num = url.param("numQuestions");
-        document.getElementById("seed").innerHTML = "<strong>Quiz number: </strong>" + seed + "<br>";
+        document.getElementById("seed").innerHTML = "<strong>Quiz number: </strong>" + seed.toString(16) + "<br>";
 
         var rs = new RandomStream(seed);
         for(i=0;i<num;i++)
