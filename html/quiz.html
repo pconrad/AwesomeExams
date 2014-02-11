@@ -27,15 +27,31 @@
     <script>
         var url = purl(); //Parse the current URL using the purl library
         var seed = parseInt(url.param("seed"),16);
-        var num = url.param("numQuestions");
+	var num = url.param("numQuestions");
+
+	// TODO if the seed is not passed in right make a random seed
+
+        var questionType = url.param("questionType");
+	var questionFunc = null;
+
+	if (questionType == "changeOfBase") {
+	   questionFunc = changeOfBaseQuestion;
+        } else if (questionType == "orderOfOperations") {
+	   questionFunc = orderOfOperationsQuestion;
+	}
+
         document.getElementById("seed").innerHTML = "<strong>Quiz number: </strong>" + seed.toString(16) + "<br>";
 
         var rs = new RandomStream(seed);
-        for(i=0;i<num;i++)
-        {
-		    var question = new changeOfBaseQuestion(rs);
-           // var question = new orderOfOperationsQuestion(rs);
-            document.getElementById("questions").innerHTML += "<h3>Question " + (i+1) + ":</h3>" + question.formatQuestion("HTML") + "<br>";
+	if (questionFunc != null) {
+          for(i=0;i<num;i++)
+          {
+		
+             var question = new questionFunc(rs);
+             document.getElementById("questions").innerHTML += "<h3>Question " + (i+1) + ":</h3>" + question.formatQuestion("HTML") + "<br>";
+           }
+        } else {
+           document.getElementById("questions").innerHTML += "<h3>No code for questionType " + questionType +"</h3>";
         }
     </script>
 
