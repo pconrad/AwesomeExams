@@ -11,6 +11,7 @@
     <script src="../js/random.js"></script>
     <script src="../js/questions.js"></script>
     <script src="../purl/purl.js"></script>
+    <script src="../js/quiz.js"></script>
 </head>
 
 <body>
@@ -23,37 +24,19 @@
     <div id="questions"></div>
     <div id="answers"></div>
     
-
     <script>
         var url = purl(); //Parse the current URL using the purl library
         var seed = parseInt(url.param("seed"),16);
-	var num = url.param("numQuestions");
-
-	// TODO if the seed is not passed in right make a random seed
-
+        var num = url.param("numQuestions");
         var questionType = url.param("questionType");
-	var questionFunc = null;
 
-	if (questionType == "changeOfBase") {
-	   questionFunc = changeOfBaseQuestion;
-        } else if (questionType == "orderOfOperations") {
-	   questionFunc = orderOfOperationsQuestion;
-	}
+        var quiz = new Quiz(seed,num,questionType);
 
-        document.getElementById("seed").innerHTML = "<strong>Quiz number: </strong>" + seed.toString(16) + "<br>";
+        document.getElementById("questions").innerHTML += quiz.formatQuestionsHTML();
 
-        var rs = new RandomStream(seed);
-	if (questionFunc != null) {
-          for(i=0;i<num;i++)
-          {
-		
-             var question = new questionFunc(rs);
-             document.getElementById("questions").innerHTML += "<h3>Question " + (i+1) + ":</h3>" + question.formatQuestion("HTML") + "<br>";
-           }
-        } else {
-           document.getElementById("questions").innerHTML += "<h3>No code for questionType " + questionType +"</h3>";
-        }
     </script>
+
+    <a href="./answers.html">Answer Key</a>
 
 </body>
 

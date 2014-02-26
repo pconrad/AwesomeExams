@@ -5,36 +5,67 @@
    @version AwesomeNextSteps Jan 2014
 */
 
+function MultipleChoiceQuestion(randomStream)
+{
+    //Members:
+    //answerChoices
+    //correctIndex
+    //Everything else is in the derived classes (question text, internal variables, etc.)
+
+    //Methods:
+    //formatQuestion & formatQuestionHTML
+    //formatAnswer & formatAnswerHTML
+    //addAnswerChoice, perhaps
+}
+
 //Parameter randomStream should be an instance of the RandomStream class.
 function orderOfOperationsQuestion(randomStream)
 {
     //Generate the three variables
-    
-    //this.a = randomStream.nextIntRange(8) + 2; //generate ints in [0 .. 7] and add 2 to get ints in [2 .. 9]
-    //this.b = randomStream.nextIntRange(9) + 1; // gen ints in [0..8], add 1 to get 1-9
-    //this.c = randomStream.nextIntRange(8) + 2; // like a
     var numbers = [2,3,4,5,6,7,8,9];
     randomStream.shuffle(numbers);
     this.a = numbers[0];
     this.b = numbers[1];
     this.c = numbers[2];    
 
+    //Shuffle the operators
     this.ops = [" + ", " * "];
     randomStream.shuffle(this.ops);
-    
-    this.correctAnswer = 0;
-    
-    if (this.ops[0]==" + ") {
-      this.correctAnswer = this.a + this.b * this.c;     
-    } else {
-      this.correctAnswer = this.a * this.b + this.c;     
+
+    //Calculate the correct answer and the distractor obtained by applying Order of Operations incorrectly
+    if(this.ops[0] == "+")
+    {
+        var correct = this.a + this.b*this.c;
+        var distract = (this.a+this.b)*this.c;
     }
-    this.answerChoices = [ (this.a *  this.b   + this.c), 
-			            ( this.a * (this.b   + this.c) ), 
-			            ( this.a + (this.b   * this.c) ), 
-			            ((this.a +  this.b ) * this.c) ]; //all possible orderings
-    randomStream.shuffle(this.answerChoices);   
-   
+    else
+    {
+        var correct = this.a * this.b + this.c;
+        var distract = this.a * (this.b + this.c);
+    }
+
+    //Pick two more distractors from within a range
+    var delta = distract - correct;
+    var lowerEnd = correct - delta ;
+    var upperEnd = distract + delta;
+    lowerEnd < 0 ? lowerEnd = 0 : lowerEnd = lowerEnd;
+
+    //Array of {int, bool} pairs, representing an answer option and whether or not it is the correct one
+    var answerChoices = [ {value: correct, flag: true},
+                          {value: distract, flag: false},
+                          {value: randomStream.nextIntRange(upperEnd-lowerEnd) + lowerEnd, flag: false},
+                          {value: randomStream.nextIntRange(upperEnd-lowerEnd) + lowerEnd, flag: false} ];
+
+    randomStream.shuffle(answerChoices);
+
+    //Find the correct answer
+    this.correctIndex = 0;
+    for(var i=0; i<answerChoices.length; i++)
+    {
+        if(answerChoices[i].flag == true)
+            this.correctIndex = i;           
+    }
+    
     this.formatQuestion = function(format) {
       switch (format) {
          case "HTML": return this.formatQuestionHTML();
@@ -44,17 +75,29 @@ function orderOfOperationsQuestion(randomStream)
     
     this.formatQuestionHTML = function () {
 
-	//Generate the question text
+	    //Generate the question text
         var questionText = "<p>What is " + this.a + this.ops[0] + this.b + this.ops[1] + this.c + "?";
 
-	//Add the answer options
+	    //Add the answer options
         questionText += "<p><strong>a) </strong>" 
-           + this.answerChoices[0] + "<br><strong>b) </strong>" 
-           + this.answerChoices[1] + "<br><strong>c) </strong>" 
-           + this.answerChoices[2] + "<br><strong>d) </strong>" 
-           + this.answerChoices[3] + "</p>";
+            + this.answerChoices[0] + "<br><strong>b) </strong>" 
+            + this.answerChoices[1] + "<br><strong>c) </strong>" 
+            + this.answerChoices[2] + "<br><strong>d) </strong>" 
+             + this.answerChoices[3] + "</p>";
 
-	return questionText;
+	    return questionText;
+    };
+
+    this.formatAnswer = function(format) {
+      switch (format) {
+         case "HTML": return this.formatAnswerHTML();
+      }  
+      return "unknown format"; // TODO: consider exception
+    };
+    
+    this.formatAnswerHTML = function () {
+        var text = String.fromCharCode(this.correctIndex + 97); //0 = 'a', 1 = 'b', 2 = 'c', etc...
+        return text;
     };
 
 };
@@ -62,59 +105,62 @@ function orderOfOperationsQuestion(randomStream)
 function changeOfBaseQuestion(randomStream)
 {
     var number = randomStream.nextIntRange(240)+15;
-    //var baseArray = [[number, "decimal"],[number.toString(16), "hexadecimal"],[number.toString(2), "binary"]];
    
-    var baseArray = [ {base: "decimal", value: number, radix: 10}, {base: "hexadecimal", value: number.toString(16), radix: 16}, {base: "binary", value: number.toString(2), radix: 2} ];
+    var baseArray = [ {base: "decimal", value: number.toString(10), radix: 10}, {base: "hexadecimal", value: number.toString(16), radix: 16}, {base: "binary", value: number.toString(2), radix: 2} ];
 
     randomStream.shuffle(baseArray);
     
     this.a = baseArray[0];
     this.b = baseArray[1];
 
-    this.correctAnswer = this.b.value;
-
-    this.answerChoices = [this.b.value, (randomStream.nextIntRange(240)+15).toString(this.b.radix), 
-			            (randomStream.nextIntRange(240)+15).toString(this.b.radix), 
-			            (randomStream.nextIntRange(240)+15).toString(this.b.radix) ]
+    //Array of {String, bool} pairs: the string representation of a number in a particular base
+    //and a flag indicating whether or not it is the correct answer.
+    this.answerChoices = [ {value: this.b.value, flag: true}, 
+                           {value: (randomStream.nextIntRange(240)+15).toString(this.b.radix), flag: false},
+			               {value: (randomStream.nextIntRange(240)+15).toString(this.b.radix), flag: false},
+			               {value: (randomStream.nextIntRange(240)+15).toString(this.b.radix), flag: false} ]
 
     randomStream.shuffle(this.answerChoices);
+
+    //Find the correct answer
+    this.correctIndex = 0;
+    for(var i=0; i<answerChoices.length; i++)
+    {
+        if(answerChoices[i].flag == true)
+            this.correctIndex = i;           
+    }
 
     this.formatQuestion = function(format) {
 
 	switch (format) {
 	    case "HTML": return this.formatQuestionHTML();
-	}
-	return "unknown format";
+	    }
+	    return "unknown format";
     };
-    this.formatQuestionHTML = function () {
 
-	var questionText = "<p>Convert " + this.a.value + " from " + this.a.base + " to " + this.b.base + ".";
+    this.formatQuestionHTML = function () {
+	    var questionText = "<p>Convert " + this.a.value + " from " + this.a.base + " to " + this.b.base + ".";
     
-    questionText += "<p><strong>a) </strong>"
-            + this.answerChoices[0] + "<br><strong>b) </strong>"
-            + this.answerChoices[1] + "<br><strong>c) </strong>"
-            + this.answerChoices[2] + "<br><strong>d) </strong>"
-            + this.answerChoices[3] + "</p>";
+        questionText += "<p><strong>a) </strong>"
+                + this.answerChoices[0] + "<br><strong>b) </strong>"
+                + this.answerChoices[1] + "<br><strong>c) </strong>"
+                + this.answerChoices[2] + "<br><strong>d) </strong>"
+                + this.answerChoices[3] + "</p>";
 
         return questionText;
     };
+
+    this.formatAnswer = function(format) {
+        switch (format) {
+            case "HTML": return this.formatAnswerHTML();
+        }  
+        return "unknown format"; // TODO: consider exception
+    };
+    
+    this.formatAnswerHTML = function () {
+        var text = String.fromCharCode(this.correctIndex + 97); //0 = 'a', 1 = 'b', 2 = 'c', etc...
+        return text;
+    };
+
 };
-
-
-
-
-
-
-
-
-//Questions to generate for CS8 (Python) material -- ideas:
-
-//Give a sample IDLE session, show commands, ask the student to provide what the output would be. 
-//(Relatively) easy, because the correct answers can be automatically generated from the questions, by running the commands.
-
-//Write functions given parameters & specifications
-//Harder. There may be multiple "right" answers. Does not lend well to multiple-choice.
-//Could the user write Python code in a text-box, and this code then be evaluated*, and the results checked?
-//*there are issues with this too, of course, such as sanitization
-
 
