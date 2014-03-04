@@ -51,18 +51,18 @@ function orderOfOperationsQuestion(randomStream)
     lowerEnd < 0 ? lowerEnd = 0 : lowerEnd = lowerEnd;
 
     //Array of {int, bool} pairs, representing an answer option and whether or not it is the correct one
-    var answerChoices = [ {value: correct, flag: true},
+    this.answerChoices = [ {value: correct, flag: true},
                           {value: distract, flag: false},
                           {value: randomStream.nextIntRange(upperEnd-lowerEnd) + lowerEnd, flag: false},
                           {value: randomStream.nextIntRange(upperEnd-lowerEnd) + lowerEnd, flag: false} ];
 
-    randomStream.shuffle(answerChoices);
+    randomStream.shuffle(this.answerChoices);
 
     //Find the correct answer
     this.correctIndex = 0;
-    for(var i=0; i<answerChoices.length; i++)
+    for(var i=0; i<this.answerChoices.length; i++)
     {
-        if(answerChoices[i].flag == true)
+        if(this.answerChoices[i].flag == true)
             this.correctIndex = i;           
     }
     
@@ -80,10 +80,10 @@ function orderOfOperationsQuestion(randomStream)
 
 	    //Add the answer options
         questionText += "<p><strong>a) </strong>" 
-            + this.answerChoices[0] + "<br><strong>b) </strong>" 
-            + this.answerChoices[1] + "<br><strong>c) </strong>" 
-            + this.answerChoices[2] + "<br><strong>d) </strong>" 
-             + this.answerChoices[3] + "</p>";
+            + this.answerChoices[0].value + "<br><strong>b) </strong>" 
+            + this.answerChoices[1].value + "<br><strong>c) </strong>" 
+            + this.answerChoices[2].value + "<br><strong>d) </strong>" 
+             + this.answerChoices[3].value + "</p>";
 
 	    return questionText;
     };
@@ -124,9 +124,9 @@ function changeOfBaseQuestion(randomStream)
 
     //Find the correct answer
     this.correctIndex = 0;
-    for(var i=0; i<answerChoices.length; i++)
+    for(var i=0; i<this.answerChoices.length; i++)
     {
-        if(answerChoices[i].flag == true)
+        if(this.answerChoices[i].flag == true)
             this.correctIndex = i;           
     }
 
@@ -142,10 +142,10 @@ function changeOfBaseQuestion(randomStream)
 	    var questionText = "<p>Convert " + this.a.value + " from " + this.a.base + " to " + this.b.base + ".";
     
         questionText += "<p><strong>a) </strong>"
-                + this.answerChoices[0] + "<br><strong>b) </strong>"
-                + this.answerChoices[1] + "<br><strong>c) </strong>"
-                + this.answerChoices[2] + "<br><strong>d) </strong>"
-                + this.answerChoices[3] + "</p>";
+                + this.answerChoices[0].value + "<br><strong>b) </strong>"
+                + this.answerChoices[1].value + "<br><strong>c) </strong>"
+                + this.answerChoices[2].value + "<br><strong>d) </strong>"
+                + this.answerChoices[3].value + "</p>";
 
         return questionText;
     };

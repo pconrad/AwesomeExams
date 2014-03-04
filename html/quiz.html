@@ -25,6 +25,7 @@
     <div id="answers"></div>
     
     <script>
+	
         var url = purl(); //Parse the current URL using the purl library
         var seed = parseInt(url.param("seed"),16);
         var num = url.param("numQuestions");
@@ -33,10 +34,13 @@
         var quiz = new Quiz(seed,num,questionType);
 
         document.getElementById("questions").innerHTML += quiz.formatQuestionsHTML();
+	document.getElementById("seed").innerHTML += "<h2>Quiz #: " + seed + "</h2> <hr> <br>";
+
+	localStorage.setItem("quiz",JSON.stringify(quiz));
 
     </script>
 
-    <a href="./answers.html">Answer Key</a>
+    <a href="./answers.html" target="_blank">Answer Key</a>
 
 </body>
 

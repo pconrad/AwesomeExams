@@ -12,11 +12,16 @@
 
 <body>
 
-    <header> 
-        <h1>Answer Key</h1>
-    </header>
+    <header id="head"> </header>
 
-    <div id="answers"></div>
+	<div id="answers"></div>
+
+	<script>
+		var theQuiz = JSON.parse(localStorage.getItem("quiz"));
+		document.getElementById("head").innerHTML += "<h1> Answer Key for Quiz #" + theQuiz.seed + "</h1> <hr> <br>";	
+		document.getElementById("answers").innerHTML += theQuiz.answers;
+	</script>
+
     
 </body>
 
