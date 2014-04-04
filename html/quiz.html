@@ -34,7 +34,7 @@
         var quiz = new Quiz(seed,num,questionType);
 
         document.getElementById("questions").innerHTML += quiz.formatQuestionsHTML();
-	document.getElementById("seed").innerHTML += "<h2>Quiz #: " + seed.toString(16) + "</h2> <hr> <br>";
+	document.getElementById("seed").innerHTML += "<h2>Quiz #: " + seed.toString(16).toUpperCase() + "</h2> <hr> <br>";
 
 	localStorage.setItem("quiz",JSON.stringify(quiz));
 
