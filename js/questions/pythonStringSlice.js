@@ -13,60 +13,59 @@ function pythonStringSlice(randomStream)
         this.index = this.index2;
 
 //Array of {String, bool} pairs: string and a flag indicating whether or not it is the correct answer.
-    this.createAnswerChoices = function(this.index1, this.index2) {
-        this.answerChoices=new Array(4);
-        if(this.index==0) {
-            if(this.index1==0 && this.index2==name.length) {
-                this.answerChoices[0]={value: this.name, flag: true};
-                this.answerChoices[1]={value: this.name.substring(1,this.name.length), flag: false};
-                this.answerChoices[2]={value: this.name.substring(0,this.name.length-1), flag: false};
-                this.answerChoices[3]={value: this.name.substring(1,this.name.length-1), flag: false};
-            }
-            else if(this.index1==0 && this.index2==1) {
-                this.answerChoices[0]={value: this.name[0], flag: true};
-                this.answerChoices[1]={value: this.name[1], flag: false};
-                this.answerChoices[2]={value: "\" \"", flag: false};//quotes or empty space?
-                this.answerChoices[3]={value: this.name.substring(0,2), flag: false};
-            }
-            else if(this.index1==name.length-1 && this.index2==name.length) {
-                this,answerChoices[0]={value: this.name[this.name.length-1], flag: true};
-                this.answerChoices[1]={value: this.name.substring(this.name.length-2,this.name.length), flag: false}; 
-                this.answerChoices[2]={value: "\" \"", flag: false};             
-                this.answerChoices[3]={value: this.name[this.name.length-2], flag: false};
-            }
-            else if(this.index1+1==this.index2) {
-                this.answerChoices[0]={value: this.name.substring(this.index1,this.index2), flag: true};
-                this.answerChoices[1]={value: this.name.substring(this.index1,this.index2+1), flag: false};
-                this.answerChoices[2]={value: this.name.substring(this.index1-1,this.index2), flag: false};
-                this.answerChoices[3]={value: "\" \"", flag: false};
-            }
-            else {
-                this.answerChoices[0]={value: this.name.substring(this.index1,this.index2), flag: true};
-                this.answerChoices[1]={value: this.name.substring(this.index1,this.index2+1), flag: false};
-                this.answerChoices[2]={value: this.name.substring(this.index1-1,this.index2), flag: false};
-                this.answerChoices[3]={value: this.name.substring(this.index1-1,this.index2+1), flag: false};
-            }
+    this.answerChoices=new Array(4);
+    if(this.index==0) {
+        if(this.index1==0 && this.index2==name.length) {
+            this.answerChoices[0]={value: this.name, flag: true};
+            this.answerChoices[1]={value: this.name.substring(1,this.name.length), flag: false};
+            this.answerChoices[2]={value: this.name.substring(0,this.name.length-1), flag: false};
+            this.answerChoices[3]={value: this.name.substring(1,this.name.length-1), flag: false};
+        }
+        else if(this.index1==0 && this.index2==1) {
+            this.answerChoices[0]={value: this.name[0], flag: true};
+            this.answerChoices[1]={value: this.name[1], flag: false};
+            this.answerChoices[2]={value: "\" \"", flag: false};//quotes or empty space?
+            this.answerChoices[3]={value: this.name.substring(0,2), flag: false};
+        }
+        else if(this.index1==name.length-1 && this.index2==name.length) {
+            this,answerChoices[0]={value: this.name[this.name.length-1], flag: true};
+            this.answerChoices[1]={value: this.name.substring(this.name.length-2,this.name.length), flag: false}; 
+            this.answerChoices[2]={value: "\" \"", flag: false};             
+            this.answerChoices[3]={value: this.name[this.name.length-2], flag: false};
+        }
+        else if(this.index1+1==this.index2) {
+            this.answerChoices[0]={value: this.name.substring(this.index1,this.index2), flag: true};
+            this.answerChoices[1]={value: this.name.substring(this.index1,this.index2+1), flag: false};
+            this.answerChoices[2]={value: this.name.substring(this.index1-1,this.index2), flag: false};
+            this.answerChoices[3]={value: "\" \"", flag: false};
         }
         else {
-            if(index==0) {
-                this.answerChoices[0]={value: this.name[0], flag: true};
-                this.answerChoices[1]={value: this.name[1], flag: false};
-                this.answerChoices[2]={value: this.name.substring(0,2), flag: false};
-                this.answerChoices[3]={value: "\" \"", flag: false};
-            }
-            else if(index==this.name.length-1) {
-                this.answerChoices[0]={value: this.name[this.name.length-1], flag: true};
-                this.answerChoices[1]={value: this.name[this.name.length-2], flag: false};
-                this.answerChoices[2]={value: this.name.substring(this.name.length-2,this.name.length), flag: false};
-                this.answerChoices[3]={value: "\" \"",flag: false};
-            }
-            else {
-                this.answerChoices[0]={value: this.name[index], flag: true};
-                this.answerChoices[1]={value: this.name[index-1], flag: false};
-                this.answerChoices[2]={value: this.name[index+1], flag: false};
-                this.answerChoices[3]={value: this.name.substring(index,this.name.length), flag: false};
-            }
+            this.answerChoices[0]={value: this.name.substring(this.index1,this.index2), flag: true};
+            this.answerChoices[1]={value: this.name.substring(this.index1,this.index2+1), flag: false};
+            this.answerChoices[2]={value: this.name.substring(this.index1-1,this.index2), flag: false};
+            this.answerChoices[3]={value: this.name.substring(this.index1-1,this.index2+1), flag: false};
         }
+    }
+    else {
+        if(index==0) {
+            this.answerChoices[0]={value: this.name[0], flag: true};
+            this.answerChoices[1]={value: this.name[1], flag: false};
+            this.answerChoices[2]={value: this.name.substring(0,2), flag: false};
+            this.answerChoices[3]={value: "\" \"", flag: false};
+        }
+        else if(index==this.name.length-1) {
+            this.answerChoices[0]={value: this.name[this.name.length-1], flag: true};
+            this.answerChoices[1]={value: this.name[this.name.length-2], flag: false};
+            this.answerChoices[2]={value: this.name.substring(this.name.length-2,this.name.length), flag: false};
+            this.answerChoices[3]={value: "\" \"",flag: false};
+        }
+        else {
+            this.answerChoices[0]={value: this.name[index], flag: true};
+            this.answerChoices[1]={value: this.name[index-1], flag: false};
+            this.answerChoices[2]={value: this.name[index+1], flag: false};
+            this.answerChoices[3]={value: this.name.substring(index,this.name.length), flag: false};
+        }
+    }
 }
                 
     randomStream.shuffle(this.answerChoices);
@@ -90,10 +89,21 @@ function pythonStringSlice(randomStream)
     this.formatQuestionHTML = function () {
 	var questionText = "<p>In Python, if we assign:" + "city=" + this.name + "then what is the value of" + "city"
         if(index==0) {
-            questionText+="[" + this.index1 + "," + this.index2 + "]" +  "?";
+            if(index1==0 && this.index2==this.name.length-1) {
+                questionText+="[:]?";
+            }
+            else if(index1==0) {
+                questionText+="[:" + this.index2 + "]?";
+            }
+            else if(index2=this.name.length-1) {
+                questionText+="[" + this.index1 + ":]?";
+            }
+            else {
+                questionText+="[" + this.index1 + ":" + this.index2 + "]?";
+            }
         }
         else {
-            questionText+="[" + this.index + "]" + "?";
+            questionText+="[" + this.index + "]?";
         }
     
         questionText += "<p><strong>a) </strong>" 
