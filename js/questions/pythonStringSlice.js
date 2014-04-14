@@ -47,23 +47,23 @@ function pythonStringSlice(randomStream)
         }
     }
     else {
-        if(index==0) {
+        if(this.index==0) {
             this.answerChoices[0]={value: this.name[0], flag: true};
             this.answerChoices[1]={value: this.name[1], flag: false};
             this.answerChoices[2]={value: this.name.substring(0,2), flag: false};
             this.answerChoices[3]={value: "\" \"", flag: false};
         }
-        else if(index==this.name.length-1) {
+        else if(this.index==this.name.length-1) {
             this.answerChoices[0]={value: this.name[this.name.length-1], flag: true};
             this.answerChoices[1]={value: this.name[this.name.length-2], flag: false};
             this.answerChoices[2]={value: this.name.substring(this.name.length-2,this.name.length), flag: false};
             this.answerChoices[3]={value: "\" \"",flag: false};
         }
         else {
-            this.answerChoices[0]={value: this.name[index], flag: true};
-            this.answerChoices[1]={value: this.name[index-1], flag: false};
-            this.answerChoices[2]={value: this.name[index+1], flag: false};
-            this.answerChoices[3]={value: this.name.substring(index,this.name.length), flag: false};
+            this.answerChoices[0]={value: this.name[this.index], flag: true};
+            this.answerChoices[1]={value: this.name[this.index-1], flag: false};
+            this.answerChoices[2]={value: this.name[this.index+1], flag: false};
+            this.answerChoices[3]={value: this.name.substring(this.index,this.name.length), flag: false};
         }
     }
 }
@@ -88,14 +88,14 @@ function pythonStringSlice(randomStream)
 
     this.formatQuestionHTML = function () {
 	var questionText = "<p>In Python, if we assign:" + "city=" + this.name + "then what is the value of" + "city"
-        if(index==0) {
-            if(index1==0 && this.index2==this.name.length-1) {
+        if(this.index==0) {
+            if(this.index1==0 && this.index2==this.name.length-1) {
                 questionText+="[:]?";
             }
-            else if(index1==0) {
+            else if(this.index1==0) {
                 questionText+="[:" + this.index2 + "]?";
             }
-            else if(index2=this.name.length-1) {
+            else if(this.index2=this.name.length-1) {
                 questionText+="[" + this.index1 + ":]?";
             }
             else {
