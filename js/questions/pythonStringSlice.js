@@ -95,7 +95,7 @@ function pythonStringSliceQuestion(randomStream)
             else if(this.index1==0) {
                 questionText+="[:" + this.index2 + "]?";
             }
-            else if(this.index2=this.name.length-1) {
+            else if(this.index2==this.name.length-1) {
                 questionText+="[" + this.index1 + ":]?";
             }
             else {
@@ -105,6 +105,7 @@ function pythonStringSliceQuestion(randomStream)
         else {
             questionText+="[" + this.index + "]?";
         }
+        questionText+="<br>;
     
         questionText += "<p><strong>a) </strong>" 
             + this.answerChoices[0].value + "<br><strong>b) </strong>"
