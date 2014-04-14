@@ -10,7 +10,8 @@ function Quiz(seed,num,type)
         questionFunc = changeOfBaseQuestion;
     else if (type == "orderOfOperations")
         questionFunc = orderOfOperationsQuestion;
-
+    else if (type == "pythonStringSlice")
+        questionFunc = pythonStringSliceQuestion;
     var randomStream = new RandomStream(seed);
 
     //Generate the questions, put them in an array
