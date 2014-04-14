@@ -8,7 +8,11 @@ function pythonStringSliceQuestion(randomStream) {
     this.index1 = randomStream.nextIntRange(this.index2 + 1);//if index1=0, print nothing
     this.index = 0;
     if (this.index2 === this.index1) {
-        this.index = this.index2;
+        if(this.index === this.name.length) {
+            this.index-=1;
+        } else {
+            this.index = this.index2;
+        }
     }
 //Array of {String, bool} pairs: string and a flag indicating whether or not it is the correct answer.
     this.answerChoices = new Array(4);
@@ -79,11 +83,11 @@ function pythonStringSliceQuestion(randomStream) {
     this.formatQuestionHTML = function () {
         var questionText = "<p>In Python, if we assign: city= \"" + this.name + "\" then what is the value of city";
         if (this.index === 0) {
-            if (this.index1 === 0 && this.index2 === this.name.length - 1) {
+            if (this.index1 === 0 && this.index2 === this.name.length) {
                 questionText += "[:]?";
             } else if (this.index1 === 0) {
                 questionText += "[:" + this.index2 + "]?";
-            } else if (this.index2 === this.name.length - 1) {
+            } else if (this.index2 === this.name.length) {
                 questionText += "[" + this.index1 + ":]?";
             } else {
                 questionText += "[" + this.index1 + ":" + this.index2 + "]?";
