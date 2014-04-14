@@ -8,8 +8,8 @@ function pythonStringSliceQuestion(randomStream) {
     this.index1 = randomStream.nextIntRange(this.index2 + 1);//if index1=0, print nothing
     this.index = 0;
     if (this.index2 === this.index1) {
-        if(this.index === this.name.length) {
-            this.index-=1;
+        if(this.index1 === this.name.length) {
+            this.index = this.index1-1;
         } else {
             this.index = this.index2;
         }
