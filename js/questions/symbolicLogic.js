@@ -1,15 +1,15 @@
 //Parameter randomStream should be an instance of the RandomStream class.
-function orderOfOperationsQuestion(randomStream)
+function symbolicLogicQuestion(randomStream)
 {
-    //Generate the three variables
-    var numbers = [2,3,4,5,6,7,8,9];
-    randomStream.shuffle(numbers);
-    this.a = numbers[0];
-    this.b = numbers[1];
-    this.c = numbers[2];    
+    //Generate the three variables' truth values
+    var values = [T,T,T,T,F,F,F,F];
+    randomStream.shuffle(values);
+    this.a = {name: "A", value: values[0]};
+    this.b = {name: "B", value: values[1]};
+    this.c = {name: "C", value: values[2]};    
 
     //Shuffle the operators
-    this.ops = [" + ", " * "];
+    this.ops = [" and ", " or ", " not ", " only if ", " if and only if "];
     randomStream.shuffle(this.ops);
 
     //Calculate the correct answer and the distractor obtained by applying Order of Operations incorrectly
