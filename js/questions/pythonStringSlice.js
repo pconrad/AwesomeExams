@@ -59,7 +59,7 @@ function pythonStringSliceQuestion(randomStream) {
             this.answerChoices[1] = {value: this.name[1], flag: false};
             this.answerChoices[2] = {value: this.name.substring(0, 2), flag: false};
             this.answerChoices[3] = {value: "\" \"", flag: false};
-        } else if (this.index === this.name.length) {
+        } else if (this.index === this.name.length - 1) {
             this.answerChoices[0] = {value: this.name[this.name.length - 1], flag: true};
             this.answerChoices[1] = {value: this.name[this.name.length - 2], flag: false};
             this.answerChoices[2] = {value: this.name.substring(this.name.length - 2, this.name.length), flag: false};
