@@ -59,50 +59,50 @@ function pythonStringSliceQuestion(randomStream) {
     }
 
                 
-randomStream.shuffle(this.answerChoices);
+    randomStream.shuffle(this.answerChoices);
 
     //Find the correct answer
-this.correctIndex = 0;
-for (var i=0; i<this.answerChoices.length; i++)
-{
-    if (this.answerChoices[i].flag == true)
-        this.correctIndex = i;           
-}
+    this.correctIndex = 0;
+    for (var i = 0; i < this.answerChoices.length; i++) {
+        if (this.answerChoices[i].flag === true) {
+             this.correctIndex = i;           
+        }
+    }
 
-this.formatQuestion = function(format) {
-    switch (format) {
+    this.formatQuestion = function(format) {
+        switch (format) {
 	case "HTML": return this.formatQuestionHTML();
-	}
+        }
 	return "unknown format";
-};
+    };
 
-this.formatQuestionHTML = function () {
-    var questionText = "<p>In Python, if we assign: city=" + this.name + "then what is the value of city";
-    if (this.index === 0) {
-        if (this.index1 === 0 && this.index2 === this.name.length-1) {
-            questionText+="[:]?";
-        } else if (this.index1 === 0) {
-                questionText+="[:" + this.index2 + "]?";
-        } else if (this.index2 === this.name.length-1) {
-                questionText+="[" + this.index1 + ":]?";
+    this.formatQuestionHTML = function () {
+        var questionText = "<p>In Python, if we assign: city=" + this.name + "then what is the value of city";
+        if (this.index === 0) {
+            if (this.index1 === 0 && this.index2 === this.name.length - 1) {
+                questionText += "[:]?";
+            } else if (this.index1 === 0) {
+                questionText += "[:" + this.index2 + "]?";
+            } else if (this.index2 === this.name.length - 1) {
+                questionText += "[" + this.index1 + ":]?";
+            } else {
+                questionText += "[" + this.index1 + ":" + this.index2 + "]?";
+            }
         } else {
-                questionText+="[" + this.index1 + ":" + this.index2 + "]?";
+            questionText += "[" + this.index + "]?";
         }
-    } else {
-        questionText+="[" + this.index + "]?";
-        }
-        questionText+="<br>";
+            questionText += "<br>";
     
-        questionText += "<p><strong>a) </strong>" 
-            + this.answerChoices[0].value + "<br><strong>b) </strong>"
-            + this.answerChoices[1].value + "<br><strong>c) </strong>"
-            + this.answerChoices[2].value + "<br><strong>d) </strong>"
-            + this.answerChoices[3].value + "</p>";
+            questionText += "<p><strong>a) </strong>" 
+                + this.answerChoices[0].value + "<br><strong>b) </strong>"
+                + this.answerChoices[1].value + "<br><strong>c) </strong>"
+                + this.answerChoices[2].value + "<br><strong>d) </strong>"
+                + this.answerChoices[3].value + "</p>";
 
         return questionText;
     };
 
-    this.formatAnswer = function(format) {
+    this.formatAnswer = function (format) {
         switch (format) {
             case "HTML": return this.formatAnswerHTML();
         }  
@@ -114,6 +114,6 @@ this.formatQuestionHTML = function () {
         return text;
     };
 
-};
+}
 
 
