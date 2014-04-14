@@ -87,7 +87,7 @@ function pythonStringSliceQuestion(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-	var questionText = "<p>In Python, if we assign:" + "city=" + this.name + "then what is the value of" + "city"
+	var questionText = "<p>In Python, if we assign:" + "city=" + this.name + "then what is the value of" + "city";
         if(this.index==0) {
             if(this.index1==0 && this.index2==this.name.length-1) {
                 questionText+="[:]?";
@@ -105,7 +105,7 @@ function pythonStringSliceQuestion(randomStream)
         else {
             questionText+="[" + this.index + "]?";
         }
-        questionText+="<br>;
+        questionText+="<br>";
     
         questionText += "<p><strong>a) </strong>" 
             + this.answerChoices[0].value + "<br><strong>b) </strong>"
