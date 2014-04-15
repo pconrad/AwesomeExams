@@ -6,10 +6,20 @@ function Quiz(seed,num,type)
 
     var questionFunc = null;
 
-    if (type == "changeOfBase") 
+    if (type == "changeOfBase") {
         questionFunc = changeOfBaseQuestion;
-    else if (type == "orderOfOperations")
+        this.quizname = 'Change of Base';
+    } else if (type == "orderOfOperations") {
         questionFunc = orderOfOperationsQuestion;
+        this.quizname = 'Order of Operations';
+    } else if (type == "cStrings") {
+        questionFunc = cStringsQuestion;
+        this.quizname = 'C Strings';
+    } else if (type == "pyStrings") {
+        questionFunc = pyStringsQuestion;
+        this.quizname = 'Python Strings';
+    }
+
 
     var randomStream = new RandomStream(seed);
 

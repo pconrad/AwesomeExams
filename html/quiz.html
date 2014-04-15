@@ -12,6 +12,7 @@
     <script src="../js/questions.js"></script>    
     <script src="../js/questions/orderOfOperations.js"></script>
     <script src="../js/questions/changeOfBase.js"></script>
+    <script src="../js/questions/strings.js"></script>
     <script src="../purl/purl.js"></script>
     <script src="../js/quiz.js"></script>
 </head>
@@ -19,7 +20,7 @@
 <body>
 
     <header> 
-        <h1>Order of Operations</h1>
+        <h1 id="quizname"></h1>
     </header>
 
     <div id="seed"></div>
@@ -36,7 +37,8 @@
         var quiz = new Quiz(seed,num,questionType);
 
         document.getElementById("questions").innerHTML += quiz.formatQuestionsHTML();
-	document.getElementById("seed").innerHTML += "<h2>Quiz #: " + seed.toString(16).toUpperCase() + "</h2> <hr> <br>";
+	    document.getElementById("seed").innerHTML += "<h2>Quiz #: " + seed.toString(16).toUpperCase() + "</h2> <hr> <br>";
+        document.getElementById("quizname").innerHTML = quiz.quizname;
 
 	localStorage.setItem("quiz",JSON.stringify(quiz));
 
