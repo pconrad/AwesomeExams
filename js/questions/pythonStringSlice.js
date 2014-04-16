@@ -22,8 +22,13 @@ function pythonStringSliceQuestion(randomStream) {
         } else if (this.index1 === 0 && this.index2 === 1) {
             this.answerChoices[0] = {value: this.name[0], flag: true};
             this.answerChoices[1] = {value: this.name[1], flag: false};
-            this.answerChoices[2] = {value: " ", flag: false};//quotes or empty space?
+            this.answerChoices[2] = {value: " ", flag: false};
             this.answerChoices[3] = {value: this.name.substring(0, 2), flag: false};
+        }  else if (this.index1 === 0 && this.index2 === 2) {
+            this.answerChoices[0] = {value: this.name.substring(0, 2), flag: true};
+            this.answerChoices[1] = {value: this.name[0], flag: false};
+            this.answerChoices[2] = {value: this.name[1], flag: false};
+            this.answerChoices[3] = {value: this.name.substring(0, 3), flag: false};
         } else if (this.index1 === this.name.length-1 && this.index2 === this.name.length) {
             this.answerChoices[0] = {value: this.name[this.name.length - 1], flag: true};
             this.answerChoices[1] = {value: this.name.substring(this.name.length - 2, this.name.length), flag: false}; 
