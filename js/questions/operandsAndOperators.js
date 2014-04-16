@@ -1,101 +1,125 @@
 //Parameter randomStream should be an instance of the RandomStream class.
 function operandsAndOperatorsQuestion(randomStream)
 {
-    /*
-        CODE COPIED FROM ANOTHER QUESTION TYPE
-        WE WILL DO THIS:
-            LOOK AT FIRST OPERATOR AND SET UP TWO VARS:
-            LEFT OPERAND AND RIGHT OERATOR
-            THEN IF THE FIRST OPERATOR IS * THE RIGHT 
-            OPERATOR WILL BE LONGER THAN +
-            THEN WE WILL ASK THE USER FOR THE LEFT AND RIGHT OPERANDS
-            DISTRACTORS CAN BE THE CENTER NUMBER OR 
-            BOTH THE CENTER AND RIGHTMOST CHARACTER
-            
-            
-    */
-        
-        
-        
-        
     //Generate the three variables
     //from randomized array
-    var numbers = [2,3,4,5,6,7,8,9];
+    var numbers = [1,2,3,4,5,6,7,8,9];
     randomStream.shuffle(numbers);
-    this.a = numbers[0];
-    this.b = numbers[1];
-    this.c = numbers[2];    
+    var firstNum  = numbers[0].toString();
+    var secondNum = numbers[1].toString();
+    var thirdNum  = numbers[2].toString();
 
     //Shuffle the operators
     this.ops = [" + ", " * "];
     randomStream.shuffle(this.ops);
+    var firstOperator = this.ops[0];
+    var secondOperator = this.ops[1];
+    
+    var firstOperatorLeftOperand;
+    var firstOperatorRightOperand;
+    var secondOperatorLeftOperand;
+    var secondOperatorRightOperand;
+    
+    var correct;
+    var distract1;
+    var distract2;
+    var distract3;
 
-    //Calculate the correct answer and the distractor obtained by applying Order of Operations incorrectly
-    if(this.ops[0] == "+")
+    //e.x. 2 + 4 * 5
+    if(firstOperator == " + ")
     {
-
-        var correct = this.a + this.b*this.c;
-        var distract = (this.a+this.b)*this.c;
+        firstOperatorLeftOperand = firstNum;
+        firstOperatorRightOperand = secondNum + secondOperator + thirdNum;
+        secondOperatorLeftOperand = secondNum;
+        secondOperatorRightOperand = thirdNum;
+        
+        //e.x. 4*5
+        correct = firstOperatorRightOperand;
+        //e.x. 2
+        distract1 = firstNum;
+        //e.x. 4
+        distract2 = secondNum;
+        //e.x. 5
+        distract3 = thirdNum;  
     }
     else
     {
-        var correct = this.a * this.b + this.c;
-        var distract = this.a * (this.b + this.c);
+        //e.x. 2 * 4 + 5
+        firstOperatorLeftOperand = firstNum;
+        firstOperatorRightOperand = secondNum;
+        secondOperatorLeftOperand = firstNum + firstOperator + secondNum;
+        secondOperatorRightOperand = thirdNum;
+        
+        //e.x. 4
+        correct = firstOperatorRightOperand;
+        //e.x. 4+5 
+        distract1 = secondNum + secondOperator + thirdNum;
+        //e.x. 2
+        distract2 = firstNum;
+        //e.x. 5
+        distract3 = thirdNum;
     }
-
-    //Pick two more distractors from within a range
-    var delta = distract - correct;
-    var lowerEnd = correct - delta ;
-    var upperEnd = distract + delta;
-    lowerEnd < 0 ? lowerEnd = 0 : lowerEnd = lowerEnd;
-
-    //Array of {int, bool} pairs, representing an answer option and whether or not it is the correct one
-    this.answerChoices = [ {value: correct, flag: true},
-                          {value: distract, flag: false},
-                          {value: randomStream.nextIntRange(upperEnd-lowerEnd) + lowerEnd, flag: false},
-                          {value: randomStream.nextIntRange(upperEnd-lowerEnd) + lowerEnd, flag: false} ];
+    
+    
+    this.answerChoices = [
+                    {value: correct,   flag: true},
+                    {value: distract1, flag: false},
+                    {value: distract2, flag: false},
+                    {value: distract3, flag: false} 
+                          ];
 
     randomStream.shuffle(this.answerChoices);
 
-    //Find the correct answer
-    this.correctIndex = 0;
-    for(var i=0; i<this.answerChoices.length; i++)
+    this.correctIndex;
+    for(var i=0; i < this.answerChoices.length; i++)
     {
         if(this.answerChoices[i].flag == true)
+        {
             this.correctIndex = i;           
+        }
     }
     
-    this.formatQuestion = function(format) {
-      switch (format) {
+    this.formatQuestion = function(format) 
+    {
+      switch (format) 
+      {
          case "HTML": return this.formatQuestionHTML();
       }  
       return "unknown format"; // TODO: consider exception
     };
     
-    this.formatQuestionHTML = function () {
+    this.formatQuestionHTML = function () 
+    {
 
 	    //Generate the question text
-        var questionText = "<p>What is " + this.a + this.ops[0] + this.b + this.ops[1] + this.c + "?";
+	    var equation = firstNum + firstOperator + secondNum 
+	                            + secondOperator + thirdNum;
+        var questionText = "<p>What is the right operand of " + firstOperator;
+        questionText += " in the equation: " + equation + "?";
 
 	    //Add the answer options
         questionText += "<p><strong>a) </strong>" 
             + this.answerChoices[0].value + "<br><strong>b) </strong>" 
             + this.answerChoices[1].value + "<br><strong>c) </strong>" 
             + this.answerChoices[2].value + "<br><strong>d) </strong>" 
-             + this.answerChoices[3].value + "</p>";
+            + this.answerChoices[3].value + "</p>";
 
 	    return questionText;
     };
 
-    this.formatAnswer = function(format) {
-      switch (format) {
+    this.formatAnswer = function(format) 
+    {
+      switch (format) 
+      {
          case "HTML": return this.formatAnswerHTML();
       }  
       return "unknown format"; // TODO: consider exception
     };
     
-    this.formatAnswerHTML = function () {
-        var text = String.fromCharCode(this.correctIndex + 97); //0 = 'a', 1 = 'b', 2 = 'c', etc...
+    this.formatAnswerHTML = function () 
+    {
+        //0 = 'a', 1 = 'b', 2 = 'c', etc...
+        var text = String.fromCharCode(this.correctIndex + 97); 
         return text;
     };
 };
