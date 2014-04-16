@@ -56,8 +56,7 @@ function pythonStringSliceQuestion(randomStream) {
             this.answerChoices[1]= {value: this.name[this.index-1], flag: false};
             this.answerChoices[2]= {value: " ", flag: false};
             this.answerChoices[3]= {value: this.name[0], flag: false};
-        }
-        if (this.index === 0) {
+        } else if (this.index === 0) {
             this.answerChoices[0] = {value: this.name[0], flag: true};
             this.answerChoices[1] = {value: this.name[1], flag: false};
             this.answerChoices[2] = {value: this.name.substring(0, 2), flag: false};
@@ -110,15 +109,16 @@ function pythonStringSliceQuestion(randomStream) {
         }
             questionText += "<br>";
         var x=["a", "b", "c", "d"];
-        if(this.index1 === this.name.length) {
+        if(this.index === this.name.length) {
             questionText+="<p>";
             for(i=0;i<4;i++) {
                 if(this.answerChoices[i].flag==true) {
-                    questionText+="<br><strong>"+x[i]+") </strong>" + this.answerChoices[i].value;
+                    questionText+="<strong>"+x[i]+") </strong>" + this.answerChoices[i].value;
                 }    
                 else {
-                    questionText+="<br><strong>" +x[i]+ ") </strong>"+"\'" + this.answerChoices[i].value + "\'";
+                    questionText+="<strong>" +x[i]+ ") </strong>"+"\'" + this.answerChoices[i].value + "\'";
                 }
+                if(i!=0)questionText+="<br>";
              }
              questionText+="</p>";
         }
