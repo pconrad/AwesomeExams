@@ -1,5 +1,9 @@
 
 function pythonStringSliceQuestion(randomStream) {
+    window.onload = function() {
+            var title=document.getElementById("pythontitle");
+            title.innerHTML="Python String Questions";
+        }
     var nameArray = ["Malibu", "Ventura", "Goleta", "Lompoc", "Oxnard", "Montecido", "Camarillo", "Moorpark"];
 
     this.name = nameArray[randomStream.nextIntRange(nameArray.length)];
