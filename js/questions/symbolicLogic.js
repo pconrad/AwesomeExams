@@ -1,16 +1,23 @@
 //Parameter randomStream should be an instance of the RandomStream class.
 function symbolicLogicQuestion(randomStream)
 {
-    //Generate the three variables' truth values
-    var values = [T,T,T,T,F,F,F,F];
+    //Generate the list of variables for use
+    var A = "A";
+    var B = "B";
+    var C = "C";
+    this.values = [A,A,A,B,B,B,C,C,C];
     randomStream.shuffle(values);
-    this.a = {name: "A", value: values[0]};
-    this.b = {name: "B", value: values[1]};
-    this.c = {name: "C", value: values[2]};    
+    //this.a = {name: "A", value: values[0]};
+    //this.b = {name: "B", value: values[1]};
+    //this.c = {name: "C", value: values[2]};    
 
     //Shuffle the operators
-    this.ops = [" and ", " or ", " not ", " only if ", " if and only if "];
+    this.ops = [" and ", " or ", " only if ", " if and only if "];
     randomStream.shuffle(this.ops);
+
+
+    //The following statements decide what the symbolic logic should be in the given situation, based on the first two operators
+    
 
     //Calculate the correct answer and the distractor obtained by applying Order of Operations incorrectly
     if(this.ops[0] == "+")
@@ -56,7 +63,7 @@ function symbolicLogicQuestion(randomStream)
     this.formatQuestionHTML = function () {
 
 	    //Generate the question text
-        var questionText = "<p>What is " + this.a + this.ops[0] + this.b + this.ops[1] + this.c + "?";
+        var questionText = "<p>What is " + this.values[0] + this.ops[0] + this.values[1] + this.ops[1] + this.values[2] + "?";
 
 	    //Add the answer options
         questionText += "<p><strong>a) </strong>" 
