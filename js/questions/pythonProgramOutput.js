@@ -1,10 +1,34 @@
-var RandomIdentifiers;
+RandomIdentifiers = 
+   {
+    one: ["foo","bar","baz","fiddle","faddle","bim","bam","quux","snork","snap"],
+    two: ["squish","squash","smoot","spiffle","splin","squal","spork","smop","smick","smock"],
+    three: ["a","b","c","d","e","moop","minx","mox","mole"]
+  };
 
-function getRandomId(randomStream)
+function getRandomId(randomStream, num)
 {
-   var index = randomStream.nextIntRange(RandomIdentifiers.length);
-   var id = RandomIdentifiers[index];
-   RandomIdentifiers.splice(index,1);
+   var id;
+switch(num){
+  case 0:
+    var index = randomStream.nextIntRange(RandomIdentifiers.one.length);
+    id = RandomIdentifiers.one[index];
+    //RandomIdentifiers.one.splice(index,1);
+    break;
+  case 1:
+    var index = randomStream.nextIntRange(RandomIdentifiers.two.length);
+    id = RandomIdentifiers.two[index];
+    //RandomIdentifiers.two.splice(index,1);
+    break;
+  case 2:
+   var index = randomStream.nextIntRange(RandomIdentifiers.three.length);
+    id = RandomIdentifiers.three[index];
+    //RandomIdentifiers.two.splice(index,1);
+    break;
+  default:
+    alert("hit default");
+    break;
+}
+  alert(id);
    return id;
 }
 
@@ -46,14 +70,13 @@ function randomIntStatement(randomStream, variable)
   return ret;
 }
 
-function randomReturnFunc(randomStream, argument)
+function randomReturnFunc(randomStream, argument, num)
 {
-   RandomIdentifiers = ["foo","bar","baz","fiddle","faddle","bim","bam","quux","snork","snap"];
    var func = {};
-   var id = getRandomId(randomStream); 
+   var id = getRandomId(randomStream,num); 
  
    var variable = {};
-   variable.text = getRandomId(randomStream);
+   variable.text = getRandomId(randomStream,2);
    variable.value = argument.value;
  
 
@@ -68,7 +91,7 @@ function randomReturnFunc(randomStream, argument)
 function getRandomVariable (randomStream)
 {
   var variable = {};
-  variable.text = getRandomId(randomStream);
+  variable.text = getRandomId(randomStream,2);
   variable.value = randomStream.nextIntRange(10);
   return variable;
 }
@@ -80,8 +103,8 @@ function pythonProgramOutputA(randomStream)
         var variable = {};
         variable.value = randomStream.nextIntRange(10);
         variable.text = variable.value.toString();
-	var randomFunc1 = randomReturnFunc(randomStream,variable);
-	var randomFunc2 = randomReturnFunc(randomStream, randomFunc1);
+	var randomFunc1 = randomReturnFunc(randomStream,variable,0);
+	var randomFunc2 = randomReturnFunc(randomStream,randomFunc1,1);
 	
 	programString = randomFunc1.def + randomFunc2.def +
 	  "print " + randomFunc2.text + "";
@@ -146,10 +169,10 @@ function pythonProgramOutputB(randomStream)
         var variable = {};
         variable.value = randomStream.nextIntRange(10);
         variable.text = variable.value.toString();
-	var randomFunc1 = randomReturnFunc(randomStream,variable);
+	var randomFunc1 = randomReturnFunc(randomStream,variable,0);
         variable.value = randomStream.nextIntRange(10);
         variable.text = variable.value.toString();
-	var randomFunc2 = randomReturnFunc(randomStream, variable);
+	var randomFunc2 = randomReturnFunc(randomStream, variable,1);
 	
 	programString = randomFunc1.def + randomFunc2.def +
 	   randomFunc1.text + "\n" + randomFunc2.text + "\n";
