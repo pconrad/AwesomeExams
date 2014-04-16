@@ -112,13 +112,13 @@ function pythonStringSliceQuestion(randomStream) {
         if(this.index === this.name.length) {
             questionText+="<p>";
             for(i=0;i<4;i++) {
+                if(i!=0)questionText+="<br>";
                 if(this.answerChoices[i].flag==true) {
                     questionText+="<strong>"+x[i]+") </strong>" + this.answerChoices[i].value;
                 }    
                 else {
                     questionText+="<strong>" +x[i]+ ") </strong>"+"\'" + this.answerChoices[i].value + "\'";
                 }
-                if(i!=0)questionText+="<br>";
              }
              questionText+="</p>";
         }
