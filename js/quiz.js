@@ -11,12 +11,12 @@ function Quiz(seed,num,type)
     else if (type == "orderOfOperations")
         questionFunc = orderOfOperationsQuestion;
     else if (type == "pythonStringSlice") {
+        questionFunc = pythonStringSliceQuestion;
         window.onload = function() {
             var title=document.getElementById("pythontitle");
             title.innerHTML="Python String Questions";
         }
-        questionFunc = pythonStringSliceQuestion;
-    }
+     }
     var randomStream = new RandomStream(seed);
 
     //Generate the questions, put them in an array
