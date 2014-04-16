@@ -4,13 +4,13 @@ function pythonStringSliceQuestion(randomStream) {
 
     this.name = nameArray[randomStream.nextIntRange(nameArray.length)];
     //obtains two random indices, if they are equal, then that index is used
-    this.index2 = randomStream.nextIntRange(this.name.length +1);//if index2=this.name.length, print nothing
+    this.index2 = randomStream.nextIntRange(this.name.length+1);//if index2=this.name.length, print nothing
     this.index1 = randomStream.nextIntRange(this.index2 + 1);//if index1=0, print nothing
     this.index = 0;
     if(this.index2 === 0) {
         this.index = -1;
     }
-    if (this.index2 === this.index1) {
+    else if (this.index2 === this.index1) {
             this.index=this.index2;
     }
 
