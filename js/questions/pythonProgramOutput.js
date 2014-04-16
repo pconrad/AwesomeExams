@@ -1,0 +1,298 @@
+var RandomIdentifiers;
+
+function getRandomId(randomStream)
+{
+   var index = randomStream.nextIntRange(RandomIdentifiers.length);
+   var id = RandomIdentifiers[index];
+   RandomIdentifiers.splice(index,1);
+   return id;
+}
+
+function randomIntStatement(randomStream, variable)
+{
+  var ret = {};
+  var constant = randomStream.nextIntRange(10);
+  switch(randomStream.nextIntRange(5))
+  {
+    //add x + 1
+    case 0:
+      ret.value = variable.value + constant;
+      ret.text = variable.text + " + " + constant.toString();
+      break;
+    //add 1 + x
+    case 1:
+      ret.value = variable.value + constant;
+      ret.text = constant.toString() + " + " + variable.text;
+      break;
+    //mult c*x
+    case 2:
+      ret.value = variable.value * constant;
+      ret.text = constant.toString() + " * " + variable.text;
+      break;
+    case 3:
+      ret.value = variable.value * constant;
+      ret.text = variable.text + " * " + constant.toString();
+      break;
+    case 4:
+      ret.value = variable.value - constant;
+      ret.text = variable.text + " - " + constant.toString();
+      break;
+    //add 1 + x
+    case 5:
+      ret.value =  constant - variable.value;
+      ret.text =  constant.toString() + " - " + variable.text;
+    break;
+  }
+  return ret;
+}
+
+function randomReturnFunc(randomStream, argument)
+{
+   RandomIdentifiers = ["foo","bar","baz","fiddle","faddle","bim","bam","quux","snork","snap"];
+   var func = {};
+   var id = getRandomId(randomStream); 
+ 
+   var variable = {};
+   variable.text = getRandomId(randomStream);
+   variable.value = argument.value;
+ 
+
+   var ret = randomIntStatement(randomStream, variable);
+   func.value = ret.value
+   func.def = "def " + id + "(" + variable.text + "):\n"
+                 + "\treturn " + ret.text + "\n\n";
+   func.text = id + "(" + argument.text + ")";
+   return func;
+}
+
+function getRandomVariable (randomStream)
+{
+  var variable = {};
+  variable.text = getRandomId(randomStream);
+  variable.value = randomStream.nextIntRange(10);
+  return variable;
+}
+
+//function PythonProgramGenerator2FuncAndPrint(randomStream)
+function pythonProgramOutputA(randomStream)
+{
+	var programString = '';
+        var variable = {};
+        variable.value = randomStream.nextIntRange(10);
+        variable.text = variable.value.toString();
+	var randomFunc1 = randomReturnFunc(randomStream,variable);
+	var randomFunc2 = randomReturnFunc(randomStream, randomFunc1);
+	
+	programString = randomFunc1.def + randomFunc2.def +
+	  "print " + randomFunc2.text + "";
+
+  this.answerChoices = [ {value: randomFunc2.value, flag: true}, 
+      {value: (randomStream.nextIntRange(50)).toString(),
+	flag: false},
+      {value: (randomStream.nextIntRange(50)).toString(), 
+	flag: false},
+      {value: (randomStream.nextIntRange(50)).toString(), 
+	flag: false} ]
+
+      this.correctIndex = 0;
+
+    randomStream.shuffle(this.answerChoices);
+
+    for(var i=0; i<this.answerChoices.length; i++)
+
+    {
+         if(this.answerChoices[i].flag == true)
+         this.correctIndex = i;           
+    }
+
+
+    this.formatQuestion = function(format) {
+
+        switch (format) {
+            case "HTML": return this.formatQuestionHTML();
+            }
+            return "unknown format";
+    };
+
+    this.formatQuestionHTML = function () {
+            var questionText = "<p>Output</p><pre>" + programString + "</pre>";
+    
+        questionText += "<p><strong>a) </strong>"
+                + this.answerChoices[0].value + "<br><strong>b) </strong>"
+                + this.answerChoices[1].value + "<br><strong>c) </strong>"
+                + this.answerChoices[2].value + "<br><strong>d) </strong>"
+                + this.answerChoices[3].value + "</p>";
+
+        return questionText;
+    };
+
+    this.formatAnswer = function(format) {
+        switch (format) {
+            case "HTML": return this.formatAnswerHTML();
+        }  
+        return "unknown format"; // TODO: consider exception
+    };
+    
+    this.formatAnswerHTML = function () {
+        var text = "";// String.fromCharCode(3); //0 = 'a', 1 = 'b', 2 = 'c', etc...
+        return text;
+    };
+   
+};
+
+function pythonProgramOutputB(randomStream)
+{
+	var programString = '';
+        var variable = {};
+        variable.value = randomStream.nextIntRange(10);
+        variable.text = variable.value.toString();
+	var randomFunc1 = randomReturnFunc(randomStream,variable);
+        variable.value = randomStream.nextIntRange(10);
+        variable.text = variable.value.toString();
+	var randomFunc2 = randomReturnFunc(randomStream, variable);
+	
+	programString = randomFunc1.def + randomFunc2.def +
+	   randomFunc1.text + "\n" + randomFunc2.text + "\n";
+
+  this.answerChoices = [ {value: "<pre>"+randomFunc1.value.toString() +
+            "\n" + randomFunc2.value.toString()+ "</pre>", flag: true}, 
+      {value: (randomStream.nextIntRange(50)).toString(),
+	flag: false},
+      {value: (randomStream.nextIntRange(50)).toString(), 
+	flag: false},
+      {value: (randomStream.nextIntRange(50)).toString(), 
+	flag: false} ]
+
+      this.correctIndex = 0;
+
+    randomStream.shuffle(this.answerChoices);
+
+    for(var i=0; i<this.answerChoices.length; i++)
+
+    {
+         if(this.answerChoices[i].flag == true)
+         this.correctIndex = i;           
+    }
+
+
+    this.formatQuestion = function(format) {
+
+        switch (format) {
+            case "HTML": return this.formatQuestionHTML();
+            }
+            return "unknown format";
+    };
+
+    this.formatQuestionHTML = function () {
+            var questionText = "<p>Output</p><pre>" + programString + "</pre>";
+    
+        questionText += "<p><strong>a) </strong>"
+                + this.answerChoices[0].value + "<br><strong>b) </strong>"
+                + this.answerChoices[1].value + "<br><strong>c) </strong>"
+                + this.answerChoices[2].value + "<br><strong>d) </strong>"
+                + this.answerChoices[3].value + "</p>";
+
+        return questionText;
+    };
+
+    this.formatAnswer = function(format) {
+        switch (format) {
+            case "HTML": return this.formatAnswerHTML();
+        }  
+        return "unknown format"; // TODO: consider exception
+    };
+    
+    this.formatAnswerHTML = function () {
+        var text = "";// String.fromCharCode(3); //0 = 'a', 1 = 'b', 2 = 'c', etc...
+        return text;
+    };
+   
+};
+
+/*
+function pythonProgramOutputC(randomStream)
+{
+	var programString = '';
+        var variable1 = {};
+	var variable2 = {};
+        variable1.value = randomStream.nextIntRange(10);
+        variable1.text = variable1.value.toString();
+	variable2.value = randomStream.nextIntRange(10);
+        variable2.text = variable2.value.toString();
+	var randomFunc1 = randomIfFunc(randomStream,variable1, variable2);
+	var variable;
+        variable.value = randomStream.nextIntRange(10);
+        variable.text = variable.value.toString();
+	var randomFunc2 = randomReturnFunc(randomStream, variable);
+	
+	var assignment = assignment(randomStream,
+
+	programString = randomFunc1.def + randomFunc2.def +
+	   randomFunc1.text + "\n" + randomFunc2.text + "\n";
+
+  this.answerChoices = [ {value: "<pre>"+randomFunc1.value.toString() +
+            "\n" + randomFunc2.value.toString()+ "</pre>", flag: true}, 
+      {value: (randomStream.nextIntRange(50)).toString(),
+	flag: false},
+      {value: (randomStream.nextIntRange(50)).toString(), 
+	flag: false},
+      {value: (randomStream.nextIntRange(50)).toString(), 
+	flag: false} ]
+
+      this.correctIndex = 0;
+
+    randomStream.shuffle(this.answerChoices);
+
+    for(var i=0; i<this.answerChoices.length; i++)
+
+    {
+         if(this.answerChoices[i].flag == true)
+         this.correctIndex = i;           
+    }
+
+
+    this.formatQuestion = function(format) {
+
+        switch (format) {
+            case "HTML": return this.formatQuestionHTML();
+            }
+            return "unknown format";
+    };
+
+    this.formatQuestionHTML = function () {
+            var questionText = "<p>Output</p><pre>" + programString + "</pre>";
+    
+        questionText += "<p><strong>a) </strong>"
+                + this.answerChoices[0].value + "<br><strong>b) </strong>"
+                + this.answerChoices[1].value + "<br><strong>c) </strong>"
+                + this.answerChoices[2].value + "<br><strong>d) </strong>"
+                + this.answerChoices[3].value + "</p>";
+
+        return questionText;
+    };
+
+    this.formatAnswer = function(format) {
+        switch (format) {
+            case "HTML": return this.formatAnswerHTML();
+        }  
+        return "unknown format"; // TODO: consider exception
+    };
+    
+    this.formatAnswerHTML = function () {
+        var text = "";// String.fromCharCode(3); //0 = 'a', 1 = 'b', 2 = 'c', etc...
+        return text;
+    };
+   
+};
+*/
+
+function pythonProgramOutput(randomStream)
+{
+  switch(randomStream.nextIntRange(2))
+  {
+    case 0:
+      return new pythonProgramOutputA(randomStream)
+    case 1:
+      return new pythonProgramOutputB(randomStream)
+  }
+}
