@@ -175,13 +175,13 @@ function pythonProgramOutputB(randomStream)
 	programString = randomFunc1.def + randomFunc2.def +
 	   randomFunc1.text + "\n" + randomFunc2.text + "\n";
 
-  this.answerChoices = [ {value: "<br/>"+randomFunc1.value.toString() +
-            "</br>"+ randomFunc2.value.toString()+ "<br/>", flag: true}, 
-      {value: "<br/>"+(randomStream.nextIntRange(50)-25).toString()+"</br>"+(randomStream.nextIntRange(50)-25).toString()+"<br/>",
+  this.answerChoices = [ {value: randomFunc1.value.toString() +
+            "</br>&nbsp&nbsp&nbsp&nbsp"+ randomFunc2.value.toString(), flag: true}, 
+      {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
 	flag: false},
-      {value: "<br/>"+(randomStream.nextIntRange(50)-25).toString()+"</br>"+(randomStream.nextIntRange(50)-25).toString()+"<br/>",
+      {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
   flag: false},
-      {value: "<br/>"+(randomStream.nextIntRange(50)-25).toString()+"</br>"+(randomStream.nextIntRange(50)-25).toString()+"<br/>",
+      {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
   flag: false} ]
 
       this.correctIndex = 0;
