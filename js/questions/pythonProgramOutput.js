@@ -22,13 +22,11 @@ switch(num){
   case 2:
    var index = randomStream.nextIntRange(RandomIdentifiers.three.length);
     id = RandomIdentifiers.three[index];
-    //RandomIdentifiers.two.splice(index,1);
+    //RandomIdentifiers.three.splice(index,1);
     break;
   default:
-    alert("hit default");
     break;
 }
-  alert(id);
    return id;
 }
 
@@ -157,7 +155,7 @@ function pythonProgramOutputA(randomStream)
     };
     
     this.formatAnswerHTML = function () {
-        var text = "";// String.fromCharCode(3); //0 = 'a', 1 = 'b', 2 = 'c', etc...
+        var text = String.fromCharCode(this.correctIndex+97); //0 = 'a', 1 = 'b', 2 = 'c', etc...
         return text;
     };
    
@@ -177,14 +175,14 @@ function pythonProgramOutputB(randomStream)
 	programString = randomFunc1.def + randomFunc2.def +
 	   randomFunc1.text + "\n" + randomFunc2.text + "\n";
 
-  this.answerChoices = [ {value: "<pre>"+randomFunc1.value.toString() +
-            "\n" + randomFunc2.value.toString()+ "</pre>", flag: true}, 
-      {value: (randomStream.nextIntRange(50)).toString(),
+  this.answerChoices = [ {value: "<br/>"+randomFunc1.value.toString() +
+            "</br>"+ randomFunc2.value.toString()+ "<br/>", flag: true}, 
+      {value: "<br/>"+(randomStream.nextIntRange(50)-25).toString()+"</br>"+(randomStream.nextIntRange(50)-25).toString()+"<br/>",
 	flag: false},
-      {value: (randomStream.nextIntRange(50)).toString(), 
-	flag: false},
-      {value: (randomStream.nextIntRange(50)).toString(), 
-	flag: false} ]
+      {value: "<br/>"+(randomStream.nextIntRange(50)-25).toString()+"</br>"+(randomStream.nextIntRange(50)-25).toString()+"<br/>",
+  flag: false},
+      {value: "<br/>"+(randomStream.nextIntRange(50)-25).toString()+"</br>"+(randomStream.nextIntRange(50)-25).toString()+"<br/>",
+  flag: false} ]
 
       this.correctIndex = 0;
 
@@ -226,7 +224,7 @@ function pythonProgramOutputB(randomStream)
     };
     
     this.formatAnswerHTML = function () {
-        var text = "";// String.fromCharCode(3); //0 = 'a', 1 = 'b', 2 = 'c', etc...
+        var text = String.fromCharCode(this.correctIndex+97); //0 = 'a', 1 = 'b', 2 = 'c', etc...
         return text;
     };
    
