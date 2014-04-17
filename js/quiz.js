@@ -6,10 +6,12 @@ function Quiz(seed,num,type)
 
     var questionFunc = null;
 
-    if (type == "changeOfBase") 
+    if (type === "changeOfBase") 
         questionFunc = changeOfBaseQuestion;
-    else if (type == "orderOfOperations")
+    else if (type === "orderOfOperations")
         questionFunc = orderOfOperationsQuestion;
+    else if (type === "symbolicLogic")
+	questionFunc = symbolicLogicQuestion;
 
     var randomStream = new RandomStream(seed);
 
