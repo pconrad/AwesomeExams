@@ -2,7 +2,8 @@ RandomIdentifiers =
    {
     one: ["foo","bar","baz","fiddle","faddle","bim","bam","quux","snork","snap"],
     two: ["squish","squash","smoot","spiffle","splin","squal","spork","smop","smick","smock"],
-    three: ["a","b","c","d","e","moop","minx","mox","mole"]
+    three: ["a","b","c","d","e","moop","minx","mox","mole"],
+    four: ["blarp","squeeble","ranchlaper","drenchlip","tulopulop","porskidor","swamwam"]
   };
 
 function getRandomId(randomStream, num)
@@ -12,23 +13,30 @@ switch(num){
   case 0:
     var index = randomStream.nextIntRange(RandomIdentifiers.one.length);
     id = RandomIdentifiers.one[index];
-    //RandomIdentifiers.one.splice(index,1);
+    RandomIdentifiers.one.splice(index,1);
     break;
   case 1:
     var index = randomStream.nextIntRange(RandomIdentifiers.two.length);
     id = RandomIdentifiers.two[index];
-    //RandomIdentifiers.two.splice(index,1);
+    RandomIdentifiers.two.splice(index,1);
     break;
   case 2:
    var index = randomStream.nextIntRange(RandomIdentifiers.three.length);
     id = RandomIdentifiers.three[index];
-    //RandomIdentifiers.three.splice(index,1);
+    RandomIdentifiers.three.splice(index,1);
+    break;
+  case 3:
+   var index = randomStream.nextIntRange(RandomIdentifiers.four.length);
+    id = RandomIdentifiers.four[index];
+    RandomIdentifiers.four.splice(index,1);
     break;
   default:
     break;
 }
    return id;
 }
+
+
 
 function randomIntStatement(randomStream, variable)
 {
@@ -67,6 +75,56 @@ function randomIntStatement(randomStream, variable)
   }
   return ret;
 }
+
+function randomComparison(randomStream, var1, var2){
+  var ret = {};
+  var constant = randomStream.nextIntRange(10);
+  //var variable1, variable2;
+  switch(randomStream.nextIntRange(1)){
+    //exp < exp
+    case 0:
+      alert("in comp, constant = "+constant+", var1 = "+var1+", var2 = "+var2);
+      var stmt1 = randomIntStatement(randomStream, var1);
+      alert("randomIntStatement worked");
+      var stmt2 = randomIntStatement(randomStream, var2);
+      ret.value = stmt1.value < stmt2.value;
+      ret.text = stmt1.text + " < " + stmt2.text;
+      alert(" -- ret value = "+ret.value+"  ret text = "+ret.text);
+      break;
+  }
+  return ret;
+}
+
+function randomIfFunc(randomStream, argument1, argument2, num){
+  //alert("in func");
+   var func = {};
+   var id = getRandomId(randomStream,num); 
+ 
+   var variable1 = {};
+   variable1.text = getRandomId(randomStream,2);
+   variable1.value = argument1.value;
+
+  var variable2 = {};
+   variable2.text = getRandomId(randomStream,3);
+   variable2.value = argument2.value;
+
+   var comp = randomComparison(randomStream,variable1,variable2);
+ 
+   var ret1 = randomIntStatement(randomStream, variable1);
+   var ret2 = randomIntStatement(randomStream, variable2);
+   alert("comp value = "+comp.value+"  comp text = "+comp.text);
+   if (comp.value)    func.value = ret1.value;
+   else    func.value = ret2.value;
+
+   func.def = "def " + id + "(" + variable1.text + ", "+ variable2.text+"):\n"
+                +"\tif " + comp.text + ":\n"
+                 + "\t\treturn " + ret1.text + "\n"
+                +"\telse:\n"
+                + "\t\treturn "+ret2.text+"\n";
+   func.text = id + "(" + argument1.text + ", "+argument2.text+")";
+   return func;
+}
+
 
 function randomReturnFunc(randomStream, argument, num)
 {
@@ -230,35 +288,31 @@ function pythonProgramOutputB(randomStream)
    
 };
 
-/*
 function pythonProgramOutputC(randomStream)
 {
-	var programString = '';
-        var variable1 = {};
-	var variable2 = {};
-        variable1.value = randomStream.nextIntRange(10);
-        variable1.text = variable1.value.toString();
-	variable2.value = randomStream.nextIntRange(10);
-        variable2.text = variable2.value.toString();
-	var randomFunc1 = randomIfFunc(randomStream,variable1, variable2);
-	var variable;
+  var programString = '';
+        var variable = {};
         variable.value = randomStream.nextIntRange(10);
         variable.text = variable.value.toString();
-	var randomFunc2 = randomReturnFunc(randomStream, variable);
-	
-	var assignment = assignment(randomStream,
+        var variable2 = {};
+        variable2.value = randomStream.nextIntRange(10);
+        variable2.text = variable.value.toString();
+  var randomFunc1 = randomIfFunc(randomStream,variable,variable2,0);
+        variable.value = randomStream.nextIntRange(10);
+        variable.text = variable.value.toString();
+  var randomFunc2 = randomReturnFunc(randomStream, variable,1);
+  
+  programString = randomFunc1.def + randomFunc2.def +
+     randomFunc1.text + "\n" + randomFunc2.text + "\n";
 
-	programString = randomFunc1.def + randomFunc2.def +
-	   randomFunc1.text + "\n" + randomFunc2.text + "\n";
-
-  this.answerChoices = [ {value: "<pre>"+randomFunc1.value.toString() +
-            "\n" + randomFunc2.value.toString()+ "</pre>", flag: true}, 
-      {value: (randomStream.nextIntRange(50)).toString(),
-	flag: false},
-      {value: (randomStream.nextIntRange(50)).toString(), 
-	flag: false},
-      {value: (randomStream.nextIntRange(50)).toString(), 
-	flag: false} ]
+  this.answerChoices = [ {value: randomFunc1.value.toString() +
+            "</br>&nbsp&nbsp&nbsp&nbsp"+ randomFunc2.value.toString(), flag: true}, 
+      {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
+  flag: false},
+      {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
+  flag: false},
+      {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
+  flag: false} ]
 
       this.correctIndex = 0;
 
@@ -300,20 +354,22 @@ function pythonProgramOutputC(randomStream)
     };
     
     this.formatAnswerHTML = function () {
-        var text = "";// String.fromCharCode(3); //0 = 'a', 1 = 'b', 2 = 'c', etc...
+        var text = String.fromCharCode(this.correctIndex+97); //0 = 'a', 1 = 'b', 2 = 'c', etc...
         return text;
     };
    
 };
-*/
+
 
 function pythonProgramOutput(randomStream)
 {
-  switch(randomStream.nextIntRange(2))
+  switch(randomStream.nextIntRange(3))
   {
     case 0:
       return new pythonProgramOutputA(randomStream)
     case 1:
       return new pythonProgramOutputB(randomStream)
+    case 2:
+      return new pythonProgramOutputC(randomStream)
   }
 }
