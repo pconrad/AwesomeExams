@@ -80,16 +80,39 @@ function randomComparison(randomStream, var1, var2){
   var ret = {};
   var constant = randomStream.nextIntRange(10);
   //var variable1, variable2;
-  switch(randomStream.nextIntRange(1)){
-    //exp < exp
-    case 0:
-      alert("in comp, constant = "+constant+", var1 = "+var1+", var2 = "+var2);
+  switch(randomStream.nextIntRange(6)){
+    case 0:    //exp < exp
       var stmt1 = randomIntStatement(randomStream, var1);
-      alert("randomIntStatement worked");
       var stmt2 = randomIntStatement(randomStream, var2);
       ret.value = stmt1.value < stmt2.value;
       ret.text = stmt1.text + " < " + stmt2.text;
-      alert(" -- ret value = "+ret.value+"  ret text = "+ret.text);
+      break;
+    case 1:   //exp < const
+      var stmt1 = randomIntStatement(randomStream, var1);
+      ret.value = stmt1.value < constant;
+      ret.text = stmt1.text + " < " + constant.toString();
+      break;
+    case 2:    //exp > exp
+      var stmt1 = randomIntStatement(randomStream, var1);
+      var stmt2 = randomIntStatement(randomStream, var2);
+      ret.value = stmt1.value < stmt2.value;
+      ret.text = stmt1.text + " < " + stmt2.text;
+      break;
+    case 3:   //exp > const
+      var stmt1 = randomIntStatement(randomStream, var1);
+      ret.value = stmt1.value > constant;
+      ret.text = stmt1.text + " > " + constant.toString();
+      break;
+    case 4:    //exp == exp
+      var stmt1 = randomIntStatement(randomStream, var1);
+      var stmt2 = randomIntStatement(randomStream, var2);
+      ret.value = stmt1.value == stmt2.value;
+      ret.text = stmt1.text + " == " + stmt2.text;
+      break;
+    case 5:   //exp == const
+      var stmt1 = randomIntStatement(randomStream, var1);
+      ret.value = stmt1.value < constant;
+      ret.text = stmt1.text + " == " + constant.toString();
       break;
   }
   return ret;
@@ -112,10 +135,13 @@ function randomIfFunc(randomStream, argument1, argument2, num){
  
    var ret1 = randomIntStatement(randomStream, variable1);
    var ret2 = randomIntStatement(randomStream, variable2);
-   alert("comp value = "+comp.value+"  comp text = "+comp.text);
-   if (comp.value)    func.value = ret1.value;
-   else    func.value = ret2.value;
-
+   //alert("comp value = "+comp.value+"  comp text = "+comp.text);
+   if (comp.value){
+    func.value = ret1.value;
+  }
+   else{
+       func.value = ret2.value;
+     }
    func.def = "def " + id + "(" + variable1.text + ", "+ variable2.text+"):\n"
                 +"\tif " + comp.text + ":\n"
                  + "\t\treturn " + ret1.text + "\n"
@@ -291,18 +317,19 @@ function pythonProgramOutputB(randomStream)
 function pythonProgramOutputC(randomStream)
 {
   var programString = '';
-        var variable = {};
-        variable.value = randomStream.nextIntRange(10);
-        variable.text = variable.value.toString();
+        var variable1 = {};
+        variable1.value = randomStream.nextIntRange(10);
+        variable1.text = variable1.value.toString();
         var variable2 = {};
         variable2.value = randomStream.nextIntRange(10);
-        variable2.text = variable.value.toString();
-  var randomFunc1 = randomIfFunc(randomStream,variable,variable2,0);
+        variable2.text = variable2.value.toString();
+  var randomFunc1 = randomIfFunc(randomStream,variable1,variable2,0);
+        var variable = {};
         variable.value = randomStream.nextIntRange(10);
         variable.text = variable.value.toString();
   var randomFunc2 = randomReturnFunc(randomStream, variable,1);
   
-  programString = randomFunc1.def + randomFunc2.def +
+  programString = randomFunc1.def + "\n"+ randomFunc2.def +
      randomFunc1.text + "\n" + randomFunc2.text + "\n";
 
   this.answerChoices = [ {value: randomFunc1.value.toString() +
