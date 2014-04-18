@@ -192,11 +192,11 @@ function pythonProgramOutputA(randomStream)
 	  "print " + randomFunc2.text + "";
 
   this.answerChoices = [ {value: randomFunc2.value, flag: true}, 
-      {value: (randomStream.nextIntRange(50)).toString(),
+      {value: randomFunc1.value,
 	flag: false},
-      {value: (randomStream.nextIntRange(50)).toString(), 
+      {value: randomFunc1.value.toString() + " " + randomFunc2.value, 
 	flag: false},
-      {value: (randomStream.nextIntRange(50)).toString(), 
+      {value: randomFunc1.value.toString() + "<br>&nbsp&nbsp&nbsp&nbsp" + randomFunc2.value, 
 	flag: false} ]
 
       this.correctIndex = 0;
@@ -248,24 +248,25 @@ function pythonProgramOutputA(randomStream)
 function pythonProgramOutputB(randomStream)
 {
 	var programString = '';
-        var variable = {};
-        variable.value = randomStream.nextIntRange(10);
-        variable.text = variable.value.toString();
-	var randomFunc1 = randomReturnFunc(randomStream,variable,0);
-        variable.value = randomStream.nextIntRange(10);
-        variable.text = variable.value.toString();
-	var randomFunc2 = randomReturnFunc(randomStream, variable,1);
+        var variable1 = {};
+	var variable2 = {};
+        variable1.value = randomStream.nextIntRange(10);
+        variable1.text = variable1.value.toString();
+	var randomFunc1 = randomReturnFunc(randomStream,variable1,0);
+        variable2.value = randomStream.nextIntRange(10);
+        variable2.text = variable2.value.toString();
+	var randomFunc2 = randomReturnFunc(randomStream, variable2,1);
 	
 	programString = randomFunc1.def + randomFunc2.def +
 	   randomFunc1.text + "\n" + randomFunc2.text + "\n";
 
   this.answerChoices = [ {value: randomFunc1.value.toString() +
             "</br>&nbsp&nbsp&nbsp&nbsp"+ randomFunc2.value.toString(), flag: true}, 
-      {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
+      {value: randomFunc1.value.toString(),
 	flag: false},
-      {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
+      {value: variable1.value.toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+variable2.value.toString(),
   flag: false},
-      {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
+      {value: randomFunc1.value.toString() +"</br>&nbsp&nbsp&nbsp&nbsp"+ randomFunc2.value.toString() + "</br>&nbsp&nbsp&nbsp&nbsp" + randomFunc2.value.toString(),
   flag: false} ]
 
       this.correctIndex = 0;
@@ -334,7 +335,7 @@ function pythonProgramOutputC(randomStream)
 
   this.answerChoices = [ {value: randomFunc1.value.toString() +
             "</br>&nbsp&nbsp&nbsp&nbsp"+ randomFunc2.value.toString(), flag: true}, 
-      {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
+      {value: randomFunc1.value.toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+randomFunc2.value.toString()+ "</br>&nbsp&nbsp&nbsp&nbsp"+randomFunc2.value.toString(),
   flag: false},
       {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
   flag: false},
