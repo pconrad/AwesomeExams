@@ -10,6 +10,8 @@ function Quiz(seed,num,type)
         questionFunc = changeOfBaseQuestion;
     else if (type == "orderOfOperations")
         questionFunc = orderOfOperationsQuestion;
+    else if (type == "CvariableType")
+	questionFunc = CvariableTypeQuestion;
 
     var randomStream = new RandomStream(seed);
 
