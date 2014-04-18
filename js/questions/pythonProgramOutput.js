@@ -220,7 +220,7 @@ function pythonProgramOutputA(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-            var questionText = "<p>Output</p><pre>" + programString + "</pre>";
+            var questionText = "<p>What is the output of this program?</p><pre>" + programString + "</pre>";
     
         questionText += "<p><strong>a) </strong>"
                 + this.answerChoices[0].value + "<br><strong>b) </strong>"
@@ -290,7 +290,7 @@ function pythonProgramOutputB(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-            var questionText = "<p>Output</p><pre>" + programString + "</pre>";
+            var questionText = "<p>What is the output of this program?</p><pre>" + programString + "</pre>";
     
         questionText += "<p><strong>a) </strong>"
                 + this.answerChoices[0].value + "<br><strong>b) </strong>"
@@ -363,7 +363,7 @@ function pythonProgramOutputC(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-            var questionText = "<p>Output</p><pre>" + programString + "</pre>";
+            var questionText = "<p>What is the output of this program?</p><pre>" + programString + "</pre>";
     
         questionText += "<p><strong>a) </strong>"
                 + this.answerChoices[0].value + "<br><strong>b) </strong>"
