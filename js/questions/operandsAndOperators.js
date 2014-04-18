@@ -15,6 +15,11 @@ function operandsAndOperatorsQuestion(randomStream)
     var firstOperator = this.ops[0];
     var secondOperator = this.ops[1];
     
+    //Shuffle for right or left operator question
+    //Index 0 is chosen for the question. 
+    var rightOrLeftOperand = ["right","left"];
+    randomStream.shuffle(rightOrLeftOperand);
+    
     var firstOperatorLeftOperand;
     var firstOperatorRightOperand;
     var secondOperatorLeftOperand;
@@ -25,14 +30,26 @@ function operandsAndOperatorsQuestion(randomStream)
     var distract2;
     var distract3;
 
+	//For LEFT operand question, in either + or * case
+	// the answer is always first number
+    if(rightOrLeftOperand[0]== "left" )
+    {           
+	   correct = firstNum;
+        //e.x. 2
+       distract1 = secondNum + secondOperator + thirdNum;
+        //e.x. 4
+       distract2 = secondNum;
+        //e.x. 5
+       distract3 = thirdNum;
+    }
     //e.x. 2 + 4 * 5
-    if(firstOperator == " + ")
+    else if(firstOperator == " + ")
     {
         firstOperatorLeftOperand = firstNum;
         firstOperatorRightOperand = secondNum + secondOperator + thirdNum;
         secondOperatorLeftOperand = secondNum;
         secondOperatorRightOperand = thirdNum;
-        
+         
         //e.x. 4*5
         correct = firstOperatorRightOperand;
         //e.x. 2
@@ -40,7 +57,7 @@ function operandsAndOperatorsQuestion(randomStream)
         //e.x. 4
         distract2 = secondNum;
         //e.x. 5
-        distract3 = thirdNum;  
+        distract3 = thirdNum;
     }
     else
     {
@@ -94,7 +111,7 @@ function operandsAndOperatorsQuestion(randomStream)
 	    //Generate the question text
 	    var equation = firstNum + firstOperator + secondNum 
 	                            + secondOperator + thirdNum;
-        var questionText = "<p>What is the right operand of " + firstOperator;
+        var questionText = "<p>What is the " + rightOrLeftOperand[0] + " operand of " + firstOperator;
         questionText += " in the equation: " + equation + "?";
 
 	    //Add the answer options
