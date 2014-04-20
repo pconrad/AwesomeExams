@@ -1,229 +1,67 @@
-/*
- * Can be tested with the following:
- *
- * var heap = new AEROTWIST.Heap();
- *
- * for(var i = 10; i > 0; i--) {
- *   heap.add(Math.round(Math.random() * 100));
- * }
- *
- * for(var i = 10; i > 0; i--) {
- *   console.log(heap.remove());
- * }
- */
-
-/** Namespace */
-var AEROTWIST = AEROTWIST || {};
-
-/**
- * @class Simple max-heap for priority queues and so on.
- *
- * @author Paul Lewis
- */
-AEROTWIST.Heap = function() {
-  this.items = [];
-};
-
-AEROTWIST.Heap.prototype = {
-		
-  /**
-   * Provides the index of the parent
-   *
-   * @param {int} index The start position
-   */
-  parentIndex: function(index) {
-    return Math.floor(index * 0.5);
-  },
-
-  /**
-   * Provides the index of the left child
-   *
-   * @param {int} index The start position
-   */
-  leftChildIndex: function(index) {
-    return index * 2;
-  },
-
-  /**
-   * Provides the index of the left child
-   *
-   * @param {int} index The start position
-   */
-  rightChildIndex: function(index) {
-    return (index * 2) + 1;
-  },
-
-  /**
-   * Gets the value from a specific position
-   * in the heap
-   *
-   * @param {int} index The position
-   */
-  get: function(index) {
-    var value = null;
-    if(index >= 1) {
-      value = this.items[index - 1];
-    }
-    return value;
-  },
-
-  /**
-   * Sets a value in the heap
-   *
-   * @param {int} index The position in the heap
-   * @param {Float} value The value to set
-   */
-  set: function(index, value) {
-    this.items[index - 1] = value;
-  },
-
-  /**
-   * Swaps two values in the heap
-   *
-   * @param {int} indexA Index of the first item to be swapped
-   * @param {int} indexB Index of the second item to be swapped
-   */
-  swap: function(indexA, indexB) {
-    var temp = this.get(indexA);
-    this.set(indexA, this.get(indexB));
-    this.set(indexB, temp);
-  },
-
-  /**
-   * Sends a value up heap. The item is compared
-   * to its parent item. If its value is greater
-   * then it's swapped and the process is repeated
-   *
-   * @param {int} startIndex The start position for the operation
-   */
-  upHeap: function(startIndex) {
-
-    var startValue  = null,
-        parentValue = null,
-        parentIndex = null,
-        switched    = false;
-
-    do {
-      switched      = false;
-      parentIndex   = this.parentIndex(startIndex);
-      startValue    = this.get(startIndex);
-      parentValue   = this.get(parentIndex);
-      switched      = parentValue !== null && startValue >= parentValue;
-
-      if(switched) {
-        this.swap(startIndex, parentIndex);
-        startIndex = parentIndex;
-      }
-
-    } while(switched);
-  },
-
-  /**
-   * Sends a value down heap. The item is compared
-   * to its two children item. If its value is less
-   * then it's swapped with the <em>highest value child</em>
-   * and the process is repeated
-   *
-   * @param {int} startIndex The start position for the operation
-   */
-  downHeap: function(startIndex) {
-
-    var startValue      = null,
-        leftChildValue  = null,
-        rightChildValue = null,
-        leftChildIndex  = null,
-        rightChildIndex = null,
-        switchValue     = null,
-        switched        = false;
-
-    do {
-
-      switched          = false;
-      leftChildIndex    = this.leftChildIndex(startIndex);
-      rightChildIndex   = this.rightChildIndex(startIndex);
-
-      startValue        = this.get(startIndex);
-      leftChildValue    = this.get(leftChildIndex) || Number.NEGATIVE_INFINITY;
-      rightChildValue   = this.get(rightChildIndex) || Number.NEGATIVE_INFINITY;
-
-      switchValue       = Math.max(leftChildValue, rightChildValue);
-
-      if(startValue < switchValue) {
-
-        if(rightChildValue === switchValue) {
-          this.swap(startIndex, rightChildIndex);
-          startIndex = rightChildIndex;
-        } else {
-          this.swap(startIndex, leftChildIndex);
-          startIndex = leftChildIndex;
-        }
-
-        switched = true;
-      }
-
-    } while(switched);
-
-  },
-
-  /**
-   * Adds a value to the heap. For now this is just
-   * numbers but a comparator function could be used
-   * for more complex comparisons.
-   *
-   * @param {Float} value The value to be added to the heap
-   */
-  add: function(value) {
-    this.items.push(value);
-    this.upHeap(this.items.length);
-  },
-
-  /**
-   * Removes the head of the heap
-   */
-  remove: function() {
-    var value = null;
-
-    // swap with the last child
-    // in the heap
-    this.swap(1, this.items.length);
-
-    // grab the value and truncate
-    // the item array
-    value = this.get(this.items.length);
-    this.items.length -= 1;
-
-    // push the swapped item
-    // down the heap to wherever it needs
-    // to sit
-    this.downHeap(1);
-
-    return value;
-  }
-};
-
-
 //Parameter randomStream should be an instance of the RandomStream class.
 function operandsAndOperatorsQuestion(randomStream)
 {
 
+    var testString = "2+3*7";
 
-  var heap = new AEROTWIST.Heap();
- 
-  heap.add(3);
-  heap.add(5);
-  heap.add(1);
+    var length = testString.length;
+    var operandInQuestion = "left";
+    var operatorString = "*";
+    var operatorInQuestion = new RegExp("\\" + operatorString);
+    var operatorIndex = testString.match(operatorInQuestion).index;
 
-  var root = heap.get(1);
-  var fiveLeftIndex = heap.leftChildIndex(1);
-  var fiveRightIndex = heap.rightChildIndex(1);
-  console.log(root);
-  console.log(heap.get(fiveLeftIndex));
-  console.log(heap.get(fiveRightIndex));
+    var correctAnswer = "";
+
+    if (operatorInQuestion == "+")
+    {
+        if (operandInQuestion == "left")
+        {
+            correctAnswer = testString.substring(0, operatorIndex);
+        }
+        else
+        {   
+            var rightSide = testString.substring(operatorIndex+1,length);
+            var nextPlus = rightSide.match(/\+/);
+            var nextPlusIndex = length;
+            if (nextPlus)
+            {
+                nextPlusIndex = nextPlus.index;
+            }
+
+            correctAnswer = rightSide.substring(0,nextPlusIndex);
+        }
+    }
 
 
-  
-  
-  console.log("penis");
+    //* times-ing
+    else
+    {
+        if (operandInQuestion == "left")
+        {
+            var leftSide = testString.substring(0,operatorIndex);
+            var reversedLeftSide = leftSide.split("").reverse().join("");
+
+            var nextPlus = reversedLeftSide.match(/\+/);
+            var nextPlusIndex = length;
+            if (nextPlus)
+            {
+                nextPlusIndex = nextPlus.index;
+            }
+
+            var reversedCorrectAnswer = reversedLeftSide.substring(0,nextPlusIndex);
+
+            correctAnswer = reversedCorrectAnswer.split("").reverse().join("");
+        }
+        else
+        { 
+            correctAnswer = testString.charAt(operatorIndex+1);
+        }
+    }
+
+    
+
+    console.log(correctAnswer);
+
 
 
 
