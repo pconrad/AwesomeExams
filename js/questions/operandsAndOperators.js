@@ -1,44 +1,71 @@
 //Parameter randomStream should be an instance of the RandomStream class.
 function operandsAndOperatorsQuestion(randomStream)
 {
+    //Generate the three variables
+    //from randomized array
+    var numbers = [1,2,3,4,5,6,7,8,9];
+    randomStream.shuffle(numbers);
+    var firstNum  = numbers[0].toString();
+    var secondNum = numbers[1].toString();
+    var thirdNum  = numbers[2].toString();
 
-    var testString = "2+3*7";
+    //Shuffle the operators
+    this.ops = ["+", "*"];
+    randomStream.shuffle(this.ops);
+    
+    //Shuffle for right or left operator question
+    //Index 0 is chosen for the question. 
+    var rightOrLeftOperand = ["right","left"];
+    randomStream.shuffle(rightOrLeftOperand);
+    
+    
+    var equation = firstNum + this.ops[0] + secondNum + this.ops[1] + thirdNum;
 
-    var length = testString.length;
-    var operandInQuestion = "left";
-    var operatorString = "*";
+    var distract1;
+    var distract2;
+    var distract3;
+
+
+    var operandInQuestion = rightOrLeftOperand[0];
+    var operatorString = this.ops[0];
     var operatorInQuestion = new RegExp("\\" + operatorString);
-    var operatorIndex = testString.match(operatorInQuestion).index;
+    var operatorIndex = equation.match(operatorInQuestion).index;
 
-    var correctAnswer = "";
+
+    var correct = "";
 
     if (operatorInQuestion == "+")
     {
+    	 console.log("operatorInQuestion is +");
+
         if (operandInQuestion == "left")
         {
-            correctAnswer = testString.substring(0, operatorIndex);
+                	    	 console.log("operandInQuestion is left");
+            correct = equation.substring(0, operatorIndex);
         }
         else
         {   
-            var rightSide = testString.substring(operatorIndex+1,length);
+        	    	 console.log("operandInQuestion is right");
+            var rightSide = equation.substring(operatorIndex+1,length);
             var nextPlus = rightSide.match(/\+/);
             var nextPlusIndex = length;
             if (nextPlus)
             {
                 nextPlusIndex = nextPlus.index;
+				console.log("nextPlusIndex inside if: " + nextPlusIndex);
+
             }
 
-            correctAnswer = rightSide.substring(0,nextPlusIndex);
+            correct = rightSide.substring(0,nextPlusIndex);
+            console.log("nextPlusIndex: " + nextPlusIndex);
         }
     }
-
-
     //* times-ing
     else
     {
         if (operandInQuestion == "left")
         {
-            var leftSide = testString.substring(0,operatorIndex);
+            var leftSide = equation.substring(0,operatorIndex);
             var reversedLeftSide = leftSide.split("").reverse().join("");
 
             var nextPlus = reversedLeftSide.match(/\+/);
@@ -50,105 +77,17 @@ function operandsAndOperatorsQuestion(randomStream)
 
             var reversedCorrectAnswer = reversedLeftSide.substring(0,nextPlusIndex);
 
-            correctAnswer = reversedCorrectAnswer.split("").reverse().join("");
+            correct = reversedCorrectAnswer.split("").reverse().join("");
         }
         else
         { 
-            correctAnswer = testString.charAt(operatorIndex+1);
+            correct = equation.charAt(operatorIndex+1);
         }
     }
 
     
 
-    console.log(correctAnswer);
-
-
-
-
-    //Generate the three variables
-    //from randomized array
-    var numbers = [1,2,3,4,5,6,7,8,9];
-    randomStream.shuffle(numbers);
-    var firstNum  = numbers[0].toString();
-    var secondNum = numbers[1].toString();
-    var thirdNum  = numbers[2].toString();
-
-    //Shuffle the operators
-    this.ops = [" + ", " * "];
-    randomStream.shuffle(this.ops);
-    var firstOperator = this.ops[0];
-    var secondOperator = this.ops[1];
-    
-    //Shuffle for right or left operator question
-    //Index 0 is chosen for the question. 
-    var rightOrLeftOperand = ["right","left"];
-    randomStream.shuffle(rightOrLeftOperand);
-    
-    var firstOperatorLeftOperand;
-    var firstOperatorRightOperand;
-    var secondOperatorLeftOperand;
-    var secondOperatorRightOperand;
-    
-    var correct;
-    var distract1;
-    var distract2;
-    var distract3;
-
-/*Testing new implementation of questions */
-
-
-
-
-
-
-
-	//For LEFT operand question, in either + or * case
-	// the answer is always first number
-    if(rightOrLeftOperand[0]== "left" )
-    {           
-	   correct = firstNum;
-        //e.x. 2
-       distract1 = secondNum + secondOperator + thirdNum;
-        //e.x. 4
-       distract2 = secondNum;
-        //e.x. 5
-       distract3 = thirdNum;
-    }
-    //e.x. 2 + 4 * 5
-    else if(firstOperator == " + ")
-    {
-        firstOperatorLeftOperand = firstNum;
-        firstOperatorRightOperand = secondNum + secondOperator + thirdNum;
-        secondOperatorLeftOperand = secondNum;
-        secondOperatorRightOperand = thirdNum;
-         
-        //e.x. 4*5
-        correct = firstOperatorRightOperand;
-        //e.x. 2
-        distract1 = firstNum;
-        //e.x. 4
-        distract2 = secondNum;
-        //e.x. 5
-        distract3 = thirdNum;
-    }
-    else
-    {
-        //e.x. 2 * 4 + 5
-        firstOperatorLeftOperand = firstNum;
-        firstOperatorRightOperand = secondNum;
-        secondOperatorLeftOperand = firstNum + firstOperator + secondNum;
-        secondOperatorRightOperand = thirdNum;
-        
-        //e.x. 4
-        correct = firstOperatorRightOperand;
-        //e.x. 4+5 
-        distract1 = secondNum + secondOperator + thirdNum;
-        //e.x. 2
-        distract2 = firstNum;
-        //e.x. 5
-        distract3 = thirdNum;
-    }
-    
+    //console.log(correct);   
     
     this.answerChoices = [
                     {value: correct,   flag: true},
@@ -181,9 +120,7 @@ function operandsAndOperatorsQuestion(randomStream)
     {
 
 	    //Generate the question text
-	    var equation = firstNum + firstOperator + secondNum 
-	                            + secondOperator + thirdNum;
-        var questionText = "<p>What is the " + rightOrLeftOperand[0] + " operand of " + firstOperator;
+        var questionText = "<p>What is the " + operandInQuestion + " operand of " + operatorString;
         questionText += " in the equation: " + equation + "?";
 
 	    //Add the answer options
