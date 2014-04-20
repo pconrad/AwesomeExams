@@ -30,6 +30,14 @@ function operandsAndOperatorsQuestion(randomStream)
     var distract2;
     var distract3;
 
+/*Testing new implementation of questions */
+
+
+
+
+
+
+
 	//For LEFT operand question, in either + or * case
 	// the answer is always first number
     if(rightOrLeftOperand[0]== "left" )
