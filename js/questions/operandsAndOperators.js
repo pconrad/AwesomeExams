@@ -6,9 +6,10 @@ function operandsAndOperatorsQuestion(randomStream)
     var testString = "2+3*7";
 
     var length = testString.length;
-    var operandInQuestion = "right";
-    var operatorInQuestion = "+";
-    var operatorIndex = testString.match(/\+/).index;
+    var operandInQuestion = "left";
+    var operatorString = "*";
+    var operatorInQuestion = new RegExp("\\" + operatorString);
+    var operatorIndex = testString.match(operatorInQuestion).index;
 
     var correctAnswer = "";
 
@@ -38,15 +39,23 @@ function operandsAndOperatorsQuestion(randomStream)
     {
         if (operandInQuestion == "left")
         {
-            var leftSide = testString.substring(0,operatorIndex-1);
+            var leftSide = testString.substring(0,operatorIndex);
             var reversedLeftSide = leftSide.split("").reverse().join("");
-            var nextPlusIndex = rightSide.match(/\+/).index;
-            var reversedCorrectAnswer = reversedLeftSideSide.substring(0,nextPlusIndex-1);
+
+            var nextPlus = reversedLeftSide.match(/\+/);
+            var nextPlusIndex = length;
+            if (nextPlus)
+            {
+                nextPlusIndex = nextPlus.index;
+            }
+
+            var reversedCorrectAnswer = reversedLeftSide.substring(0,nextPlusIndex);
+
             correctAnswer = reversedCorrectAnswer.split("").reverse().join("");
         }
         else
         { 
-            correctAnswer = testString.charAt(opertorIndex+1);
+            correctAnswer = testString.charAt(operatorIndex+1);
         }
     }
 
