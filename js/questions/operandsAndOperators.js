@@ -25,7 +25,7 @@ AEROTWIST.Heap = function() {
 };
 
 AEROTWIST.Heap.prototype = {
-
+		
   /**
    * Provides the index of the parent
    *
