@@ -1,25 +1,31 @@
 //Parameter randomStream should be an instance of the RandomStream class.
 function operandsAndOperatorsQuestion(randomStream)
 {
-    //Generate the three variables
-    //from randomized array
-    var numbers = [1,2,3,4,5,6,7,8,9];
-    randomStream.shuffle(numbers);
-    var firstNum  = numbers[0].toString();
-    var secondNum = numbers[1].toString();
-    var thirdNum  = numbers[2].toString();
-
-    //Shuffle the operators
+	//Choose size of problem
+	var numberOfOperators = 2;
+	
     this.ops = ["+", "*"];
-    randomStream.shuffle(this.ops);
+    var numbers = [1,2,3,4,5,6,7,8,9];
+    
+    //Add the first number in the equation
+    randomStream.shuffle(numbers);
+	var equation = numbers[0];
+    var numberOfOperatorsEnumerated = [numberOfOperators]
+    for(var i=0; i < numberOfOperators; i++)
+    {
+    	//Add a random operator...
+	    randomStream.shuffle(this.ops);
+	    equation += this.ops[0];
+	    
+	    //Add a random number...
+	    randomStream.shuffle(numbers);
+	    equation += numbers[0];  
+    }
     
     //Shuffle for right or left operator question
     //Index 0 is chosen for the question. 
     var rightOrLeftOperand = ["right","left"];
     randomStream.shuffle(rightOrLeftOperand);
-    
-    
-    var equation = firstNum + this.ops[0] + secondNum + this.ops[1] + thirdNum;
 
     var distract1;
     var distract2;
@@ -27,37 +33,35 @@ function operandsAndOperatorsQuestion(randomStream)
 
 
     var operandInQuestion = rightOrLeftOperand[0];
-    var operatorString = this.ops[0];
+    
+    var operatorIndex = randomStream.shuffle();
+    var operatorString = equation.charAt(operatorIndex);
     var operatorInQuestion = new RegExp("\\" + operatorString);
-    var operatorIndex = equation.match(operatorInQuestion).index;
+        console.log(equation + ", " + operatorString);
 
 
     var correct = "";
 
-    if (operatorInQuestion == "+")
+    if (operatorString == "+")
     {
-    	 console.log("operatorInQuestion is +");
-
         if (operandInQuestion == "left")
         {
-                	    	 console.log("operandInQuestion is left");
             correct = equation.substring(0, operatorIndex);
         }
         else
         {   
-        	    	 console.log("operandInQuestion is right");
-            var rightSide = equation.substring(operatorIndex+1,length);
+            var rightSide = equation.substring(operatorIndex+1, equation.length);
             var nextPlus = rightSide.match(/\+/);
-            var nextPlusIndex = length;
+            var nextPlusIndex = equation.length;
+            				console.log("Rightside" + rightSide);
+
             if (nextPlus)
             {
                 nextPlusIndex = nextPlus.index;
-				console.log("nextPlusIndex inside if: " + nextPlusIndex);
 
             }
 
             correct = rightSide.substring(0,nextPlusIndex);
-            console.log("nextPlusIndex: " + nextPlusIndex);
         }
     }
     //* times-ing
@@ -69,7 +73,7 @@ function operandsAndOperatorsQuestion(randomStream)
             var reversedLeftSide = leftSide.split("").reverse().join("");
 
             var nextPlus = reversedLeftSide.match(/\+/);
-            var nextPlusIndex = length;
+            var nextPlusIndex = equation.length;
             if (nextPlus)
             {
                 nextPlusIndex = nextPlus.index;
