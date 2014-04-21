@@ -2,7 +2,7 @@
 function operandsAndOperatorsQuestion(randomStream)
 {
 	//Choose size of problem
-	var numberOfOperators = 2;
+	var numberOfOperators = 4;
 	
     this.ops = ["+", "*"];
     var numbers = [1,2,3,4,5,6,7,8,9];
@@ -10,7 +10,6 @@ function operandsAndOperatorsQuestion(randomStream)
     //Add the first number in the equation
     randomStream.shuffle(numbers);
 	var equation = numbers[0];
-    var numberOfOperatorsEnumerated = [numberOfOperators]
     for(var i=0; i < numberOfOperators; i++)
     {
     	//Add a random operator...
@@ -20,6 +19,17 @@ function operandsAndOperatorsQuestion(randomStream)
 	    //Add a random number...
 	    randomStream.shuffle(numbers);
 	    equation += numbers[0];  
+    }
+
+    var numberOfOperatorsEnumerated = [numberOfOperators];
+    var numberOfOpEnumIndex = 0;
+    for (var j=0; j < numberOfOperators+2; j++)
+    {
+        if (j%2 != 0)
+        {
+            numberOfOperatorsEnumerated[numberOfOpEnumIndex] = j;
+            numberOfOpEnumIndex++;
+        }
     }
     
     //Shuffle for right or left operator question
@@ -33,11 +43,12 @@ function operandsAndOperatorsQuestion(randomStream)
 
 
     var operandInQuestion = rightOrLeftOperand[0];
-    
-    var operatorIndex = randomStream.shuffle();
+    randomStream.shuffle(numberOfOperatorsEnumerated);
+    var operatorIndex = numberOfOperatorsEnumerated[0];
     var operatorString = equation.charAt(operatorIndex);
     var operatorInQuestion = new RegExp("\\" + operatorString);
-        console.log(equation + ", " + operatorString);
+
+    
 
 
     var correct = "";
@@ -53,7 +64,6 @@ function operandsAndOperatorsQuestion(randomStream)
             var rightSide = equation.substring(operatorIndex+1, equation.length);
             var nextPlus = rightSide.match(/\+/);
             var nextPlusIndex = equation.length;
-            				console.log("Rightside" + rightSide);
 
             if (nextPlus)
             {
@@ -124,7 +134,7 @@ function operandsAndOperatorsQuestion(randomStream)
     {
 
 	    //Generate the question text
-        var questionText = "<p>What is the " + operandInQuestion + " operand of " + operatorString;
+        var questionText = "<p>What is the " + operandInQuestion + " operand of the " + Math.ceil(operatorIndex/2) + "th operator";
         questionText += " in the equation: " + equation + "?";
 
 	    //Add the answer options
