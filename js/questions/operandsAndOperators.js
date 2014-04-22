@@ -2,7 +2,7 @@
 function operandsAndOperatorsQuestion(randomStream)
 {
 	//Choose size of problem
-	var numberOfOperators = 4;
+	var numberOfOperators = 3;
 	
     this.ops = ["+", "*"];
     var numbers = [1,2,3,4,5,6,7,8,9];
@@ -48,12 +48,10 @@ function operandsAndOperatorsQuestion(randomStream)
     var operatorString = equation.charAt(operatorIndex);
     var operatorInQuestion = new RegExp("\\" + operatorString);
 
-    
-
 
     var correct = "";
 
-    if (operatorString == "+")
+    if ((operatorString == "+"))
     {
         if (operandInQuestion == "left")
         {
@@ -132,9 +130,22 @@ function operandsAndOperatorsQuestion(randomStream)
     
     this.formatQuestionHTML = function () 
     {
+    	var numberSuffix = "th";
+		if(Math.ceil(operatorIndex/2) == 1)
+    	{
+	    	numberSuffix = "st";
+    	}
+    	else if(Math.ceil(operatorIndex/2) == 2)
+    	{
+	    	numberSuffix = "nd";
+    	}
+    	else if(Math.ceil(operatorIndex/2) == 3)
+    	{
+	    	numberSuffix = "rd";
+    	}
 
 	    //Generate the question text
-        var questionText = "<p>What is the " + operandInQuestion + " operand of the " + Math.ceil(operatorIndex/2) + "th operator";
+        var questionText = "<p>What is the " + operandInQuestion + " operand of the " + Math.ceil(operatorIndex/2) + numberSuffix + " operator";
         questionText += " in the equation: " + equation + "?";
 
 	    //Add the answer options
