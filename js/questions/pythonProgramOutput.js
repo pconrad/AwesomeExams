@@ -111,7 +111,7 @@ function randomComparison(randomStream, var1, var2){
       break;
     case 5:   //exp == const
       var stmt1 = randomIntStatement(randomStream, var1);
-      ret.value = stmt1.value < constant;
+      ret.value = stmt1.value == constant;
       ret.text = stmt1.text + " == " + constant.toString();
       break;
   }
@@ -209,8 +209,7 @@ function pythonProgramOutputA(randomStream)
 	this.programString = randomFunc1.def + randomFunc2.def +
 	  "print " + randomFunc2.text + "";
 
-  this.correctAnswer = ">>> ================================ RESTART ================================\n" + 
-                randomFunc2.value
+  this.correctAnswer = randomFunc2.value
 
   this.answerChoices = [ {value: randomFunc2.value, flag: true}, 
       {value: randomFunc1.value,
@@ -281,7 +280,7 @@ function pythonProgramOutputB(randomStream)
 	this.programString = randomFunc1.def + randomFunc2.def +
 	   randomFunc1.text + "\n" + randomFunc2.text + "\n";
 
-  this.correctAnswer = ">>> ================================ RESTART ================================\n" +
+  this.correctAnswer =
                 randomFunc2.value.toString()
 
   this.answerChoices = [ {value: randomFunc2.value.toString() , flag: true}, 
@@ -361,8 +360,8 @@ function pythonProgramOutputC(randomStream)
   this.programString = randomFunc1.def + "\n"+ randomFunc2.def +
      variable.text + " = " + randomFunc1.text + "\n"+ "print " + randomFunc2.text + "\n";
 
-  this.correctAnswer = ">>> ================================ RESTART ================================\n" + 
-               randomFunc1.value.toString()+"\n"+randomFunc2.value.toString()+ "\n"+randomFunc2.value.toString()
+  this.correctAnswer = 
+		randomFunc2.value.toString();
 
   this.answerChoices = [ {value: randomFunc2.value.toString(), flag: true}, 
       {value: randomFunc1.value.toString()+"<br>"+randomFunc2.value.toString()+ "<br>"+randomFunc2.value.toString(),
