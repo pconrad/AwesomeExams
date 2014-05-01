@@ -2,7 +2,7 @@ RandomIdentifiers =
    {
     one: ["foo","bar","baz","fiddle","faddle","bim","bam","quux","snork","snap"],
     two: ["squish","squash","smoot","spiffle","splin","squal","spork","smop","smick","smock"],
-    three: ["a","b","c","d","e","moop","minx","mox","mole"],
+    three: ["a","b","c","d","e","moop","minx","mox","mole","f","g"],
     four: ["blarp","squeeble","ranchlaper","drenchlip","tulopulop","porskidor","swamwam"]
   };
 
@@ -13,22 +13,22 @@ switch(num){
   case 0:
     var index = randomStream.nextIntRange(RandomIdentifiers.one.length);
     id = RandomIdentifiers.one[index];
-    RandomIdentifiers.one.splice(index,1);
+//    RandomIdentifiers.one.splice(index,1);
     break;
   case 1:
     var index = randomStream.nextIntRange(RandomIdentifiers.two.length);
     id = RandomIdentifiers.two[index];
-    RandomIdentifiers.two.splice(index,1);
+//    RandomIdentifiers.two.splice(index,1);
     break;
   case 2:
    var index = randomStream.nextIntRange(RandomIdentifiers.three.length);
     id = RandomIdentifiers.three[index];
-    RandomIdentifiers.three.splice(index,1);
+//    RandomIdentifiers.three.splice(index,1);
     break;
   case 3:
    var index = randomStream.nextIntRange(RandomIdentifiers.four.length);
     id = RandomIdentifiers.four[index];
-    RandomIdentifiers.four.splice(index,1);
+//    RandomIdentifiers.four.splice(index,1);
     break;
   default:
     break;
@@ -170,6 +170,24 @@ function randomReturnFunc(randomStream, argument, num)
    return func;
 }
 
+function randomPrintFunc(randomStream, argument, num)
+{
+   var func = {};
+   var id = getRandomId(randomStream,num);
+
+   var variable = {};
+   variable.text = getRandomId(randomStream,2);
+   variable.value = argument.value;
+
+
+   var ret = randomIntStatement(randomStream, variable);
+   func.value = ret.value
+   func.def = "def " + id + "(" + variable.text + "):\n"
+                 + "\tprint " + ret.text + "\n\n";
+   func.text = id + "(" + argument.text + ")";
+   return func;
+}
+
 function getRandomVariable (randomStream)
 {
   var variable = {};
@@ -196,11 +214,11 @@ function pythonProgramOutputA(randomStream)
 	flag: false},
       {value: randomFunc1.value.toString() + " " + randomFunc2.value, 
 	flag: false},
-      {value: randomFunc1.value.toString() + "<br>&nbsp&nbsp&nbsp&nbsp" + randomFunc2.value, 
+      {value: randomFunc1.value.toString() + "<br>" + randomFunc2.value, 
 	flag: false} ]
 
       this.correctIndex = 0;
-
+    this.answerChoices = this.answerChoices.map(function(arg) { return {"value": ">>> ================================ RESTART ================================<br>"+arg.value + "<br>>>>", "flag": arg.flag }; });
     randomStream.shuffle(this.answerChoices);
 
     for(var i=0; i<this.answerChoices.length; i++)
@@ -255,21 +273,22 @@ function pythonProgramOutputB(randomStream)
 	var randomFunc1 = randomReturnFunc(randomStream,variable1,0);
         variable2.value = randomStream.nextIntRange(10);
         variable2.text = variable2.value.toString();
-	var randomFunc2 = randomReturnFunc(randomStream, variable2,1);
+	var randomFunc2 = randomPrintFunc(randomStream, variable2,1);
 	
 	programString = randomFunc1.def + randomFunc2.def +
 	   randomFunc1.text + "\n" + randomFunc2.text + "\n";
 
-  this.answerChoices = [ {value: randomFunc1.value.toString() +
-            "</br>&nbsp&nbsp&nbsp&nbsp"+ randomFunc2.value.toString(), flag: true}, 
+  this.answerChoices = [ {value: randomFunc2.value.toString() , flag: true}, 
       {value: randomFunc1.value.toString(),
 	flag: false},
-      {value: variable1.value.toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+variable2.value.toString(),
+      {value: variable1.value.toString()+"<br>"+variable2.value.toString(),
   flag: false},
-      {value: randomFunc1.value.toString() +"</br>&nbsp&nbsp&nbsp&nbsp"+ randomFunc2.value.toString() + "</br>&nbsp&nbsp&nbsp&nbsp" + randomFunc2.value.toString(),
+      {value: randomFunc1.value.toString() +"<br>"+ randomFunc2.value.toString() + "<br>" + randomFunc2.value.toString(),
   flag: false} ]
 
       this.correctIndex = 0;
+    this.answerChoices = this.answerChoices.map(function(arg) { return {"value": ">>> ================================ RESTART ================================<br>"+arg.value + "<br>>>>", "flag": arg.flag }; });
+
 
     randomStream.shuffle(this.answerChoices);
 
@@ -326,23 +345,26 @@ function pythonProgramOutputC(randomStream)
         variable2.text = variable2.value.toString();
   var randomFunc1 = randomIfFunc(randomStream,variable1,variable2,0);
         var variable = {};
-        variable.value = randomStream.nextIntRange(10);
-        variable.text = variable.value.toString();
+	variable.value = randomFunc1.value;
+	variable.text = getRandomId(randomStream, 2)
+//        variable.value = randomStream.nextIntRange(10);
+//        variable.text = variable.value.toString();
   var randomFunc2 = randomReturnFunc(randomStream, variable,1);
   
-  programString = randomFunc1.def + "\n"+ randomFunc2.def +
-     randomFunc1.text + "\n" + randomFunc2.text + "\n";
 
-  this.answerChoices = [ {value: randomFunc1.value.toString() +
-            "</br>&nbsp&nbsp&nbsp&nbsp"+ randomFunc2.value.toString(), flag: true}, 
-      {value: randomFunc1.value.toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+randomFunc2.value.toString()+ "</br>&nbsp&nbsp&nbsp&nbsp"+randomFunc2.value.toString(),
+  programString = randomFunc1.def + "\n"+ randomFunc2.def +
+     variable.text + " = " + randomFunc1.text + "\n"+ "print " + randomFunc2.text + "\n";
+
+  this.answerChoices = [ {value: randomFunc2.value.toString(), flag: true}, 
+      {value: randomFunc1.value.toString()+"<br>"+randomFunc2.value.toString()+ "<br>"+randomFunc2.value.toString(),
   flag: false},
-      {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
+      {value: (randomStream.nextIntRange(50)-25).toString()+"<br>"+(randomStream.nextIntRange(50)-25).toString(),
   flag: false},
-      {value: (randomStream.nextIntRange(50)-25).toString()+"</br>&nbsp&nbsp&nbsp&nbsp"+(randomStream.nextIntRange(50)-25).toString(),
+      {value: (randomStream.nextIntRange(50)-25).toString()+"<br>"+(randomStream.nextIntRange(50)-25).toString(),
   flag: false} ]
 
       this.correctIndex = 0;
+    this.answerChoices = this.answerChoices.map(function(arg) { return {"value": ">>> ================================ RESTART ================================<br>"+arg.value + "<br>>>>", "flag": arg.flag }; });
 
     randomStream.shuffle(this.answerChoices);
 
