@@ -199,15 +199,18 @@ function getRandomVariable (randomStream)
 //function PythonProgramGenerator2FuncAndPrint(randomStream)
 function pythonProgramOutputA(randomStream)
 {
-	var programString = '';
+	//var programString = '';
         var variable = {};
         variable.value = randomStream.nextIntRange(10);
         variable.text = variable.value.toString();
 	var randomFunc1 = randomReturnFunc(randomStream,variable,0);
 	var randomFunc2 = randomReturnFunc(randomStream,randomFunc1,1);
 	
-	programString = randomFunc1.def + randomFunc2.def +
+	this.programString = randomFunc1.def + randomFunc2.def +
 	  "print " + randomFunc2.text + "";
+
+  this.correctAnswer = ">>> ================================ RESTART ================================\n" + 
+                randomFunc2.value
 
   this.answerChoices = [ {value: randomFunc2.value, flag: true}, 
       {value: randomFunc1.value,
@@ -238,7 +241,7 @@ function pythonProgramOutputA(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-            var questionText = "<p>What is the output of this program?</p><pre>" + programString + "</pre>";
+            var questionText = "<p>What is the output of this program?</p><pre>" + this.programString + "</pre>";
     
         questionText += "<p><strong>a) </strong>"
                 + this.answerChoices[0].value + "<br><strong>b) </strong>"
@@ -265,7 +268,7 @@ function pythonProgramOutputA(randomStream)
 
 function pythonProgramOutputB(randomStream)
 {
-	var programString = '';
+	//var programString = '';
         var variable1 = {};
 	var variable2 = {};
         variable1.value = randomStream.nextIntRange(10);
@@ -275,8 +278,11 @@ function pythonProgramOutputB(randomStream)
         variable2.text = variable2.value.toString();
 	var randomFunc2 = randomPrintFunc(randomStream, variable2,1);
 	
-	programString = randomFunc1.def + randomFunc2.def +
+	this.programString = randomFunc1.def + randomFunc2.def +
 	   randomFunc1.text + "\n" + randomFunc2.text + "\n";
+
+  this.correctAnswer = ">>> ================================ RESTART ================================\n" +
+                randomFunc2.value.toString()
 
   this.answerChoices = [ {value: randomFunc2.value.toString() , flag: true}, 
       {value: randomFunc1.value.toString(),
@@ -309,7 +315,7 @@ function pythonProgramOutputB(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-            var questionText = "<p>What is the output of this program?</p><pre>" + programString + "</pre>";
+            var questionText = "<p>What is the output of this program?</p><pre>" + this.programString + "</pre>";
     
         questionText += "<p><strong>a) </strong>"
                 + this.answerChoices[0].value + "<br><strong>b) </strong>"
@@ -336,7 +342,7 @@ function pythonProgramOutputB(randomStream)
 
 function pythonProgramOutputC(randomStream)
 {
-  var programString = '';
+  //var programString = '';
         var variable1 = {};
         variable1.value = randomStream.nextIntRange(10);
         variable1.text = variable1.value.toString();
@@ -352,8 +358,11 @@ function pythonProgramOutputC(randomStream)
   var randomFunc2 = randomReturnFunc(randomStream, variable,1);
   
 
-  programString = randomFunc1.def + "\n"+ randomFunc2.def +
+  this.programString = randomFunc1.def + "\n"+ randomFunc2.def +
      variable.text + " = " + randomFunc1.text + "\n"+ "print " + randomFunc2.text + "\n";
+
+  this.correctAnswer = ">>> ================================ RESTART ================================\n" + 
+               randomFunc1.value.toString()+"\n"+randomFunc2.value.toString()+ "\n"+randomFunc2.value.toString()
 
   this.answerChoices = [ {value: randomFunc2.value.toString(), flag: true}, 
       {value: randomFunc1.value.toString()+"<br>"+randomFunc2.value.toString()+ "<br>"+randomFunc2.value.toString(),
@@ -385,7 +394,7 @@ function pythonProgramOutputC(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-            var questionText = "<p>What is the output of this program?</p><pre>" + programString + "</pre>";
+            var questionText = "<p>What is the output of this program?</p><pre>" + this.programString + "</pre>";
     
         questionText += "<p><strong>a) </strong>"
                 + this.answerChoices[0].value + "<br><strong>b) </strong>"

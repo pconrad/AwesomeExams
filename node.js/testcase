@@ -10,6 +10,6 @@ eval(fs.readFileSync('../js/random.js')+'');
 var randomStream = new RandomStream(seed);
 var questionFunc = pythonProgramOutput;
 var questions = new questionFunc(randomStream)
-console.log(questions.formatAnswer("HTML"))
-console.log(questions.formatQuestion("HTML"))
+console.log(questions.programString)
+console.log(questions.correctAnswer)
 
