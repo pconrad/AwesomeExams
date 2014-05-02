@@ -12,6 +12,8 @@ function Quiz(seed,num,type)
         questionFunc = orderOfOperationsQuestion;
     else if (type == "operandsAndOperators")
         questionFunc = operandsAndOperatorsQuestion;
+    else if (type == "pythonProgramOutput")
+        questionFunc = pythonProgramOutput;
 
     var randomStream = new RandomStream(seed);
 

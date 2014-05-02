@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+var args = process.argv.slice(2);
+
+var fs = require('fs');
+eval(fs.readFileSync('../js/questions/pythonProgramOutput.js')+'');
+eval(fs.readFileSync('../js/bits.js')+'');
+eval(fs.readFileSync('../js/random.js')+'');
+
+
+var randomStream = new RandomStream(args[0]);
+var questionFunc = pythonProgramOutput;
+var questions = new questionFunc(randomStream)
+console.log(questions.programString)
+//console.log(questions.correctAnswer)
+
