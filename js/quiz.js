@@ -18,6 +18,8 @@ function Quiz(seed,num,type)
         questionFunc = pythonStringSliceQuestion;
     else if (type === "symbolicLogic")
 	questionFunc = symbolicLogicQuestion;
+    else if (type == "CvariableType")
+	questionFunc = CvariableTypeQuestion;
 
 
     var randomStream = new RandomStream(seed);
