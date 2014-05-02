@@ -6,9 +6,9 @@ function Quiz(seed,num,type)
 
     var questionFunc = null;
 
-    if (type == "changeOfBase") 
+    if (type === "changeOfBase") 
         questionFunc = changeOfBaseQuestion;
-    else if (type == "orderOfOperations")
+    else if (type === "orderOfOperations")
         questionFunc = orderOfOperationsQuestion;
     else if (type == "operandsAndOperators")
         questionFunc = operandsAndOperatorsQuestion;
@@ -16,7 +16,9 @@ function Quiz(seed,num,type)
         questionFunc = pythonProgramOutput;
     else if (type == "pythonStringSlice") 
         questionFunc = pythonStringSliceQuestion;
-    
+    else if (type === "symbolicLogic")
+	questionFunc = symbolicLogicQuestion;
+
 
     var randomStream = new RandomStream(seed);
 
