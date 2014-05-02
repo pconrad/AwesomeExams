@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 var args = process.argv.slice(2);
 
+
+// fs allows us to pull in other JavaScript files
+// It's a node.js thing
+
 var fs = require('fs');
 eval(fs.readFileSync('../js/questions/pythonProgramOutput.js')+'');
 eval(fs.readFileSync('../js/bits.js')+'');
