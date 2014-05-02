@@ -14,6 +14,9 @@ function Quiz(seed,num,type)
         questionFunc = operandsAndOperatorsQuestion;
     else if (type == "pythonProgramOutput")
         questionFunc = pythonProgramOutput;
+    else if (type == "pythonStringSlice") 
+        questionFunc = pythonStringSliceQuestion;
+    
 
     var randomStream = new RandomStream(seed);
 
