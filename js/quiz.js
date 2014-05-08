@@ -4,11 +4,28 @@ function Quiz(seed,num,type)
     this.num = num;
     this.type = type;
 
-    var questionFunc = null;
+   
+    // NEW-QUESTION-TYPE: add to questionFunctions dictionary below
 
-    if (type === "changeOfBase") 
+    questionTypes = {
+	"changeOfBase":          {"f": changeOfBaseQuestion,       title: "Change of Base"},
+	"orderOfOperations":     {"f": orderOfOperationsQuestion,  title: "Order of Operations"},
+	"operandsAndOperators":  {"f":operandsAndOperatorsQuestion,title: "Operands and Operators"},
+	"pythonProgramOutput":   {"f":pythonProgramOutputQuestion, title: "Python Program Output"},
+	"pythonStringSlice":    {"f":pythonStringSliceQuestion,    title: "Python String Slice"},
+	"symbolicLogic":         {"f":symbolicLogicQuestion,       title: "Symbolic Logic"},
+	"CvariableType":         {"f":CvariableTypeQuestion,       title: "C Variable Type"},
+	"cStrings":              {"f":cStringsQuestion,            title: "C Strings"},
+	"pyStrings":             {"f":pyStringsQuestion,           title: "Python Strings"}
+    };
+
+    var questionFunc = ((type in questionTypes) ? questionTypes[type].f : null);
+    this.quizname = ((type in questionTypes) ? questionTypes[type].title  :  "Question Type Not Found");
+
+    /*
+    if (type == "changeOfBase") 
         questionFunc = changeOfBaseQuestion;
-    else if (type === "orderOfOperations")
+    else if (type == "orderOfOperations")
         questionFunc = orderOfOperationsQuestion;
     else if (type == "operandsAndOperators")
         questionFunc = operandsAndOperatorsQuestion;
@@ -16,10 +33,17 @@ function Quiz(seed,num,type)
         questionFunc = pythonProgramOutput;
     else if (type == "pythonStringSlice") 
         questionFunc = pythonStringSliceQuestion;
-    else if (type === "symbolicLogic")
+    else if (type == "symbolicLogic")
 	questionFunc = symbolicLogicQuestion;
     else if (type == "CvariableType")
 	questionFunc = CvariableTypeQuestion;
+    else if (type == "cStrings") 
+        questionFunc = cStringsQuestion;
+    else if (type == "pyStrings") 
+        questionFunc = pyStringsQuestion;
+    }
+    */
+
 
 
     var randomStream = new RandomStream(seed);

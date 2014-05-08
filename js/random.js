@@ -65,6 +65,13 @@ function RandomStream(seed) {
         } while (bits - val + (n-1) < 0);
         return val;
     };
+
+    //Picks a random element from an array of n elements, with each element having probability of being chosen 1/n
+    this.pick = function (someArray) {
+        if (!someArray.length)
+            return null;
+        return someArray[this.nextIntRange(someArray.length)];
+    }
     
     //Shuffles an array in place, with each possible permutation having equal probability 1/n!
     //This is a Fisher-Yates shuffle (also called a Knuth shuffle), described in The Art of Computer Programming 2, pp. 124-125:

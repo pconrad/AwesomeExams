@@ -37,7 +37,7 @@ function changeOfBaseQuestion(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-	    var questionText = "<p>Convert " + this.a.value + " from " + this.a.base + " to " + this.b.base + ".";
+	    var questionText = "<p>Convert " + this.a.value + " from " + this.a.base + " to " + this.b.base + ".</p>";
     
         questionText += "<p><strong>a) </strong>"
                 + this.answerChoices[0].value + "<br><strong>b) </strong>"

@@ -17,7 +17,7 @@
     <script src="../js/questions/pythonStringSlice.js"></script>
     <script src="../js/questions/symbolicLogic.js"></script>
     <script src="../js/questions/CvariableType.js"></script>
-    
+    <script src="../js/questions/strings.js"></script>
     <script src="../purl/purl.js"></script>
     <script src="../js/quiz.js"></script>
 </head>
@@ -25,7 +25,7 @@
 <body>
 
     <header> 
-        <h1 id="pythontitle">Order of Operations</h1>
+        <h1 id="quizname"></h1>
     </header>
 
     <div id="seed"></div>
@@ -35,14 +35,34 @@
     <script>
 	
         var url = purl(); //Parse the current URL using the purl library
-        var seed = parseInt(url.param("seed"),16);
+
+
         var num = url.param("numQuestions");
         var questionType = url.param("questionType");
 
+	// Try pulling out the seed as a hex number
+
+        var seed = parseInt(url.param("seed"),16);
+
+	// In case that seed was bogus, calculuate an alternative backup seed.
+
+	altSeed = function (min, max) {
+	    return Math.floor(Math.random() * (max - min + 1)) + min;
+	}(0,0xFFFFFFFF);
+
+	// Use the alternative if the seed passed in was not a legit number
+
+	seed = isNaN(seed) ? altSeed : seed;   
+
+	// generate the quiz using the seed
+
         var quiz = new Quiz(seed,num,questionType);
+
+	// Fill in the parts of the document TODO: Refactor using JQuery instead of long form JavaScript calls
 
         document.getElementById("questions").innerHTML += quiz.formatQuestionsHTML();
 	document.getElementById("seed").innerHTML += "<h2>Quiz #: " + seed.toString(16).toUpperCase() + "</h2> <hr> <br>";
+        document.getElementById("quizname").innerHTML = quiz.quizname;
 
 	localStorage.setItem("quiz",JSON.stringify(quiz));
 

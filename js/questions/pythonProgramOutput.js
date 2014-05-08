@@ -419,7 +419,7 @@ function pythonProgramOutputC(randomStream)
 };
 
 
-function pythonProgramOutput(randomStream)
+function pythonProgramOutputQuestion(randomStream)
 {
   switch(randomStream.nextIntRange(3))
   {
