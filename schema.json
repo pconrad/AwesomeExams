@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title" : "Question",
+    "description" : "An object to generate multiple-choice questions.",
+    "type" : "Object",
+
+    "properties" : {
+        
+        "questionType": {
+            "type" : "string",
+            "description" : "Question type (order of operations, etc)"
+        },
+
+        "parameters": {
+            "type" : "object",
+            "description" : "An object to store parameters for the question-generating function"
+        },
+
+        "repeat": {
+            "type" : "number",
+            "description" : "Number of times to repeat this question type (default is 1)"
+        }
+    },
+
+    "required" : ["questionType"]
+}
+
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title" : "ChooseK",
+    "description" : "An object to perform functions (e.g. chooseK) on groups of objects/questions",
+    "type" : "Object",
+    "properties" : {
+        
+        "chooseK": {
+            "type" : "number",
+            "description" : "Allows you to choose k questions at random from an array.",
+            "minimum" : 1
+        },
+
+        "items": {
+            "type" : "array",
+            "description" : "An array of items to perform the function on.",
+            "items" : {"type" : "object"},
+            "minItems" : 1
+        }
+    }
+}
