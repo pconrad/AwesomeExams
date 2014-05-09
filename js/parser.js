@@ -1,19 +1,20 @@
 //A parser for the JSON quiz notation
 
-//Takes an array of question-generating objects
-//Returns an array of questions
-function parseQuizArray(quizArray, randomStream)
+//Takes an array of "question-generating objects"
+//Returns an array of question objects
+//Some other code (quiz.js perhaps) will then make the actual question text/html
+
+function parseQuizJSON(quizArray, randomStream)
 {
 	var questions = [];
 	
 	//stolen from quiz.js
-	//Needs to have "included" (aka called in the same html file) all the specific question-type js files
 	var questionFunctions = {
-	"changeOfBase":          {"f": changeOfBaseQuestion,       title: "Change of Base"},
-	"orderOfOperations":     {"f": orderOfOperationsQuestion,  title: "Order of Operations"},
+	"changeOfBase":          {"f":changeOfBaseQuestion,        title: "Change of Base"},
+	"orderOfOperations":     {"f":orderOfOperationsQuestion,   title: "Order of Operations"},
 	"operandsAndOperators":  {"f":operandsAndOperatorsQuestion,title: "Operands and Operators"},
 	"pythonProgramOutput":   {"f":pythonProgramOutputQuestion, title: "Python Program Output"},
-	"pythonStringSlice":    {"f":pythonStringSliceQuestion,    title: "Python String Slice"},
+	"pythonStringSlice":     {"f":pythonStringSliceQuestion,   title: "Python String Slice"},
 	"symbolicLogic":         {"f":symbolicLogicQuestion,       title: "Symbolic Logic"},
 	"CvariableType":         {"f":CvariableTypeQuestion,       title: "C Variable Type"},
 	"cStrings":              {"f":cStringsQuestion,            title: "C Strings"},
@@ -47,7 +48,7 @@ function parseQuizArray(quizArray, randomStream)
 		{
 			var k = item.chooseK;
 			var itemsArray = (("items" in item) ? item.items : []);
-			var newArray = parseQuizArray(itemsArray, randomStream); //Recursively parse the array passed to chooseK, which can contain question generators or more chooseK objects
+			var newArray = parseQuizJSON(itemsArray, randomStream); //Recursively parse the array passed to chooseK, which can contain question generators or more chooseK objects
 			//After this finishes newArray should consist solely of question objects
 			randomStream.shuffle(newArray);
 			questions = questions.concat(newArray.slice(0,k)); //Grab the first k elements and add them to the questions array

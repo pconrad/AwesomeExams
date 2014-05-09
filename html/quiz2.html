@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 
-<!-- Authors: Phill Conrad, Evan Crook, Kevin Malta-->
+<!-- Authors: Phill Conrad, Evan Crook, Kevin Malta, and the students of CCS CS 130E, Spring 2014-->
 
 <head>
     <meta charset="utf-8">
@@ -19,60 +19,69 @@
     <script src="../js/questions/CvariableType.js"></script>
     <script src="../js/questions/strings.js"></script>
     <script src="../purl/purl.js"></script>
-	<script src="../js/parser.js"></script>
-    <script src="../js/quiz.js"></script>
+    <script src="../js/parser.js"></script>
 </head>
 
 <body>
 
     <div id="seed"></div>
     <div id="questions">
-	Click the "Load JSON" button to load a JSON file from the local machine (currently hardcoded to "../quiz.json")
-	specifying the question types to include, in what order, how many, etc. <br>
-	This text should then disappear and be replaced with the quiz. <br>
+		<p>Click the "Load JSON" button to load a JSON file from the local machine
+		specifying the question types to include, in what order, how many, etc. <br>
+		This page should then disappear and be replaced with the quiz. <br> <br> </p>	
+		
+		<p>Enter a seed (in hexadecimal) for the quiz below. <br>
+		(If none is provided, one will be randomly generated.) <br>
+		Seed: <input type="text" id="seedInput"> </p> <br>
+
+		<br>
+		<button type="button" onclick="loadJSON()">Load JSON</button>
 	</div>
     <div id="answers"></div>   
 	
     <script>
 		//Whee I get to play with AJAX
 		//I think jQuery can do this better but I don't know it -- yet. also there's some value in understanding the old ways of things
-
+	
 		//Load a JSON file from the local machine containing a quiz specification
 		function loadJSON()
 		{		
-			var seed = Math.floor(Math.random() * 0xFFFFFFFF); //hardcoding this I'm testing and in a hurry
+			var seed = parseInt(document.getElementById("seedInput").value,16);
+			seed = isNaN(seed) ? (Math.floor(Math.random() * 0xFFFFFFFF)) : seed;
+
 			var randomStream = new RandomStream(seed);
 		
 			var jsonFile = "../quiz.json";
-			var httpRequest = new XMLHttpRequest(); //because screw IE
+			var httpRequest = new XMLHttpRequest(); //because screw IE	
 			
 			httpRequest.onreadystatechange = function()
 			{
 				if(httpRequest.readyState == 4 && httpRequest.status == 200)
 				{
 					//Parse the JSON data that should be in the response text, turn it into an actual Javascript object (or in this case an array)
-					var jsonObject = JSON.parse(httpRequest.responseText);
+					var quizJSON = JSON.parse(httpRequest.responseText);
 				
 					//Call the parser on it -- which will return an array of question objects
-					var questions = parseQuizArray(jsonObject.quiz, randomStream);
+					var questions = parseQuizJSON(quizJSON.quiz, randomStream);
 				
 					//Create a string that is a list of all the questions
 					var questionsText = "";
 					for(var i=0; i<questions.length; i++)
-						questionsText += "<h3>Question " + (i+1) + ":</h3>" + questions[i].formatQuestion("HTML") + "<br>";
+					    questionsText += "<h3>Question " + (i+1) + ":</h3>" + questions[i].formatQuestion("HTML") + "<br>";
 
 					//Create a string that is a list of all the answers
 					var answersText = "";
 					for(var i=0; i<questions.length; i++)
-						answersText += "<strong>" + (i+1) + ") </strong>" + questions[i].formatAnswer("HTML") + "<br>";
+					    answersText += "<strong>" + (i+1) + ") </strong>" + questions[i].formatAnswer("HTML") + "<br>";
 						
 					//Store the answers text so answers.html can retrieve it
 					localStorage.setItem("answers",answersText);
 					localStorage.setItem("seed",seed.toString(16).toUpperCase());
 					
+					//Update the document (should be using jquery!)
 					document.getElementById("questions").innerHTML = questionsText;
-					document.getElementById("seed").innerHTML = "<h2>Seed: " + seed.toString(16).toUpperCase() + "</h2> <hr> <br>";
-					document.getElementById("answers").innerHTML = "<a href=\"./answers2.html\" target=\"_blank\">Answer Key</a>"	
+					document.getElementById("seed").innerHTML = "<h3>Seed: " + seed.toString(16).toUpperCase() + "</h3> <hr> <br>";
+					document.getElementById("answers").innerHTML = "<a href=\"./answers.html\" target=\"_blank\">Answer Key</a>"	
 					
 				}
 			}
@@ -82,12 +91,6 @@
 			httpRequest.send();
 		}
 	</script>	
-	
-	<div class="central">
-		<br>
-		<button type="button" onclick="loadJSON()">Load JSON</button>	
-	</div>
-		
 		
 </body>
 

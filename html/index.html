@@ -1,12 +1,13 @@
 <!doctype html>
 <html>
 
-<!-- Authors: Phill Conrad, Evan Crook, Kevin Malta-->
+<!-- Authors: Phill Conrad, Evan Crook, Kevin Malta, and the students of CCS CS 130E, Spring 2014.-->
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>The Beginning of the Next Steps of Project Awesome</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script> <!-- now with infinity% more jQuery! -->
 </head>
 
 <body>
@@ -16,54 +17,100 @@
         <p>The Beginning of the Next Steps of Project Awesome.</p>
     </header>
 
-    <!-- This is a "Landing" page, where the quiz can be set up -->
-    <!-- After setup, it will request quiz.html where the actual quiz is generated -->
-    <!-- We can also request other pages that will generate LaTEX from here as well -->
-
     <p>
     <h2>Set up your quiz:</h2>
     
-    <form name="setup" action="quiz.html">
-        To generate a specific quiz or retrieve a past quiz, enter a quiz number here. <br>
-        Quiz numbers are in hexadecimal (0-9, A-F, e.g. 123ABC56F). <br>
-        Leave "Quiz Number" blank if you wish to generate a random quiz. <br> <br>
-        Quiz number: <input type="text" name="seed"> <br> <br>
+    Enter a seed (in hexadecimal) for this quiz.
+    (If none is provided, one will be generated randomly.) <br>
+    Seed: <input type="text" id="seedInput"> <br> <br>
 
-        Select the number of questions you wish your quiz to have. This is independent of the quiz number. <br>
-        The same quiz number will always yield the same questions. <br> <br>
-        Number of questions: 
-        <select name="numQuestions">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-            <option value="25">25</option>
-        </select>
+	<h3>Select how many questions of each type you'd like your quiz to have.</h3> <br>
+	<form id="inputs">
+        Order of Operations: <input type="number" name="orderOfOperations" value="0"></input> <br>
+		Change of Base: <input type="number" name="changeOfBase" value="0"></input> <br>
+		Operands and Operators: <input name="number" id="operandsAndOperators" value="0"></input> <br>
+		Python String Slicing: <input name="number" id="pythonStringSlice" value="0"></input> <br>
+		Simple Python Programs: <input name="number" id="pythonProgramOutput" value="0"></input> <br>
+		Python Strings: <input type="number" name="pyStrings" value="0"></input> <br>
+		C Strings: <input type="number" name="cStrings" value="0"></input> <br>
+		C Variable Types: <input type="number" name="CvariableType" value="0"></input> <br>
+		Symbolic Logic: <input type="number" name="symbolicLogic" value="0"></input> <br>
+	</form>
 
-	<!-- TODO: Add some JavaScript that will start from a dictionary of question
-	     types and populate this option list automatically -->
-
-        <select name="questionType">
-            <option value="orderOfOperations">Order Of Operations</option>
-            <option value="changeOfBase">Change Of Base</option>
-            <option value="operandsAndOperators">Operands And Operators</option>
-            <option value="pythonProgramOutput">Python Program Output</option>
-            <option value="orderOfOperations">orderOfOperations</option>
-            <option value="pythonStringSlice">pythonStringSlice</option>
-	    <option value="symbolicLogic">symbolicLogic</option>
-	    <option value="CvariableType">CvariableType</option>
-            <option value="cStrings">C Strings</option>
-            <option value="pyStrings">Python Strings</option>
-            <option value="noneOfTheAbove">none of the above</option>
-        </select>
-
-
-        <br> <br>
-        <input type="submit" value="Get Quiz">
-
-    </form>
+    <br>
+	Click "Generate Quiz" to generate a new quiz according to the settings above. <br>
+	Alternately, click "Load JSON" to load a quiz from a JSON file. (It will still use the seed specified above.) <br>
+	<div id="makequiz"> <button type="button" onclick="makeQuizJSON()">Generate Quiz</button> <br> </div>
+    <button type="button" onclick="loadQuizJSON()">Load JSON</button>
     </p>
 
+	<script>
+	function setSeed() {
+		//Convert the string to an int, and then store it as a string (and then convert it back to an int later)
+		//The reason for this inefficiency is to have the NaN-handling and random-generation in one place (i.e. here)
+		var seed = parseInt($('seedInput').val(),16);
+		seed = isNaN(seed) ? (Math.floor(Math.random() * 0xFFFFFFFF)) : seed;
+		localStorage.setItem("seed",seed.toString(16).toUpperCase());
+	}
+
+	//Generate a QuizJSON string from the inputs of the form
+	//Put in in localStorage, to be retrieved by quiz.html, along with the seed
+	function makeQuizJSON(){
+
+		//Through the magic of jQuery, create an object of name:value pairs from all the inputs in the form
+		//and make them into question-generating objects
+		//and put those in an array.
+		var quiz = [];
+		$.each($('#inputs').serializeArray(), function(i, field) {
+			var questionObject = {};
+			questionObject["question"] = field.name; //the name property of the input is the question type
+			questionObject["repeat"] = field.value; //the number of times is the value entered in the input
+			quiz.push(questionObject); //store it in the quiz array
+		});	
+
+		//Build and stringify a valid QuizJSON object
+		//It will not support parameterization, chooseK, etc. (for now)
+		var quizObject = {};
+		quizObject["version"] = 0.1;
+		quizObject["quiz"] = quiz;
+		var jsonString = JSON.stringify(quizObject);
+		localStorage.setItem("quizJSON",jsonString);
+	
+		//Open quiz.html in a new tab (and render the quiz there, using the JSON stored in localStorage)
+		setSeed();
+		window.open("quiz.html",'_blank');
+
+		//Create a download link
+		//var data = "text/json;charset=utf-8," + encodeURIComponent(jsonString);
+		//$('<a href="data:' + data + '" download="data.json">download JSON</a>').appendTo('#makequiz');
+		
+	}
+
+	//Load a JSON file from the local machine containing a quiz specification
+	//Put it in localStorage, to be retrieved by quiz.html, along with the seed specified on this page
+	function loadQuizJSON()
+	{		
+		var jsonFile = "../quiz.json";
+		var httpRequest = new XMLHttpRequest(); //because screw IE			
+		var jsonString = "";
+
+		httpRequest.onreadystatechange = function()
+		{
+			if(httpRequest.readyState == 4 && httpRequest.status == 200)
+			{
+				jsonString = httpRequest.responseText;
+				localStorage.setItem("quizJSON",jsonString);
+				setSeed();
+			}					
+		}
+			
+		httpRequest.open("GET", jsonFile, true);
+		httpRequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+		httpRequest.send();	
+
+		window.open("quiz.html",'_blank');
+	}
+	</script>
 
 </body>
 

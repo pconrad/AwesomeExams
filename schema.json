@@ -1,5 +1,27 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
+    "title" : "QuizJSON",
+    "description" : "The top-level QuizJSON object.",
+    "type" : "Object",
+
+    "properties" : {
+        
+        "version": {
+            "type" : "number",
+            "description" : "Represents the version of the software this QuizJSON is compatible with."
+        },
+
+        "quiz": {
+            "type" : "array",
+            "description" : "An array of generator objects (question generators, chooseK, etc)."
+        }
+    },
+
+    "required" : ["version","quiz"]
+}
+
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
     "title" : "Question",
     "description" : "An object to generate multiple-choice questions.",
     "type" : "Object",
