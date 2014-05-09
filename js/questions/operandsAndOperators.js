@@ -9,16 +9,21 @@ function operandsAndOperatorsQuestion(randomStream)
     //suffice in getting the point accorss to students.
     //The creaton of the problem and correct answer ormation are dynamic and expandable
     //Howerver, the creation of distractors is specific to a 2 operator problem, so it 
-    //may need to be redone if this parameter shuold change
-	var numberOfOperators = 2;
+    //may need to be redone if this parameter should change
+    
+    //Note that max is 10 because we want to do all unique numbers
+    //This can change
+	var numberOfOperators = 1;
 	
     //For now, only + and *, this can be 
     //expanded to other operations
     this.ops = ["+", "*"];
     var numbers = [1,2,3,4,5,6,7,8,9];
     
+    //Create the equation
+    //
     //Shuffle the numbers so we can have a random assortment
-    //Begin ewuation with a singel number
+    //Begin equation with a single number
     //Add the first number in the equation
     randomStream.shuffle(numbers);
 	var equation = numbers[0];
@@ -48,6 +53,8 @@ function operandsAndOperatorsQuestion(randomStream)
         }
     }
     
+    //Set question variables
+    //
     //Shuffle for right or left operator question
     //Index 0 is chosen for the question. 
     var rightOrLeftOperand = ["right","left"];
@@ -62,6 +69,22 @@ function operandsAndOperatorsQuestion(randomStream)
 
     //The correct answer
     var correct = "";
+    
+    var possibleDistractors = ["", "", "", "", ""];
+    
+    //Number to the left of the operand
+    possibleDistractors[0] = equation.substring(operatorIndex-1, operatorIndex);
+    //Number to the right of the operand
+    possibleDistractors[1] = equation.substring(operatorIndex+1, operatorIndex+2);
+    //Entire left substring
+    possibleDistractors[2] = equation.substring(0, operatorIndex);
+    //Entire right substring
+    possibleDistractors[3] = equation.substring(operatorIndex+1, equation.length);
+    //Operator in question, and number to its left and right
+    possibleDistractors[4] = equation.substring(operatorIndex-1, operatorIndex+2);
+    
+    
+    
 
     //Four main cases:
         //Left operator of +
@@ -78,7 +101,9 @@ function operandsAndOperatorsQuestion(randomStream)
         //higher number of opeators
         if (operandInQuestion == "left")
         {
-            correct = equation.substring(0, operatorIndex);
+            //Answer is the entire left substring
+            correct = equation.substring(0, operatorIndex);  
+                                     
         }
         //Case: Right operand of +
         //This finds the index of the next plus, 
@@ -133,20 +158,46 @@ function operandsAndOperatorsQuestion(randomStream)
             correct = reversedCorrectAnswer.split("").reverse().join("");
         }
         //Case: Right operand of *
-        //Easy, answer is just the net number in the equation
+        //Easy, answer is just the next number in the equation
         else
         { 
             correct = equation.charAt(operatorIndex+1);
         }
     }
 
-    //This string is used to generate distractors
-    //This code is very specific to the 2 operator structur
-    //There are two main cases:
-        //1) The correct answer is one number
-        //2) The correct answer is two numbers with an operator in between
+    //Make the distractors
+    //Loop through the possbiel distractor 
+    //array and pull out ones that are not 
+    //equal to the correct answer
     var distractors = ["", "", ""];
-    var distractorsIndex = 0;
+    var numberOfDistractors = 0;
+    
+    for (var i = 0; i < 5; i++)
+    {
+        //check if its unique
+        var existsInDistractors = 0;
+        
+        for (var j = 0; j < 3; j++)
+        {
+            if (distractors[j].localeCompare(possibleDistractors[i]) == 0)
+            {
+                existsInDistractors = 1;
+            }
+            
+        }
+        
+        if ((existsInDistractors == 0) && (correct.localeCompare(possibleDistractors[i]) != 0))
+        {
+            distractors[numberOfDistractors] = possibleDistractors[i];
+            numberOfDistractors++;
+        }
+
+    }
+    
+    
+    
+    /*
+    //OLD DISTRACTOR CODE
 
     //Case 1)
     //Here, two of our distractors are just 
@@ -182,11 +233,12 @@ function operandsAndOperatorsQuestion(randomStream)
         }
 
     }
+    */
      
 
     //Adding all answers
     this.answerChoices = [
-                    {value: correct,   flag: true},
+                    {value: correct,        flag: true},
                     {value: distractors[0], flag: false},
                     {value: distractors[1], flag: false},
                     {value: distractors[2], flag: false} 
