@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+
+<!-- Authors: Phill Conrad, Evan Crook, Kevin Malta, and the students of CCS CS 130E, Spring 2014.-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>The Beginning of the Next Steps of Project Awesome</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script> <!-- now with infinity% more jQuery! -->
+    <script src="../js/bits.js"></script>
+    <script src="../js/random.js"></script>
+    <script src="../js/questions.js"></script>    
+    <script src="../js/questions/orderOfOperations.js"></script>
+    <script src="../js/questions/changeOfBase.js"></script>
+    <script src="../js/questions/operandsAndOperators.js"></script>
+    <script src="../js/questions/pythonProgramOutput.js"></script>
+    <script src="../js/questions/pythonStringSlice.js"></script>
+    <script src="../js/questions/symbolicLogic.js"></script>
+    <script src="../js/questions/CvariableType.js"></script>
+    <script src="../js/questions/strings.js"></script>
+    <script src="../js/parser.js"></script>
+</head>
+
+<body>
+
+    <header> 
+        <h1 id="quizname"></h1>
+    </header>
+
+    <div id="seed"></div>
+    <div id="questions"></div>
+    <div id="answers"></div>
+    
+    <script>
+		var seed = parseInt(localStorage.getItem("seed"),16);
+		var randomStream = new RandomStream(seed);
+
+		//Parse the JSON data that should have been stored in localStorage by index.html (either generated or loaded)
+		var quizJSON = JSON.parse(localStorage.getItem("quizJSON"));
+		
+		//Call the parser on it -- which will return an array of question objects
+		var questions = parseQuizJSON(quizJSON.quiz, randomStream);				
+
+		//Create a string that is a list of all the questions
+		var questionsText = "";
+		for(var i=0; i<questions.length; i++)
+			questionsText += "<h3>Question " + (i+1) + ":</h3>" + questions[i].formatQuestion("HTML") + "<br>";
+
+		//Create a string that is a list of all the answers
+		var answersText = "";
+		for(var i=0; i<questions.length; i++)
+			answersText += "<strong>" + (i+1) + ") </strong>" + questions[i].formatAnswer("HTML") + "<br>";
+						
+		//Store the answers text so answers.html can retrieve it
+		localStorage.setItem("answers",answersText);
+		localStorage.setItem("seed",seed.toString(16).toUpperCase());
+					
+		//Update the document (should be using jquery!)
+		document.getElementById("questions").innerHTML = questionsText;
+		document.getElementById("seed").innerHTML = "<h3>Seed: " + seed.toString(16).toUpperCase() + "</h3> <hr> <br>";
+
+		//Create a link to download the QuizJSON
+		var data = "text/json;charset=utf-8," + encodeURIComponent(localStorage.getItem("quizJSON"));
+		$('<a href="data:' + data + '" download="data.json">download JSON</a>').appendTo('#answers');
+    </script>
+
+    <a href="./answers.html" target="_blank">Answer Key</a>
+
+</body>
+
+</html>
