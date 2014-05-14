@@ -11,3 +11,14 @@ var questionTypes = {
 "cStrings":              {"f":cStringsQuestion,            title: "C Strings"},
 "pyStrings":             {"f":pyStringsQuestion,           title: "Python Strings"}
 };
+
+
+function addOptionForEachQuestionType(e) {
+    
+    $.each(questionTypes, function(key, val) {
+	    console.log("key="+key+" val.title=" +val.title);
+	    e.append($('<option></option>').val(key).html(val.title));
+	});
+    
+
+}
