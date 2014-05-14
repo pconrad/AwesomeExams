@@ -9,6 +9,9 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>The Beginning of the Next Steps of Project Awesome</title>
 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
     <script src="../js/questions/orderOfOperations.js"></script>
     <script src="../js/questions/changeOfBase.js"></script>
     <script src="../js/questions/operandsAndOperators.js"></script>
@@ -19,10 +22,14 @@
     <script src="../js/questions/strings.js"></script>
     <script src="../js/questionTypes.js"></script>
 
-<script>
+    <script>
 
+$(document).ready(function(){
+  addOptionForEachQuestionType($("#questionType"));
+});
 
-</script>
+   </script>
+
 
 </head>
 
@@ -70,23 +77,10 @@
             <option value="no">no</option>
         </select></p>
 
+	<!-- This drop down menu is popualted by a call to "addOptionForEachQuestionType"
+	     and the questionTypes are defined in js/questionTypes.js -->
 
-	<!-- TODO: Add some JavaScript that will start from a dictionary of question
-	          types and populate this option list automatically -->
-
-        <select name="questionType">
-            <option value="orderOfOperations">Order Of Operations</option>
-            <option value="changeOfBase">Change Of Base</option>
-            <option value="operandsAndOperators">Operands And Operators</option>
-            <option value="pythonProgramOutput">Python Program Output</option>
-            <option value="orderOfOperations">orderOfOperations</option>
-            <option value="pythonStringSlice">pythonStringSlice</option>
-	        <option value="symbolicLogic">symbolicLogic</option>
-		    <option value="CvariableType">CvariableType</option>
-            <option value="cStrings">C Strings</option>
-            <option value="pyStrings">Python Strings</option>
-            <option value="noneOfTheAbove">none of the above</option>
-        </select>
+        <select name="questionType" id="questionType"></select>
 
 
         <br> <br>
