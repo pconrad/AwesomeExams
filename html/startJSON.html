@@ -7,11 +7,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>The Beginning of the Next Steps of Project Awesome</title>
+    <title>AwesomeNextSteps--start quiz from JSON file</title>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-
+    <script src="../purl/purl.js"></script>
     <script src="../js/questions/orderOfOperations.js"></script>
     <script src="../js/questions/changeOfBase.js"></script>
     <script src="../js/questions/operandsAndOperators.js"></script>
@@ -26,9 +26,17 @@
 
 $(document).ready(function(){
   addOptionForEachQuestionType($("#questionType"));
+ 
+  url=purl();
+
+  $("#jsontextarea").val(url.param("jsonString"));
 });
 
    </script>
+
+    <style>
+      #jsontextarea {font-size:120%;}
+    </style>
 
 
 </head>
@@ -47,25 +55,22 @@ $(document).ready(function(){
     <p>
     <h2>Set up your quiz:</h2>
     
-    <form name="setup" action="quiz.html">
+    <form name="setup" action="quizFromJSON.html">
         <p>To generate a specific quiz or retrieve a past quiz, enter a quiz number here. <br>
         Quiz numbers are in hexadecimal (0-9, A-F, e.g. 123ABC56F). <br>
         Leave "Quiz Number" blank if you wish to generate a random quiz. <br> <br>
         Quiz number: <input type="text" name="seed"> </p>
 
-	<p>Now design the quiz you want by selecting the question type and number of questions. Or for more complex quizzes, try the <a href="generateQuizJSON.html">JSON String Builder</a> and the <a href="startJSON.html">JSON Quiz Builder</a>.</p>
+        <p>Paste in some JSON that describes the quiz you want.  You can build a JSON string on the <a href="generateQuizJSON.html">JSON Builder</a> page.</p>
 
-        <p>Select the number of questions you wish your quiz to have. This is independent of the quiz number. <br>
-        The same quiz number will always yield the same questions. <br> <br>
-        Number of questions: </p>
+<p>Or, if you don't want to deal with JSON, try the <a href="./start.html">simple interface</a> instead.</p>
 
-        <select name="numQuestions">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-            <option value="25">25</option>
-        </select>
+<div id="jsondiv">
+<textarea rows="10" cols="50" id="jsontextarea" name="jsonString">
+
+</textarea>
+</div>
+
 
 	<p>Show questions:
         <select name="questions" value="yes">
@@ -79,11 +84,11 @@ $(document).ready(function(){
             <option value="no">no</option>
         </select></p>
 
-	<!-- This drop down menu is popualted by a call to "addOptionForEachQuestionType"
-	     and the questionTypes are defined in js/questionTypes.js -->
-
-        <select name="questionType" id="questionType"></select>
-
+	<p>Show JSON:
+        <select name="showJson" value="yes">
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+        </select></p>
 
         <br> <br>
         <input type="submit" value="Get Quiz">
