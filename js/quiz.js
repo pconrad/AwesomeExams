@@ -101,19 +101,24 @@ function determineSeed(rawTextSeed) {
 
 
 // pass in url returned by purl
-function linkToQuiz(url,extraParams) {
-    return url.attr("protocol") + "://" + url.attr("host") + url.attr("directory") + "quiz.html" + 
-	"?seed" + seed.toString(16) +
-	"&numQuestions" + url.param("numQuestions") +
-	"&questionType" + url.param("questionType") +
+function linkToQuiz(url,extraParams,seed) {
+    return url.attr("protocol") + "://" 
+	+ url.attr("host") + url.attr("directory") 
+	+ "quiz.html" + 
+	"?seed" + "=" +
+	seed.toString(16) +
+	"&numQuestions" + "=" 
+	+ url.param("numQuestions") +
+	"&questionType" + "=" 
+	+ url.param("questionType") +
 	extraParams;
 }
 
 // pass in url returned by purl
-function linkToQuizFromJSON(url) {
-    return url.attr("protocol") + "://" + url.attr("host") + url.attr("directory") + "quiz.html" + 
-	"?seed" + seed.toString(16) +
-	"&jsonString" + url.param("numQuestions") +
+function linkToQuizFromJSON(url,extraParams,seed) {
+    return url.attr("protocol") + "://" + url.attr("host") + url.attr("directory") + "quizFromJSON.html" + 
+	"?seed=" + seed.toString(16) +
+	"&jsonString=" + url.param("jsonString") +
 	extraParams;
 }
 
@@ -128,7 +133,8 @@ function buildQuiz() {
 	var key = url.param("key");
 
 	var seed = determineSeed(url.param("seed"));
-
+        console.log("seed="+seed)
+    
 	// generate the quiz using the seed
 
         var quiz = new Quiz(seed,num,questionType);
@@ -136,11 +142,16 @@ function buildQuiz() {
 	// TODO: Fill in the parts of the document TODO: Refactor using JQuery instead of long form JavaScript calls
 	// TODO: Only fill it in if it is asked for in the URL
 	
-	$("#linkBack").html("<a href='" + url.attr("protocol") + "://" + url.attr("host") + url.attr("directory") + "start.html'>generate new quiz</a>");
+	$("#linkBack").html("<a href='" +
+			    url.attr("protocol") + 
+			    "://" + url.attr("host") + 
+			    url.attr("directory") + 
+               "start.html'>generate new quiz</a>");
+       
         $("#quizname").html(quiz.quizname);
 
-	var showQuestions = ("<p><a href='" + linkToQuiz(url,"&questions=yes") + "'>Show Questions</a></p>");
-	var showKey = ("<p><a href='" + linkToQuiz(url,"key=yes") + "'>Show Answer Key</a></p>");
+	var showQuestions = ("<p><a href='" + linkToQuiz(url,"&questions=yes",seed) + "'>Show Questions</a></p>");
+	var showKey = ("<p><a href='" + linkToQuiz(url,"&key=yes",seed) + "'>Show Answer Key</a></p>");
 
 
         if (questions=="yes") { 
@@ -162,7 +173,6 @@ function buildQuizFromJSON() {
 
         var url = purl(); //Parse the current URL using the purl library
 
-        var num = url.param("numQuestions");
         var jsonString = url.param("jsonString");
 	var questions = url.param("questions");
 	var key = url.param("key");
@@ -181,9 +191,9 @@ function buildQuizFromJSON() {
         $("#quizname").html(quiz.quizname);
 
 
-	var showQuestions = ("<p><a href='" + linkToQuiz(url,"&questions=yes") + "'>Show Questions</a></p>");
-	var showKey = ("<p><a href='" + linkToQuiz(url,"key=yes") + "'>Show Answer Key</a></p>");
-	var showJsonLink = ("<p><a href='" + linkToQuiz(url,"showJson=yes") + "'>Show JSON</a></p>");
+	var showQuestions = ("<p><a href='" + linkToQuizFromJSON(url,"&questions=yes",seed) + "'>Show Questions</a></p>");
+	var showKey = ("<p><a href='" + linkToQuizFromJSON(url,"&key=yes",seed) + "'>Show Answer Key</a></p>");
+	var showJsonLink = ("<p><a href='" + linkToQuizFromJSON(url,"&showJson=yes",seed) + "'>Show JSON</a></p>");
 
 
         if (questions=="yes") { 
