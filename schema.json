@@ -11,6 +11,11 @@
             "description" : "Represents the version of the software this QuizJSON is compatible with."
         },
 
+        "title": {
+	        "type" : "string",
+            "description" : "Allows the user to give the quiz a title that will be displayed when it is rendered (as HTML, latex, whatever)"
+        },
+
         "quiz": {
             "type" : "array",
             "description" : "An array of generator objects (question generators, chooseK, etc)."
@@ -50,11 +55,33 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title" : "ChooseK",
-    "description" : "An object to perform functions (e.g. chooseK) on groups of objects/questions",
+    "description" : "An object to generate a group of n objects/questions and then choose k of n at random.",
     "type" : "Object",
     "properties" : {
         
         "chooseK": {
+            "type" : "number",
+            "description" : "Specify the number of questions to choose.",
+            "minimum" : 1
+        },
+
+        "items": {
+            "type" : "array",
+            "description" : "An array of items to perform the function on.",
+            "items" : {"type" : "object"},
+            "minItems" : 1
+        }
+    }
+}
+
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title" : "Shuffle",
+    "description" : "An object to shuffle a group of objects/questions",
+    "type" : "Object",
+    "properties" : {
+        
+        "shuffle": {
             "type" : "number",
             "description" : "Allows you to choose k questions at random from an array.",
             "minimum" : 1

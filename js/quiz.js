@@ -6,7 +6,7 @@ function Quiz(seed,quizDescriptor)
     this.jsonObject = quizDescriptor;
 
     this.randomStream = new RandomStream(seed);
-    this.questions = parseQuizJSON(this.jsonObject.quiz, this.randomStream);
+    this.questions = interpretQuizJSON(this.jsonObject, this.randomStream);
 
     this.quizname = this.jsonObject.quizTitle;
 
@@ -82,72 +82,65 @@ function linkToQuizFromJSON(url,extraParams,seed) {
 
 function buildQuiz() {
 
-        var url = purl(); //Parse the current URL using the purl library
+    var url = purl(); //Parse the current URL using the purl library
 
-        var num = url.param("numQuestions");
-        var questionType = url.param("questionType");
-	var questions = url.param("questions");
-	var key = url.param("key");
+    var num = url.param("numQuestions");
+    var questionType = url.param("questionType");
+    var questions = url.param("questions");
+    var key = url.param("key");
 
 	var seed = determineSeed(url.param("seed"));
-        console.log("seed="+seed)
+    console.log("seed="+seed);
 
-        var title = ""
-        try {
-           title = questionsTypes[questionType].title;
-        } catch (err) {
-           title = "Unknown question type";
-        }
+    var title = ""
+    try {
+        title = questionsTypes[questionType].title;
+    } catch (err) {
+        title = "Unknown question type";
+    }
     
 	// generate the quiz using the seed
-
-
-
-        var quizDescriptor = 
-
+    // Generate it as a simple piece of QuizJSON
+    var quizDescriptor = 
     {"version":0.1,
      "title":title,
-     "quiz":[{"question":questionType,"repeat":num}]}
+     "quiz":[{"question":questionType,"repeat":num}]
+    }
+    
+    // Generate the actual quiz from the QuizJSON just created
+    var quiz = new Quiz(seed,quizDescriptor);
 
-	
-
-        var quiz = new Quiz(seed,quizDescriptor);
-
-	// TODO: Fill in the parts of the document TODO: Refactor using JQuery instead of long form JavaScript calls
-	// TODO: Only fill it in if it is asked for in the URL
-	
 	$("#linkBack").html("<a href='" +
 			    url.attr("protocol") + 
 			    "://" + url.attr("host") + 
 			    url.attr("directory") + 
                "start.html'>generate new quiz</a>");
        
-        $("#quizname").html(quiz.quizname);
+    $("#quizname").html(quiz.quizname);
 
 	var showQuestions = ("<p><a href='" + linkToQuiz(url,"&questions=yes",seed) + "'>Show Questions</a></p>");
 	var showKey = ("<p><a href='" + linkToQuiz(url,"&key=yes",seed) + "'>Show Answer Key</a></p>");
 
 
-        if (questions=="yes") { 
+    if (questions=="yes") { 
 	    $("#questions").html("<h2>Questions</h2>\n" + quiz.formatQuestionsHTML()); 
 	} else {
 	    $("#questions").html(showQuestions);
 	}
 
-        if (key=="yes") { 
+    if (key=="yes") { 
 	    $("#key").html("<h2>Key</h2>\n" + quiz.formatAnswersHTML());
 	} else {
 	    $("#key").html(showKey);
 	}
-
 }
 
 
 function buildQuizFromJSON() {
 
-        var url = purl(); //Parse the current URL using the purl library
+    var url = purl(); //Parse the current URL using the purl library
 
-        var jsonString = url.param("jsonString");
+    var jsonString = url.param("jsonString");
 	var questions = url.param("questions");
 	var key = url.param("key");
 	var showJson = url.param("showJson");
@@ -155,13 +148,10 @@ function buildQuizFromJSON() {
 	var seed = determineSeed(url.param("seed"));
 
 	// generate the quiz using the seed
-        var quizDescriptor = JSON.parse(jsonString);
+    var quizDescriptor = JSON.parse(jsonString);
 
-        var quiz = new Quiz(seed,quizDescriptor);
+    var quiz = new Quiz(seed,quizDescriptor);
 
-	// TODO: Fill in the parts of the document TODO: Refactor using JQuery instead of long form JavaScript calls
-	// TODO: Only fill it in if it is asked for in the URL
-	
 	$("#linkBack").html("<a href='" + url.attr("protocol") + "://" + url.attr("host") + url.attr("directory") + "startJSON.html'>generate new quiz</a>");
         $("#quizname").html(quiz.quizname);
 
@@ -170,24 +160,86 @@ function buildQuizFromJSON() {
 	var showKey = ("<p><a href='" + linkToQuizFromJSON(url,"&key=yes",seed) + "'>Show Answer Key</a></p>");
 	var showJsonLink = ("<p><a href='" + linkToQuizFromJSON(url,"&showJson=yes",seed) + "'>Show JSON</a></p>");
 
-
-        if (questions=="yes") { 
+    if (questions=="yes") { 
 	    $("#questions").html("<h2>Questions</h2>\n" + quiz.formatQuestionsHTML()); 
 	} else {
 	    $("#questions").html(showQuestions);
 	}
 
-        if (key=="yes") { 
+    if (key=="yes") { 
 	    $("#key").html("<h2>Key</h2>\n" +  quiz.formatAnswersHTML());
 	} else {
 	    $("#key").html(showKey);
 	}
 
-
-        if (showJson=="yes") { 
+    if (showJson=="yes") { 
 	    $("#json").html("<h2>Json</h2>\n" +  "<textarea id='jsontextarea' rows='10' cols='30'>" + jsonString + "</textarea>");
 	} else {
 	    $("#json").html(showJsonLink);
 	}
+}
 
+// evdc: refactored buildQuiz() and buildQuizFromJSON() into one function
+// that checks which one it's doing, to minimize code reuse.
+// after all, technically *every* quiz is built from JSON -- some are just simpler than others.
+function buildQuiz() {
+
+    var url = purl(); //Parse the current URL using the purl library
+
+    var jsonString = url.param("jsonString");       //If a JSON string was passed in through the URL
+    var num = url.param("numQuestions");            //For the simple interface
+    var questionType = url.param("questionType");   //For the simple interface
+    var questions = url.param("questions");         //Show the questions?
+    var key = url.param("key");                     //Show the answer key?
+    var showJson = url.param("showJson");           //Show the JSON used?
+
+	var seed = determineSeed(url.param("seed"));
+
+    var title = ""
+    try {
+        title = questionsTypes[questionType].title;
+    } catch (err) {
+        title = "Unknown question type";
+    }
+    
+	// generate the quiz using the seed
+    // Generate it as a simple piece of QuizJSON
+    var quizDescriptor = 
+    {"version":0.1,
+     "title":title,
+     "quiz":[{"question":questionType,"repeat":num}]
+    }
+    
+    // Generate the actual quiz from the QuizJSON just created
+    var quiz = new Quiz(seed,quizDescriptor);
+
+	$("#linkBack").html("<a href='" +
+			    url.attr("protocol") + 
+			    "://" + url.attr("host") + 
+			    url.attr("directory") + 
+               "start.html'>generate new quiz</a>");
+       
+    $("#quizname").html(quiz.quizname);
+
+	var showQuestions = ("<p><a href='" + linkToQuiz(url,"&questions=yes",seed) + "'>Show Questions</a></p>");
+	var showKey = ("<p><a href='" + linkToQuiz(url,"&key=yes",seed) + "'>Show Answer Key</a></p>");
+
+
+    if (questions=="yes") { 
+	    $("#questions").html("<h2>Questions</h2>\n" + quiz.formatQuestionsHTML()); 
+	} else {
+	    $("#questions").html(showQuestions);
+	}
+
+    if (key=="yes") { 
+	    $("#key").html("<h2>Key</h2>\n" + quiz.formatAnswersHTML());
+	} else {
+	    $("#key").html(showKey);
+	}
+
+    if (showJson=="yes") { 
+	    $("#json").html("<h2>Json</h2>\n" +  "<textarea id='jsontextarea' rows='10' cols='30'>" + jsonString + "</textarea>");
+	} else {
+	    $("#json").html(showJsonLink);
+	}
 }

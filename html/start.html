@@ -11,7 +11,6 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-
     <script src="../js/questions/orderOfOperations.js"></script>
     <script src="../js/questions/changeOfBase.js"></script>
     <script src="../js/questions/operandsAndOperators.js"></script>
@@ -24,13 +23,11 @@
 
     <script>
 
-$(document).ready(function(){
-  addOptionForEachQuestionType($("#questionType"));
-});
+    $(document).ready(function(){
+        addOptionForEachQuestionType($("#questionType"));
+    });
 
    </script>
-
-
 </head>
 
 <body>
@@ -48,15 +45,15 @@ $(document).ready(function(){
     <h2>Set up your quiz:</h2>
     
     <form name="setup" action="quiz.html">
-        <p>To generate a specific quiz or retrieve a past quiz, enter a quiz number here. <br>
-        Quiz numbers are in hexadecimal (0-9, A-F, e.g. 123ABC56F). <br>
-        Leave "Quiz Number" blank if you wish to generate a random quiz. <br> <br>
-        Quiz number: <input type="text" name="seed"> </p>
+        Enter a seed (in hexadecimal) for this quiz.
+        (If none is provided, one will be generated randomly.) <br>
+        Seed: <input type="text" name="seed"> <br> <br>
 
-	<p>Now design the quiz you want by selecting the question type and number of questions. Or for more complex quizzes, try the <a href="generateQuizJSON.html">JSON String Builder</a> and the <a href="startJSON.html">JSON Quiz Builder</a>.</p>
+        Quiz Title: <input type="text" id="quizTitle"> <br> <br>
 
-        <p>Select the number of questions you wish your quiz to have. This is independent of the quiz number. <br>
-        The same quiz number will always yield the same questions. <br> <br>
+	    <p>Now design the quiz you want by selecting the question type and number of questions. Or for more complex quizzes, try the <a href="startJSON.html">JSON Quiz Builder</a>.</p>
+
+        <p>Select the number of questions you wish your quiz to have. <br> <br>
         Number of questions: </p>
 
         <select name="numQuestions">
@@ -67,13 +64,13 @@ $(document).ready(function(){
             <option value="25">25</option>
         </select>
 
-	<p>Show questions:
+	    <p>Show questions:
         <select name="questions" value="yes">
             <option value="yes">yes</option>
             <option value="no">no</option>
         </select></p>
 
-	<p>Show answer key:
+	    <p>Show answer key:
         <select name="key" value="yes">
             <option value="yes">yes</option>
             <option value="no">no</option>
@@ -86,11 +83,27 @@ $(document).ready(function(){
 
 
         <br> <br>
-        <input type="submit" value="Get Quiz">
+        <input type="submit" value="Get Quiz" onclick="makeQuizJSON()"> <!-- Here: run quick JS to encode numQuestions, questionType in a QuizJSON string & put in the URL -->
 
     </form>
     </p>
 
+    <script>
+    function makeQuizJSON(){
+        //Grab numQuestions and questionType, make quizJSON out of them, stringify, pass in URL.
+        var num = $('#numQuestions').val;
+        var type = $('#questionType').val;
+
+        var quizDescriptor = 
+        {"version":0.1,
+        "title": $("#quizTitle").val(),
+        "quiz":[{"question":type,"repeat":num}]
+        } 
+        var jsonString = JSON.stringify(quizDescriptor);
+
+        //now somehow ensure this gets in the URL/the GET request, that gets sent to quiz.html   
+    }
+    </script>
 
 </body>
 
