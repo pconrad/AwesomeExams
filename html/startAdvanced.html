@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+
+<!-- Authors: Phill Conrad, Evan Crook, Kevin Malta-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>The Beginning of the Next Steps of Project Awesome.</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script src="../purl/purl.js"></script>
+    <script src="../js/questions/orderOfOperations.js"></script>
+    <script src="../js/questions/changeOfBase.js"></script>
+    <script src="../js/questions/operandsAndOperators.js"></script>
+    <script src="../js/questions/pythonProgramOutput.js"></script>
+    <script src="../js/questions/pythonStringSlice.js"></script>
+    <script src="../js/questions/symbolicLogic.js"></script>
+    <script src="../js/questions/CvariableType.js"></script>
+    <script src="../js/questions/strings.js"></script>
+    <script src="../js/questionTypes.js"></script>
+
+    <script>
+    $(document).ready(function(){
+        addOptionForEachQuestionType($("#questionType"));
+    });
+    </script>
+
+    <style>
+      #jsontextarea {font-size:120%;}
+    </style>
+
+
+</head>
+
+<body>
+
+    <header>
+        <h1>AwesomeNextSteps Advanced Quiz Builder</h1>
+        <p>The Beginning of the Next Steps of Project Awesome.</p>
+    </header>
+
+    <p>
+    <h2>Set up your quiz:</h2>
+    
+    <form name="setup" action="quiz.html">
+        
+        <div id="optionsdiv" style="float:left; margin:0px 50px">
+            Enter a seed (in hexadecimal) for this quiz.
+            (If none is provided, one will be generated randomly.) <br>
+            Seed: <input type="text" name="seed"> <br>
+
+            Quiz Title: <input type="text" id="quizTitle"> <br> <br> <br>
+    
+            <form id="questions">
+                Choose the types and amounts of questions you'd like your quiz to have. <br>
+                Order of Operations: <input type="number" class="questionInput" name="orderOfOperations" value="0"></input> <br>
+                Change of Base: <input type="number" class="questionInput" name="changeOfBase" value="0"></input> <br>
+                Operands and Operators: <input type="number" class="questionInput" name="operandsAndOperators" value="0"></input> <br>
+                Python String Slicing: <input type="number" class="questionInput" name="pythonStringSlice" value="0"></input> <br>
+                Simple Python Programs: <input type="number" class="questionInput" name="pythonProgramOutput" value="0"></input> <br>
+                Python Strings: <input type="number" class="questionInput" name="pyStrings" value="0"></input> <br>
+                C Strings: <input type="number" class="questionInput" name="cStrings" value="0"></input> <br>
+                C Variable Types: <input type="number" class="questionInput" name="CvariableType" value="0"></input> <br>
+                Symbolic Logic: <input type="number" class="questionInput" name="symbolicLogic" value="0"></input> <br> <br>
+            </form>
+
+            <p>Show questions:
+            <select name="questions" value="yes">
+                <option value="yes">yes</option>
+                <option value="no">no</option>
+            </select> <br>
+
+	        Show answer key:
+                <select name="key" value="yes">
+                    <option value="yes">yes</option>
+                    <option value="no">no</option>
+                </select> <br>
+
+	        Show JSON:
+                <select name="showJson" value="yes">
+                    <option value="yes">yes</option>
+                    <option value="no">no</option>
+                </select> <br>
+            </p>
+
+            <p>Or, if you don't want to deal with JSON, try the <a href="./start.html">simple interface</a> instead.</p>
+        </div>
+
+        <div id="jsondiv" style="float:left; margin:50px">
+            <p>Paste in some JSON that describes the quiz you want, or build it using the interface to the left. <br>
+               As you add and remove questions, this text field should update automatically.<br></p>
+            <textarea rows="10" cols="50" id="jsontextarea" name="jsonString"></textarea>
+            <br> <br>
+            <input type="submit" style="float:right;" value="Get Quiz">
+        </div>
+
+    </form>
+    </p>
+
+
+    <script>
+    var quizObject = {"version":0.1,"title":"","quiz":[]};  //Basic empty Quiz  
+
+    $(".questionInput").each(function(index) {
+        $(this).change(function() {
+            alert("HEY CHANGED");
+            var questionObject = {};
+            questionObject["question"] = $(this).name;
+            questionObject["repeat"] = $(this).val();
+            if (questionObject["repeat"]>0) 
+	        	quizObject.quiz.push(questionObject); //store it in the quiz array ONLY IF not zero
+            
+            $("#jsontextarea").val(JSON.stringify(quizObject));
+        });
+    });    
+
+    </script>
+
+</body>
+
+</html>
