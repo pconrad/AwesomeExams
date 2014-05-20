@@ -44,9 +44,8 @@
     <p>
     <h2>Set up your quiz:</h2>
     
-    <form name="setup" action="quiz.html">
-        
-        <div id="optionsdiv" style="float:left; margin:0px 50px">
+    <div id="setupdiv" style="float:left; margin:0px 50px">
+    <form name="setup"> 
             Enter a seed (in hexadecimal) for this quiz.
             (If none is provided, one will be generated randomly.) <br>
             Seed: <input type="text" name="seed"> <br>
@@ -72,49 +71,74 @@
                 <option value="no">no</option>
             </select> <br>
 
-	        Show answer key:
-                <select name="key" value="yes">
-                    <option value="yes">yes</option>
-                    <option value="no">no</option>
-                </select> <br>
+	    Show answer key:
+            <select name="key" value="yes">
+                <option value="yes">yes</option>
+                <option value="no">no</option>
+            </select> <br>
 
-	        Show JSON:
-                <select name="showJson" value="yes">
-                    <option value="yes">yes</option>
-                    <option value="no">no</option>
-                </select> <br>
+	    Show JSON:
+            <select name="showJson" value="yes">
+                <option value="yes">yes</option>
+                <option value="no">no</option>
+            </select> <br>
             </p>
 
-            <p>Or, if you don't want to deal with JSON, try the <a href="./start.html">simple interface</a> instead.</p>
-        </div>
-
-        <div id="jsondiv" style="float:left; margin:50px">
-            <p>Paste in some JSON that describes the quiz you want, or build it using the interface to the left. <br>
-               As you add and remove questions, this text field should update automatically.<br></p>
-            <textarea rows="10" cols="50" id="jsontextarea" name="jsonString"></textarea>
-            <br> <br>
-            <input type="submit" style="float:right;" value="Get Quiz">
-        </div>
-
     </form>
+
+    <br> <button onclick="buildQuizJSON()">Build QuizJSON</button> <br>
+    <p>Or, if you don't want to deal with JSON, try the <a href="./start.html">simple interface</a> instead.</p>    
+    </div>
+	
+
+    <div id="jsondiv" style="float:left; margin:50px">
+        <p>Paste in some JSON that describes the quiz you want, or build it using the interface to the left. <br> </p>
+        <textarea rows="10" cols="50" id="jsontextarea" name="jsonString"></textarea>
+        <br> <br>
+        <input type="submit" style="float:right;" value="Get Quiz">
+    </div>
+
     </p>
 
 
     <script>
-    var quizObject = {"version":0.1,"title":"","quiz":[]};  //Basic empty Quiz  
+        function buildQuizJSON(){
 
-    $(".questionInput").each(function(index) {
-        $(this).change(function() {
-            alert("HEY CHANGED");
-            var questionObject = {};
-            questionObject["question"] = $(this).name;
-            questionObject["repeat"] = $(this).val();
-            if (questionObject["repeat"]>0) 
-	        	quizObject.quiz.push(questionObject); //store it in the quiz array ONLY IF not zero
-            
-            $("#jsontextarea").val(JSON.stringify(quizObject));
-        });
-    });    
+		var quiz = [];
+		$.each($('#questions').serializeArray(), function(i, field) {
+			var questionObject = {};
+			questionObject["question"] = field.name; //the name property of the input is the question type
+			questionObject["repeat"] = field.value; //the number of times is the value entered in the input
+			if (questionObject["repeat"]>0) 
+	        	quiz.push(questionObject); //store it in the quiz array ONLY IF not zero
+		});	
+
+		//Build and stringify a valid QuizJSON object
+		var quizObject = {};
+		quizObject["version"] = 0.1;
+		quizObject["title"] = $("#quizTitle").val();
+		quizObject["quiz"] = quiz;
+		var jsonString = JSON.stringify(quizObject);
+
+		//Put the JSON generated in the text area for display
+		//(and for grabbing by the "submit" button and sticking into the GET request) 
+	       $("#jsontextarea").val(jsonString);
+	}
+
+    //var quizObject = {"version":0.1,"title":"","quiz":[]};  //Basic empty Quiz  
+    //$(".questionInput").each(function(index) {
+    //  $(this).change(function() {
+    //      var questionObject = {};
+    //      questionObject["question"] = $(this).attr("name");
+    //      questionObject["repeat"] = $(this).val();
+    //      if (questionObject["repeat"]>0) 
+    //        	quizObject.quiz.push(questionObject);
+    //        
+    //        $("#jsontextarea").val(JSON.stringify(quizObject));
+    //    });
+    //});    
+
+
 
     </script>
 
