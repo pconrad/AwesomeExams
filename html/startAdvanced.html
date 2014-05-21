@@ -21,16 +21,9 @@
     <script src="../js/questions/strings.js"></script>
     <script src="../js/questionTypes.js"></script>
 
-    <script>
-    $(document).ready(function(){
-        addOptionForEachQuestionType($("#questionType"));
-    });
-    </script>
-
     <style>
       #jsontextarea {font-size:120%;}
     </style>
-
 
 </head>
 
@@ -42,70 +35,68 @@
     </header>
 
     <p>
-    <h2>Set up your quiz:</h2>
+    <h3>Set up your quiz:</h3>
     
-    <div id="setupdiv" style="float:left; margin:0px 50px">
-    <form name="setup"> 
-            Enter a seed (in hexadecimal) for this quiz.
-            (If none is provided, one will be generated randomly.) <br>
-            Seed: <input type="text" name="seed"> <br>
-
-            Quiz Title: <input type="text" id="quizTitle"> <br> <br> <br>
-    
-            <form id="questions">
+    <div id="setupdiv" style="float:left; margin:0px 50px">            
+            <form id="inputs">
                 Choose the types and amounts of questions you'd like your quiz to have. <br>
-                Order of Operations: <input type="number" class="questionInput" name="orderOfOperations" value="0"></input> <br>
-                Change of Base: <input type="number" class="questionInput" name="changeOfBase" value="0"></input> <br>
-                Operands and Operators: <input type="number" class="questionInput" name="operandsAndOperators" value="0"></input> <br>
-                Python String Slicing: <input type="number" class="questionInput" name="pythonStringSlice" value="0"></input> <br>
-                Simple Python Programs: <input type="number" class="questionInput" name="pythonProgramOutput" value="0"></input> <br>
-                Python Strings: <input type="number" class="questionInput" name="pyStrings" value="0"></input> <br>
-                C Strings: <input type="number" class="questionInput" name="cStrings" value="0"></input> <br>
-                C Variable Types: <input type="number" class="questionInput" name="CvariableType" value="0"></input> <br>
-                Symbolic Logic: <input type="number" class="questionInput" name="symbolicLogic" value="0"></input> <br> <br>
+                Order of Operations: <input type="number" name="orderOfOperations" value="0"></input> <br>
+                Change of Base: <input type="number" name="changeOfBase" value="0"></input> <br>
+                Operands and Operators: <input type="number" name="operandsAndOperators" value="0"></input> <br>
+                Python String Slicing: <input type="number" name="pythonStringSlice" value="0"></input> <br>
+                Simple Python Programs: <input type="number" name="pythonProgramOutput" value="0"></input> <br>
+                Python Strings: <input type="number" name="pyStrings" value="0"></input> <br>
+                C Strings: <input type="number" name="cStrings" value="0"></input> <br>
+                C Variable Types: <input type="number" name="CvariableType" value="0"></input> <br>
+                Symbolic Logic: <input type="number" name="symbolicLogic" value="0"></input> <br> <br>
             </form>
 
-            <p>Show questions:
-            <select name="questions" value="yes">
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select> <br>
-
-	    Show answer key:
-            <select name="key" value="yes">
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select> <br>
-
-	    Show JSON:
-            <select name="showJson" value="yes">
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select> <br>
-            </p>
-
-    </form>
-
-    <br> <button onclick="buildQuizJSON()">Build QuizJSON</button> <br>
-    <p>Or, if you don't want to deal with JSON, try the <a href="./start.html">simple interface</a> instead.</p>    
+    <br> <input type="button" onclick="makeQuizJSON()" value="Build JSON" /> <br>
+    <p>Or, if you don't want to deal with JSON, try the <a href="./start.html">simple interface</a> instead.</p>
     </div>
 	
-
-    <div id="jsondiv" style="float:left; margin:50px">
+    <div id="jsondiv" style="float:left; margin:0px 50px">
+    <form id="quizbuilder" action="quiz.html" method="get">
         <p>Paste in some JSON that describes the quiz you want, or build it using the interface to the left. <br> </p>
         <textarea rows="10" cols="50" id="jsontextarea" name="jsonString"></textarea>
         <br> <br>
-        <input type="submit" style="float:right;" value="Get Quiz">
-    </div>
 
+        Enter a seed (in hexadecimal) for this quiz.
+        (If none is provided, one will be generated randomly.) <br>
+        Seed: <input type="text" name="seed"> <br>
+
+        Quiz Title: <input type="text" id="quizTitle"> <br> <br> <br>
+
+        <p>Show questions:
+        <select name="showQuestions" value="yes">
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+        </select> <br>
+
+        Show answer key:
+        <select name="showKey" value="yes">
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+        </select> <br>
+
+        Show JSON:
+        <select name="showJSON" value="yes">
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+        </select> <br>
+        </p>
+
+        <button type="submit">Get Quiz</button>
+    </form>
+    </div>
+    
     </p>
 
-
     <script>
-        function buildQuizJSON(){
+    function makeQuizJSON(){
 
 		var quiz = [];
-		$.each($('#questions').serializeArray(), function(i, field) {
+		$.each($('#setupdiv #inputs').serializeArray(), function(i, field) {
 			var questionObject = {};
 			questionObject["question"] = field.name; //the name property of the input is the question type
 			questionObject["repeat"] = field.value; //the number of times is the value entered in the input
@@ -122,24 +113,8 @@
 
 		//Put the JSON generated in the text area for display
 		//(and for grabbing by the "submit" button and sticking into the GET request) 
-	       $("#jsontextarea").val(jsonString);
+	    $("#jsontextarea").val(jsonString);
 	}
-
-    //var quizObject = {"version":0.1,"title":"","quiz":[]};  //Basic empty Quiz  
-    //$(".questionInput").each(function(index) {
-    //  $(this).change(function() {
-    //      var questionObject = {};
-    //      questionObject["question"] = $(this).attr("name");
-    //      questionObject["repeat"] = $(this).val();
-    //      if (questionObject["repeat"]>0) 
-    //        	quizObject.quiz.push(questionObject);
-    //        
-    //        $("#jsontextarea").val(JSON.stringify(quizObject));
-    //    });
-    //});    
-
-
-
     </script>
 
 </body>

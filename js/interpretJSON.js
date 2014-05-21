@@ -12,7 +12,7 @@ function interpretQuizJSON(quizObject, randomStream)
     //Loop through the array of generating objects
     for(var i = 0; i < quizObject["quiz"].length; ++i)
 	{
-	    var item = quizArray[i];
+	    var item = quizObject.quiz[i];
 	    
 	    if("question" in item) //If this object is a question generator
 		{
