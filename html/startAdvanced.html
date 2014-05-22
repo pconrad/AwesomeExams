@@ -20,8 +20,9 @@
     <script src="../js/questions/CvariableType.js"></script>
     <script src="../js/questions/strings.js"></script>
     <script src="../js/questionTypes.js"></script>
+    
     <script>
-
+        
     $(document).ready(function(){
         addOptionForEachQuestionType($(".questionType"));
     });
@@ -41,17 +42,15 @@
         <h1>AwesomeNextSteps Advanced Quiz Builder</h1>
         <p>The Beginning of the Next Steps of Project Awesome.</p>
     </header>
-
-    <p>
-    <h3>Set up your quiz:</h3>
-    
+ 
     <div id="setupdiv" style="float:left; margin:0px 50px"> 
+    <h3>Set up your quiz:</h3>
         
     <!-- Dynamically addable select options -->
     <div id="div_questions">
         <div class="div_question">
             Question type: <select class="questionType" ></select>
-            Number of these: <input class="repeat" ></input>
+            Number of these: <input type="number" min="0" class="repeat" ></input>
         </div>
     </div>
     <div id="div_addbutton">
@@ -64,15 +63,15 @@
 	
     <div id="jsondiv" style="float:left; margin:0px 50px">
     <form id="quizbuilder" action="quiz.html" method="get">
-        <p>Paste in some JSON that describes the quiz you want, or build it using the interface to the left. <br> </p>
-        <textarea rows="10" cols="50" id="jsontextarea" name="jsonString"></textarea>
-        <br> <br>
-
         Enter a seed (in hexadecimal) for this quiz.
         (If none is provided, one will be generated randomly.) <br>
         Seed: <input type="text" name="seed"> <br>
 
-        Quiz Title: <input type="text" id="quizTitle"> <br> <br> <br>
+        Quiz Title: <input type="text" id="quizTitle"> <br>
+        
+        <p>Paste in some JSON that describes the quiz you want, or build it using the interface to the left. <br> </p>
+        <textarea rows="10" cols="50" id="jsontextarea" name="jsonString"></textarea>
+        <br> <br>
 
         <p>Show questions:
         <select name="showQuestions" value="yes">
@@ -97,9 +96,10 @@
     </form>
     </div>
     
-    </p>
-
     <script>
+    //Called by the "Build JSON" button
+    //Use the values of all present question-type-select fields / number inputs
+    //to build QuizJSON corresponding to the quiz they specify; and put it in the text area.
     function makeQuizJSON(){
 
 		var quiz = [];
@@ -124,8 +124,6 @@
 		quizObject.quiz = quiz;
 		var jsonString = JSON.stringify(quizObject);
 
-		//Put the JSON generated in the text area for display
-		//(and for grabbing by the "submit" button and sticking into the GET request) 
 	    $("#jsontextarea").val(jsonString);
 	}
         
@@ -134,11 +132,11 @@
     function addQuestion() {
                 
         //Create elements
-        var questionDiv = $("<div>",{"class":"div_question"}); //Create a div DOM element
+        var questionDiv = $("<div>",{"class":"div_question"});
         var questionTypeSelect = $("<select></select>",{"class":"questionType"});
-        var numberSelect = $("<input></input>",{"class":"repeat"});
+        var numberSelect = $("<input></input>",{"class":"repeat","type":"number","min":"0"});
         
-        //Auto-populate
+        //Auto-populate and bind updater
         addOptionForEachQuestionType(questionTypeSelect);
         
         //Unify and add
@@ -146,8 +144,9 @@
         questionDiv.append(" Number of these: ").append(numberSelect);
         questionDiv.appendTo("#div_questions");      
     }
+    
     </script>
-
+    
 </body>
 
 </html>
