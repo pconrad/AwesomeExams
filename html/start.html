@@ -7,10 +7,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>The Beginning of the Next Steps of Project Awesome</title>
+    <title>The Beginning of the Next Steps of Project Awesome.</title>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
 
     <script src="../js/questions/orderOfOperations.js"></script>
     <script src="../js/questions/changeOfBase.js"></script>
@@ -24,19 +23,17 @@
 
     <script>
 
-$(document).ready(function(){
-  addOptionForEachQuestionType($("#questionType"));
-});
+    $(document).ready(function(){
+        addOptionForEachQuestionType($("#questionType"));
+    });
 
    </script>
-
-
 </head>
 
 <body>
 
     <header>
-        <h1>AwesomeNextSteps</h1>
+        <h1>AwesomeNextSteps Simple Quiz Builder</h1>
         <p>The Beginning of the Next Steps of Project Awesome.</p>
     </header>
 
@@ -47,50 +44,72 @@ $(document).ready(function(){
     <p>
     <h2>Set up your quiz:</h2>
     
-    <form name="setup" action="quiz.html">
-        <p>To generate a specific quiz or retrieve a past quiz, enter a quiz number here. <br>
-        Quiz numbers are in hexadecimal (0-9, A-F, e.g. 123ABC56F). <br>
-        Leave "Quiz Number" blank if you wish to generate a random quiz. <br> <br>
-        Quiz number: <input type="text" name="seed"> </p>
+    <form id="setup" name="setup" action="quiz.html">
+        Enter a seed (in hexadecimal) for this quiz.
+        (If none is provided, one will be generated randomly.) <br>
+        Seed: <input type="text" name="seed"> <br> <br>
 
-	<p>Now design the quiz you want by selecting the question type and number of questions. Or for more complex quizzes, try the <a href="generateQuizJSON.html">JSON String Builder</a> and the <a href="startJSON.html">JSON Quiz Builder</a>.</p>
+        Quiz Title: <input type="text" id="quizTitle"> <br> <br>
 
-        <p>Select the number of questions you wish your quiz to have. This is independent of the quiz number. <br>
-        The same quiz number will always yield the same questions. <br> <br>
-        Number of questions: </p>
+        <p>Now design the quiz you want by selecting the question type and number of questions. Or for more complex quizzes, try the <a href="startAdvanced.html">JSON Quiz Builder</a>.</p>
 
-        <select name="numQuestions">
+	<!-- This drop down menu is popualted by a call to "addOptionForEachQuestionType"
+	     and the questionTypes are defined in js/questionTypes.js -->
+        <select name="questionType" id="questionType"></select>
+
+        <p>Select the number of questions you wish your quiz to have. <br>
+        Number of questions:
+
+        <select id="numQuestions">
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="15">15</option>
             <option value="20">20</option>
             <option value="25">25</option>
-        </select>
+        </select> </p>
 
-	<p>Show questions:
-        <select name="questions" value="yes">
+        <p>Show questions:
+        <select name="showQuestions" value="yes">
             <option value="yes">yes</option>
             <option value="no">no</option>
         </select></p>
 
-	<p>Show answer key:
-        <select name="key" value="yes">
+        <p>Show answer key:
+        <select name="showKey" value="yes">
             <option value="yes">yes</option>
             <option value="no">no</option>
         </select></p>
 
-	<!-- This drop down menu is popualted by a call to "addOptionForEachQuestionType"
-	     and the questionTypes are defined in js/questionTypes.js -->
+        <input name="showJSON" type="hidden" value="no" />
 
-        <select name="questionType" id="questionType"></select>
-
-
-        <br> <br>
-        <input type="submit" value="Get Quiz">
-
+        <input id="jsonStringField" name="jsonString" type="hidden" />
     </form>
+
+    <br> <br>
+    <input type="button" value="Get Quiz" onclick="makeQuizJSON()">
+
     </p>
 
+    <script>
+    function makeQuizJSON(){
+
+        //Grab numQuestions and questionType, make quizJSON out of them, stringify.
+        var num = $('#numQuestions').val();
+        var type = $('#questionType').val();
+
+        var quizDescriptor = 
+        {"version":0.1,
+        "title": $("#quizTitle").val(),
+        "quiz":[{"question":type,"repeat":num}]
+        } 
+        var jsonString = JSON.stringify(quizDescriptor);
+
+        //Put that into a hidden field and submit the form, so it gets into the URL properly.
+        //(is there a better way to do this? I don't know things)
+        $("#jsonStringField").val(jsonString);
+        $("#setup").submit();  
+    }
+    </script>
 
 </body>
 

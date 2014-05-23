@@ -5,7 +5,7 @@ var questionTypes = {
 "orderOfOperations":     {"f": orderOfOperationsQuestion,  title: "Order of Operations"},
 "operandsAndOperators":  {"f":operandsAndOperatorsQuestion,title: "Operands and Operators"},
 "pythonProgramOutput":   {"f":pythonProgramOutputQuestion, title: "Python Program Output"},
-"pythonStringSlice":    {"f":pythonStringSliceQuestion,    title: "Python String Slice"},
+"pythonStringSlice":     {"f":pythonStringSliceQuestion,   title: "Python String Slice"},
 "symbolicLogic":         {"f":symbolicLogicQuestion,       title: "Symbolic Logic"},
 "CvariableType":         {"f":CvariableTypeQuestion,       title: "C Variable Type"},
 "cStrings":              {"f":cStringsQuestion,            title: "C Strings"},
@@ -16,9 +16,6 @@ var questionTypes = {
 function addOptionForEachQuestionType(e) {
     
     $.each(questionTypes, function(key, val) {
-	    console.log("key="+key+" val.title=" +val.title);
 	    e.append($('<option></option>').val(key).html(val.title));
 	});
-    
-
 }

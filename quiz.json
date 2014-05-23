@@ -1,5 +1,6 @@
 {
 	"version" : 0.1,
+	"title" : "Example QuizJSON",
 	"quiz" : [
     	{ 
         	"question": "orderOfOperations", 
@@ -12,6 +13,13 @@
             	{"question": "changeOfBase", "repeat": 5},
            		{"question": "operandsAndOperators", "repeat": 5}
         	]
-    	}   
+    	},
+		{
+			"shuffle": true,
+			"items": [
+				{"question": "pythonStringSlice", "repeat": 3},
+				{"question": "pythonProgramOutput", "repeat": 3}
+			]
+		}   
 	]
 }

@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html>
 
@@ -11,8 +10,7 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="../js/bits.js"></script>
-    <script src="../js/random.js"></script>
-    <script src="../js/questions.js"></script>    
+    <script src="../js/random.js"></script>   
     <script src="../js/questions/orderOfOperations.js"></script>
     <script src="../js/questions/changeOfBase.js"></script>
     <script src="../js/questions/operandsAndOperators.js"></script>
@@ -21,15 +19,16 @@
     <script src="../js/questions/symbolicLogic.js"></script>
     <script src="../js/questions/CvariableType.js"></script>
     <script src="../js/questions/strings.js"></script>
-    <script src="../js/questionTypes.js"></script>
+    <script src="../js/questionTypes.js"></script>    
     <script src="../purl/purl.js"></script>
-    <script src="../js/parser.js"></script>
+    <script src="../js/interpretJSON.js"></script>
+    <script src="../js/utils.js"></script>
     <script src="../js/quiz.js"></script>
     <script>
 
-$(document).ready(function(){
-   buildQuiz();
-});
+        $(document).ready(function(){
+            buildQuiz();
+        });
 
    </script>
 </head>
@@ -44,6 +43,7 @@ $(document).ready(function(){
     <div id="seed"></div>
     <div id="questions"></div>
     <div id="key"></div>
+    <div id="json"></div>
     
 </body>
 
