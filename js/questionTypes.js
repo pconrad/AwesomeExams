@@ -9,7 +9,10 @@ var questionTypes = {
 "symbolicLogic":         {"f":symbolicLogicQuestion,       title: "Symbolic Logic"},
 "CvariableType":         {"f":CvariableTypeQuestion,       title: "C Variable Type"},
 "cStrings":              {"f":cStringsQuestion,            title: "C Strings"},
-"pyStrings":             {"f":pyStringsQuestion,           title: "Python Strings"}
+"pyStrings":             {"f":pyStringsQuestion,           title: "Python Strings"},
+
+"binHexOctDec":          {"f":binHexOctDec,           title: "Bin Hex Oct Dec"}
+
 };
 
 
