@@ -1,4 +1,4 @@
-RandomIdentifiers =
+RandomNames =
 {
     one: ["foo","bar","baz","fiddle","faddle","bim","bam","quux","snork","snap"],
     two: ["squish","squash","smoot","spiffle","splin","squal","spork","smop","smick","smock"],
@@ -13,16 +13,16 @@ function getRandomId(randomStream, num)
 
     switch(num){
         case 0:
-            id = RandomIdentifiers.one[randomStream.nextIntRange(RandomIdentifiers.one.length)];
+            id = RandomNames.one[randomStream.nextIntRange(RandomNames.one.length)];
             break;
         case 1:
-            id = RandomIdentifiers.two[randomStream.nextIntRange(RandomIdentifiers.two.length)];
+            id = RandomNames.two[randomStream.nextIntRange(RandomNames.two.length)];
             break;
         case 2:
-            id = RandomIdentifiers.three[randomStream.nextIntRange(RandomIdentifiers.three.length)];
+            id = RandomNames.three[randomStream.nextIntRange(RandomNames.three.length)];
             break;
         case 3:
-            id = RandomIdentifiers.four[randomStream.nextIntRange(RandomIdentifiers.four.length)];
+            id = RandomNames.four[randomStream.nextIntRange(RandomNames.four.length)];
             break;
         default:
             break;
