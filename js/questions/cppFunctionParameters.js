@@ -51,23 +51,21 @@ function cppFunctionParametersA(randomStream)
     var paramType = getRandomReturnType(randomStream);
     var paramName = getRandomId(randomStream, 3);
 
-    randomStream.shuffle(parameterPassTypes);
-
     this.answerChoices = [
-        { value: parameterPassTypes[0][0], flag: true},
-        { value: parameterPassTypes[1][0], flag: false},
-        { value: parameterPassTypes[2][0], flag: false},
-        { value: parameterPassTypes[3][0], flag: false}
+        { value: parameterPassTypes[0][0], specialChar: parameterPassTypes[0][1],
+            specialPos: parameterPassTypes[0][2], flag: false},
+        { value: parameterPassTypes[1][0], specialChar: parameterPassTypes[1][1],
+            specialPos: parameterPassTypes[1][2], flag: false},
+        { value: parameterPassTypes[2][0], specialChar: parameterPassTypes[2][1],
+            specialPos: parameterPassTypes[2][2], flag: false},
+        { value: parameterPassTypes[3][0], specialChar: parameterPassTypes[3][1],
+            specialPos: parameterPassTypes[3][2], flag: false}
     ];
 
     randomStream.shuffle(this.answerChoices);
 
-    this.correctIndex = 0;
-    for(var i=0; i<this.answerChoices.length; i++)
-    {
-        if(this.answerChoices[i].flag == true)
-            this.correctIndex = i;
-    }
+    this.correctIndex = randomStream.nextIntRange(4);
+    this.answerChoices[this.correctIndex][3] = true;
 
     this.formatQuestion = function(format) {
         switch (format) {
@@ -79,11 +77,11 @@ function cppFunctionParametersA(randomStream)
     this.formatQuestionHTML = function () {
         var questionText = "<p>The following prototype is an example of which type of parameter passing?</p>" +
             "<pre>" + retType + " " + funcName + "(" + paramType + " ";
-        if(parameterPassTypes[this.correctIndex][2] == -1)
-            questionText += parameterPassTypes[this.correctIndex][1];
+        if(this.answerChoices[this.correctIndex].specialPos == -1)
+            questionText += this.answerChoices[this.correctIndex].specialChar;
         questionText += paramName;
-        if(parameterPassTypes[this.correctIndex][2] == 1)
-            questionText += parameterPassTypes[this.correctIndex][1];
+        if(this.answerChoices[this.correctIndex].specialPos == 1)
+            questionText += this.answerChoices[this.correctIndex].specialChar;
         questionText += ");</pre>";
 
         questionText += "<p><strong>a) </strong>"

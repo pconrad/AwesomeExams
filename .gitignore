@@ -11,3 +11,5 @@
 *.log 
 *.bak 
 
+# Webstorm junk
+.idea/
