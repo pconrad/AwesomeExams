@@ -1,0 +1,1 @@
+mvn archetype:generate -DgroupId=edu.ucsb.cs.pconrad.awesome -DartifactId=awesome -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
