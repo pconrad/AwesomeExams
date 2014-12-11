@@ -122,17 +122,19 @@ function cppFunctionParametersB(randomStream) {
     var mainVarName = getRandomId(randomStream, 3);
     var mainVarValue;
     var mainVarFinalValue;
+
     var mainVarAssignedToReturn;
     if(randomStream.nextIntRange(2) === 0)
         mainVarAssignedToReturn = 0;
     else
         mainVarAssignedToReturn = 1;
+
     var funParameter1Name = getRandomId(randomStream, 3);
     var funParameter2Name;
     var useFunParameter2;
     var funMultiplier = randomStream.nextIntRange(4) + 1;
     var funAdder = randomStream.nextIntRange(4) + 2;
-    if ((funParamPassTypeIndex === 3) || (randomStream.nextIntRange(3) === 0)) {
+    if ((funParamPassTypeIndex === 3) || (randomStream.nextIntRange(3) === 0)) { // need 2nd parameter if passing or array or as red herring
         useFunParameter2 = 1;
         do
         {
@@ -149,6 +151,7 @@ function cppFunctionParametersB(randomStream) {
         useFunParameter2 = 0;
         mainVarValue = randomStream.nextIntRange(10);
     }
+
     var funReturnTypeIndex = randomStream.nextIntRange(2);
     var funReturnValue;
     var useFunReturnValue = randomStream.nextIntRange(2);
