@@ -1,28 +1,28 @@
-RandomNames =
+CppRandomNames =
 {
     one: ["foo","bar","baz","fiddle","faddle","bim","bam","quux","snork","snap"],
     two: ["squish","squash","smoot","spiffle","splin","squal","spork","smop","smick","smock"],
     three: ["blarp","squeeble","blurgle","podiddle","tulopulop","porskidor","swamwam"],
-    four: ["a","b","c","d","e","moop","minx","mox","mole","f","g"]
+    four: ["MOOP","MooP","mOOp","mooP","Moop","moop","minx","mox","mole","moof","moog"]
 };
 RandomReturnTypes = ["int", "float", "double", "string"];
 
-function getRandomId(randomStream, num)
+function cppGetRandomId(randomStream, num)
 {
     var id;
 
     switch(num){
         case 0:
-            id = RandomNames.one[randomStream.nextIntRange(RandomNames.one.length)];
+            id = CppRandomNames.one[randomStream.nextIntRange(CppRandomNames.one.length)];
             break;
         case 1:
-            id = RandomNames.two[randomStream.nextIntRange(RandomNames.two.length)];
+            id = CppRandomNames.two[randomStream.nextIntRange(CppRandomNames.two.length)];
             break;
         case 2:
-            id = RandomNames.three[randomStream.nextIntRange(RandomNames.three.length)];
+            id = CppRandomNames.three[randomStream.nextIntRange(CppRandomNames.three.length)];
             break;
         case 3:
-            id = RandomNames.four[randomStream.nextIntRange(RandomNames.four.length)];
+            id = CppRandomNames.four[randomStream.nextIntRange(CppRandomNames.four.length)];
             break;
         default:
             break;
@@ -47,9 +47,9 @@ function cppFunctionParametersA(randomStream)
         ];
 
     var retType = getRandomReturnType(randomStream);
-    var funcName = getRandomId(randomStream, randomStream.nextIntRange(3));
+    var funcName = cppGetRandomId(randomStream, randomStream.nextIntRange(3));
     var paramType = getRandomReturnType(randomStream);
-    var paramName = getRandomId(randomStream, 3);
+    var paramName = cppGetRandomId(randomStream, 3);
 
     this.answerChoices = [
         { value: parameterPassTypes[0][0], specialChar: parameterPassTypes[0][1],
@@ -117,9 +117,11 @@ function cppFunctionParametersB(randomStream) {
     var returnTypes = ["void", "int"];
 
     /////// choose all the random values for this problem
-    var funName = getRandomId(randomStream, randomStream.nextIntRange(3));
-    var funParamPassTypeIndex = parameterPassTypes[randomStream.nextIntRange(4)];
-    var mainVarName = getRandomId(randomStream, 3);
+    var funName = cppGetRandomId(randomStream, randomStream.nextIntRange(3));
+    var funParamPassTypeIndex = randomStream.nextIntRange(4);
+    var funParamPassTypeIndex = randomStream.nextIntRange(4);
+    console.log("funParamPassTypeIndex is " + funParamPassTypeIndex + "; should be 0-3");
+    var mainVarName = cppGetRandomId(randomStream, 3);
     var mainVarValue;
     var mainVarFinalValue;
 
@@ -129,7 +131,7 @@ function cppFunctionParametersB(randomStream) {
     else
         mainVarAssignedToReturn = 1;
 
-    var funParameter1Name = getRandomId(randomStream, 3);
+    var funParameter1Name = cppGetRandomId(randomStream, 3);
     var funParameter2Name;
     var useFunParameter2;
     var funMultiplier = randomStream.nextIntRange(4) + 1;
@@ -138,18 +140,19 @@ function cppFunctionParametersB(randomStream) {
         useFunParameter2 = 1;
         do
         {
-            funParameter2Name = getRandomId(randomStream, 3);
+            funParameter2Name = cppGetRandomId(randomStream, 3);
         } while (funParameter2Name == funParameter1Name);
         mainVarValue = [];
         mainVarFinalValue = [];
         for (var i = 0; i < 3; ++i) {
             mainVarValue.push(randomStream.nextIntRange(10));
-            mainVarFinalValue.push(mainVarValue[i] * funMultiplier);
+            mainVarFinalValue.push(mainVarValue[i] * funMultiplier + funAdder);
         }
     }
     else {
         useFunParameter2 = 0;
-        mainVarValue = randomStream.nextIntRange(10);
+        mainVarValue = randomStream.nextIntRange(10)+2;
+        mainVarFinalValue = mainVarValue * funMultiplier + funAdder;
     }
 
     var funReturnTypeIndex = randomStream.nextIntRange(2);
@@ -158,7 +161,7 @@ function cppFunctionParametersB(randomStream) {
     if (useFunReturnValue === 0)
         funReturnValue = randomStream.nextIntRange(2);
 
-    var program = "";
+    var program = '#include iostream>;\n\n';
 
     /////// build fun
     program += returnTypes[funReturnTypeIndex] + " " + funName + "(int ";
@@ -174,8 +177,8 @@ function cppFunctionParametersB(randomStream) {
 
     if (funParamPassTypeIndex === 3) // build an array algorithm
     {
-        program += "  for(int i = 0; i < " + funParameter2Name + "; ++i)\n{\n";
-        program += "    " + funParameter1Name + "[i] *= " + funMultiplier + ";\n";
+        program += "  for(int i = 0; i < " + funParameter2Name + "; ++i)\n  {\n";
+        program += "    " + funParameter1Name + "[i] *= " + funMultiplier + " + " + funAdder + ";\n";
         program += "  }\n";
     }
     else // build some other algorithm
@@ -194,6 +197,7 @@ function cppFunctionParametersB(randomStream) {
         if (useFunReturnValue === 0)    // return a fake answer?
         {
             program += " " + funReturnValue;
+            mainVarFinalValue = funReturnValue;
         }
         else
         {
@@ -211,7 +215,7 @@ function cppFunctionParametersB(randomStream) {
     if(funParamPassTypeIndex === 3)
     {
         program += "  int " + mainVarName + "[] = { " + mainVarValue[0] + ", " + mainVarValue[1] +
-            ", " + mainVarValue[2] + ";\n";
+            ", " + mainVarValue[2] + "};\n";
         program += "  int sz = 3;\n";
     }
     else
@@ -236,18 +240,35 @@ function cppFunctionParametersB(randomStream) {
     program += mainVarName;
     if(funParamPassTypeIndex === 3)
         program += "[]";
-    // LEFT OFF HERE: add 2nd parameter to call if this is enabled for this question
+    if(useFunParameter2 === 1)
+        program += ", sz";
+    program += ");\n\n";
 
-    this.answerChoices = [
-        { value: parameterPassTypes[0][0], specialChar: parameterPassTypes[0][1],
-            specialPos: parameterPassTypes[0][2], flag: false},
-        { value: parameterPassTypes[1][0], specialChar: parameterPassTypes[1][1],
-            specialPos: parameterPassTypes[1][2], flag: false},
-        { value: parameterPassTypes[2][0], specialChar: parameterPassTypes[2][1],
-            specialPos: parameterPassTypes[2][2], flag: false},
-        { value: parameterPassTypes[3][0], specialChar: parameterPassTypes[3][1],
-            specialPos: parameterPassTypes[3][2], flag: false}
-    ];
+    if(funParamPassTypeIndex != 3)
+        program += "  std::cout << " + mainVarName + " << std::endl;";
+    else
+        program += "  std::cout << " + mainVarName + "[1] << std::endl;";
+
+    program += "\n\nreturn 0;\n}";
+
+    if(funParamPassTypeIndex === 3)
+        this.answerChoices = [
+            { value: mainVarFinalValue[1], flag: true},
+            { value: (mainVarFinalValue[1] === 0 || mainVarValue[1] === 0 ? randomStream.nextIntRange(23)+2 : 0),
+                flag: false},
+            { value: (mainVarFinalValue[1] === 1 || mainVarValue[1] === 1 ? randomStream.nextIntRange(23)+2 : 1),
+                flag: false},
+            { value: mainVarValue[1], flag: false}
+        ];
+    else
+        this.answerChoices = [
+            { value: mainVarFinalValue, flag: true},
+            { value: (mainVarFinalValue === 0 || mainVarValue === 0 ? randomStream.nextIntRange(23)+2 : 0),
+                flag: false},
+            { value: (mainVarFinalValue === 1 || mainVarValue === 1 ? randomStream.nextIntRange(23)+2 : 1),
+                flag: false},
+            { value: mainVarValue, flag: false}
+        ];
 
     randomStream.shuffle(this.answerChoices);
 
@@ -262,14 +283,8 @@ function cppFunctionParametersB(randomStream) {
     };
 
     this.formatQuestionHTML = function () {
-        var questionText = "<p>The following prototype is an example of which type of parameter passing?</p>" +
-            "<pre>" + retType + " " + funcName + "(" + paramType + " ";
-        if(this.answerChoices[this.correctIndex].specialPos == -1)
-            questionText += this.answerChoices[this.correctIndex].specialChar;
-        questionText += paramName;
-        if(this.answerChoices[this.correctIndex].specialPos == 1)
-            questionText += this.answerChoices[this.correctIndex].specialChar;
-        questionText += ");</pre>";
+        var questionText = "<p>What is the output of the following program?</p>" +
+            "<pre>" + program + "</pre>";
 
         questionText += "<p><strong>a) </strong>"
             + this.answerChoices[0].value + "<br><strong>b) </strong>"
@@ -295,5 +310,8 @@ function cppFunctionParametersB(randomStream) {
 
 function cppFunctionParametersQuestion(randomStream)
 {
-        return new cppFunctionParametersA(randomStream)
+    if(randomStream.nextIntRange(3) == 0)
+        return new cppFunctionParametersA(randomStream);
+    else
+        return new cppFunctionParametersB(randomStream);
 }
