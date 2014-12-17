@@ -2,8 +2,10 @@
 
 var questionTypes = {
 "changeOfBase":          {"f": changeOfBaseQuestion,       title: "Change of Base"},
-"cppFunctionParameters": {"f": cppFunctionParametersQuestion,       title: "C++ Function Parameters"},
-"orderOfOperations":     {"f": orderOfOperationsQuestion,  title: "Order of Operations"},
+"cppFunctionParameters": {"f": cppFunctionParametersQuestion, title: "C++ Function Parameters"},
+"cppAppropriateVariables": {"f": cppAppropriateVariablesQuestion, title: "C++ Variable Types"},
+//"cppBooleanEval":       {"f": cppBooleanEvalQuestion,      title: "C++ Boolean Evaluation"},
+"orderOfOperations":     {"f": orderOfOperationsQuestion,   title: "Order of Operations"},
 "operandsAndOperators":  {"f": operandsAndOperatorsQuestion,title: "Operands and Operators"},
 "pythonProgramOutput":   {"f": pythonProgramOutputQuestion, title: "Python Program Output"},
 "pythonStringSlice":     {"f": pythonStringSliceQuestion,   title: "Python String Slice"},
@@ -11,7 +13,7 @@ var questionTypes = {
 "CvariableType":         {"f": CvariableTypeQuestion,       title: "C Variable Type"},
 "cStrings":              {"f": cStringsQuestion,            title: "C Strings"},
 "pyStrings":             {"f": pyStringsQuestion,           title: "Python Strings"},
-"binHexOctDec":          {"f": binHexOctDec,           title: "Bin Hex Oct Dec"}
+"binHexOctDec":          {"f": binHexOctDec,                title: "Bin Hex Oct Dec"}
 };
 
 function addOptionForEachQuestionType(e) {
