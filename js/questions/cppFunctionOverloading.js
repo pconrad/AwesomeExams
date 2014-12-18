@@ -49,13 +49,27 @@ function cppFunctionOverloadingQuestion(randomStream)
     var funcOverName = cppGetRandomId(randomStream, 0);
     var funcOverArgs = [];
     var funcOverReturnType = randomStream.nextIntRange(CppRandomTypes.length);
-    var funcOverArgCount = 2 + randomStream.nextIntRange(2);
+    var funcOverArgCount = 3 + randomStream.nextIntRange(3);
+    var funcOverArgSafety = null;   // make sure all parameters aren't the same
     for(var i1 = 0; i1 < funcOverArgCount; ++i1)
-    {   // TODO: a fun with 3 double args produces distractors with all 3 double args
+    {
         funcOverArgs[i1] = [];
         funcOverArgs[i1][0] = randomStream.nextIntRange(CppRandomTypes.length - 1);
-        funcOverArgs[i1][1] = cppGetRandomId(randomStream, i1+1);
-        funcOverArgs[i1][2] = cppGetRandomId(randomStream, i1+1);
+        if(funcOverArgSafety == null)
+            funcOverArgSafety = funcOverArgs[i1][0];    // set first type
+        else if(funcOverArgSafety != funcOverArgs[i1][0])
+            funcOverArgSafety = -1; // have type diversity
+        if(i1 === funcOverArgCount - 1)
+            while(funcOverArgs[i1][0] === funcOverArgSafety)
+                funcOverArgs[i1][0] = randomStream.nextIntRange(CppRandomTypes.length - 1);
+
+        funcOverArgs[i1][1] = cppGetRandomId(randomStream, (i1+1) % 3);
+        while(i1-3 >= 0 && funcOverArgs[i1][1] == funcOverArgs[i1-3][1]) // unique ID from last time we used this list
+            funcOverArgs[i1][1] = cppGetRandomId(randomStream, (i1+1) % 3);
+        funcOverArgs[i1][2] = cppGetRandomId(randomStream, (i1+1) % 3);
+        while(i1-3 >= 0 && funcOverArgs[i1][2] == funcOverArgs[i1-3][2])
+            funcOverArgs[i1][2] = cppGetRandomId(randomStream, (i1+1) % 3);
+
         funcOverArgs[i1][3] = cppGenerateRandomValue(randomStream, funcOverArgs[i1][0]);
     }
 
@@ -69,33 +83,36 @@ function cppFunctionOverloadingQuestion(randomStream)
 
     var funcOverDistractors = [];
     for(var i3 = 0; i3 < 3; ++i3)
-    {
+    {   // create 3 distractors
         var fakeType;
 
-        funcOverDistractors[i3] = CppRandomTypes[funcOverReturnType] + " " + funcOverName + "(";
-        if(i3 == 0)
+        // type and function name of distractor signature
+        //funcOverDistractors[i3] = CppRandomTypes[funcOverReturnType] + " " + funcOverName + "(";
+        funcOverDistractors[i3] = CppRandomTypes[randomStream.nextIntRange(CppRandomTypes.length)] +
+            " " + funcOverName + "(";
+        if(i3 == 0) // first pass change type of first argument
         {
             fakeType = randomStream.nextIntRange(CppRandomTypes.length-1);
             while(fakeType == funcOverArgs[0][0])
                 fakeType = randomStream.nextIntRange(CppRandomTypes.length-1);
             funcOverDistractors[0] += CppRandomTypes[fakeType] + " " + funcOverArgs[0][1];
         }
-        else
+        else    // not first pass, leave type of first argument alone
         {
             funcOverDistractors[i3] += CppRandomTypes[funcOverArgs[0][0]] + " " + funcOverArgs[0][1];
         }
 
         for(var i4 = 1; i4 < funcOverArgCount; ++i4)
-        {
+        {   // add arguments 2 and up, faking the type of arg# == i3
             if(i3 == i4)
-            {
+            {   // this is the one we're faking
                 fakeType = randomStream.nextIntRange(CppRandomTypes.length-1);
                 while(fakeType == funcOverArgs[i4][0])
                     fakeType = randomStream.nextIntRange(CppRandomTypes.length-1);
-                funcOverDistractors[i3] += CppRandomTypes[fakeType] + " " + funcOverArgs[i4][1];
+                funcOverDistractors[i3] += ", " + CppRandomTypes[fakeType] + " " + funcOverArgs[i4][1];
             }
             else
-            {
+            {   // not faking this one this time
                 funcOverDistractors[i3] += ", " + CppRandomTypes[funcOverArgs[i4][0]] + " " + funcOverArgs[i4][1];
             }
 
@@ -109,7 +126,7 @@ function cppFunctionOverloadingQuestion(randomStream)
         {value: funcOverDistractors[1], flag: false},
         {value: funcOverDistractors[2], flag: false} ];
 
-    //randomStream.shuffle(this.answerChoices);
+    randomStream.shuffle(this.answerChoices);
 
     //Find the correct answer
     this.correctIndex = 0;
@@ -128,7 +145,7 @@ function cppFunctionOverloadingQuestion(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-        var overVarOffset = randomStream.nextIntRange(funcOverArgCount);
+        var overVarOffset = randomStream.nextIntRange(funcOverArgCount) + 1;
         var questionText = "<p>Which function signature belongs to the function that is called?</p>";
         questionText += "<pre>";
         for(var i5 = 0; i5 < funcOverArgCount; ++i5)
