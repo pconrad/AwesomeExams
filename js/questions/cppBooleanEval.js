@@ -33,6 +33,7 @@ function cppGetRandomId(randomStream, num)
 
 function cppBooleanEvalQuestion(randomStream)
 {
+    var evalBoolNotInt = randomStream.nextIntRange(2);
     var varName1 = cppGetRandomId(randomStream, 3);
     var varName2 = varName1;
     while(varName2 == varName1)
@@ -41,8 +42,17 @@ function cppBooleanEvalQuestion(randomStream)
     }
     var varVal1;
     var varVal2;
+    if(evalBoolNotInt === 0)
+    {
+        varVal1 = randomStream.nextIntRange(100);
+        varVal2 = randomStream.nextIntRange(100);
+    }
+    else
+    {
+        varVal1 = [false, true][randomStream.nextIntRange(2)];
+        varVal2 = [false, true][randomStream.nextIntRange(2)];
+    }
 
-    var evalBoolNotInt = randomStream.nextIntRange(2);
     var possibleAnswer1 = (evalBoolNotInt===0?[false, true][randomStream.nextIntRange(2)]:randomStream.nextIntRange(100));
     var possibleAnswer2 = possibleAnswer1;
     if(evalBoolNotInt === 1)
@@ -54,24 +64,25 @@ function cppBooleanEvalQuestion(randomStream)
     {
         possibleAnswer2 = !possibleAnswer2;
     }
+
     var distractorAnswer1 = (evalBoolNotInt===1?[false, true][randomStream.nextIntRange(2)]:randomStream.nextIntRange(100));
     var distractorAnswer2 = distractorAnswer1;
-    if(evalBoolNotInt === 0)
+    if(evalBoolNotInt === 1)
     {
         distractorAnswer2 = !distractorAnswer2;
     }
     else
     {
-        while(distractorAnswer2 === distractorAnswer1)
-            distractorAnswer2 = randomStream.nextIntRange(100);
+       // while(distractorAnswer2 === distractorAnswer1)
+       //     distractorAnswer2 = randomStream.nextIntRange(100);
+        distractorAnswer1 = varVal1;
+        distractorAnswer2 = varVal2;
     }
     var correctAnswer;
 
     var boolCompareIdx;
     if(evalBoolNotInt === 0)    // eval ints
     {
-        varVal1 = randomStream.nextIntRange(100);
-        varVal2 = randomStream.nextIntRange(100);
         boolCompareIdx = randomStream.nextIntRange(6);
         switch(boolCompareIdx)
         {
@@ -114,8 +125,6 @@ function cppBooleanEvalQuestion(randomStream)
     }
     else                        // eval bools
     {
-        varVal1 = [false, true][randomStream.nextIntRange(2)];
-        varVal2 = [false, true][randomStream.nextIntRange(2)];
         boolCompareIdx = randomStream.nextIntRange(2);
         switch(boolCompareIdx)
         {
@@ -158,7 +167,7 @@ function cppBooleanEvalQuestion(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-        var questionText = "<p>What is the final value of <pre>answer</pre>?</p>"+
+        var questionText = "<p>What is the final value of 'answer'?</p>"+
             "<pre>";
 
         if(evalBoolNotInt === 0)
