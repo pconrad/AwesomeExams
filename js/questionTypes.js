@@ -7,6 +7,7 @@ var questionTypes = {
 "cppBooleanEval":        {"f": cppBooleanEvalQuestion,      title: "C++ Boolean Evaluation"},
 "cppArgcArgv":           {"f": cppArgcArgvQuestion,         title: "C++ Command Line Arguments"},
 "cppFunctionOverloading": {"f": cppFunctionOverloadingQuestion, title: "C++ Function Overloading"},
+"cppPointerAssignment":  {"f": cppPointerAssignmentQuestion, title: "C++ Pointer Assignment"},
 "orderOfOperations":     {"f": orderOfOperationsQuestion,   title: "Order of Operations"},
 "operandsAndOperators":  {"f": operandsAndOperatorsQuestion,title: "Operands and Operators"},
 "pythonProgramOutput":   {"f": pythonProgramOutputQuestion, title: "Python Program Output"},

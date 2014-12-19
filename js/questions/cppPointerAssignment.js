@@ -76,6 +76,7 @@ function cppPointerAssignmentQuestion(randomStream)
     }
     cppPAQuestion += "\n";
 
+
     // apply 3-5 changes
     var cppPAChangeCount = 3 + randomStream.nextIntRange(3);
     for(var i5 = 0; i5 < cppPAChangeCount; ++i5)
@@ -84,10 +85,10 @@ function cppPointerAssignmentQuestion(randomStream)
         if(randomStream.nextIntRange(3) === 0)
         {
             var cppPAPtoP1 = randomStream.nextIntRange(4);
-            var cppPaPtoP2 = randomStream.nextIntRange(4);
-            while(cppPaPtoP2 === cppPAPtoP1)
-                cppPaPtoP2 = randomStream.nextIntRange(4);
-            cppPAPointers[cppPAPtoP1][1] = cppPAPointers[cppPaPtoP2][1];
+            var cppPAPtoP2 = randomStream.nextIntRange(4);
+            while(cppPAPtoP2 === cppPAPtoP1)
+                cppPAPtoP2 = randomStream.nextIntRange(4);
+            cppPAPointers[cppPAPtoP1][1] = cppPAPointers[cppPAPtoP2][1];
             cppPAQuestion += cppPAPointers[cppPAPtoP1][0] + " = " +cppPAPointers[cppPAPtoP2][0] + ";\n";
         }
         // set value of non-pointer variable
@@ -111,39 +112,77 @@ function cppPointerAssignmentQuestion(randomStream)
 
             cppPAQuestion += cppPAVars[cppPASetValIdx][0] + " = " + cppPAVars[cppPASetValIdx][1] + ";\n";
         }
-        // set value of dereferenced pointer
+        // set value of dereferenced pointer to a value that is not hold by another variable
         else
         {
             var cppPASetDerefIdx = randomStream.nextIntRange(4);
             var cppPASetDerefUnique = false;
             var cppPASetDerefNewVal;
-            while(!cppPASetValUnique)
+            while(!cppPASetDerefUnique)   // loop until we find a unique value
             {
                 cppPASetDerefNewVal = randomStream.nextIntRange(100);
                 cppPASetDerefUnique = true;
 
-                for(var i9 = 0; i9 < 4; ++i9)
+                for(var i9 = 0; i9 < 4; ++i9)   // look at each int
                 {
-                    if(i9 === cppPASetDerefIdx) // TODO: change to if var pointed to by this pointer's idx === derefidx
+                    if(i9 === cppPAPointers[cppPASetDerefIdx][1])   // if this int is the one changing, don't need to look
                         continue;
                     if(cppPASetDerefNewVal === cppPAVars[i9][1])
+                    {
                         cppPASetDerefUnique = false;
+                    }
                 }
             }
 
-            cppPAQuestion += "(*" + cppPAPointers[cppPASetValIdx][0] + ") = " + cppPAVars[cppPASetValIdx][1] + ";\n";
+            cppPAVars[cppPASetDerefIdx][1] = cppPASetDerefNewVal;
+            cppPAQuestion += "(*" + cppPAPointers[cppPASetDerefIdx][0] + ") = " + cppPAVars[cppPASetDerefIdx][1] + ";\n";
         }
     }
 
     // generate question, answer, and distractors
-    cppPAQuestion += "what is the value of ";
+    cppPAQuestion += "</pre>what is the value of ";
+
     this.answerChoices = [
         {value: 0, flag: true},
         {value: 0, flag: false},
         {value: 0, flag: false},
         {value: 0, flag: false} ];
 
-    //randomStream.shuffle(this.answerChoices);
+    var cppPARandomIdx = randomStream.nextIntRange(4);
+    if(randomStream.nextIntRange(3) === 0)  // pick int
+    {
+        this.answerChoices[0].value = cppPAVars[cppPARandomIdx][1];
+        this.answerChoices[1].value = cppPAVars[(cppPARandomIdx+1)%4][1];
+        this.answerChoices[2].value = cppPAVars[(cppPARandomIdx+2)%4][1];
+        this.answerChoices[3].value = (randomStream.nextIntRange(2)===0?cppPAVars[(cppPARandomIdx+3)%4][1]:"a memory address");
+
+        cppPAQuestion += cppPAVars[cppPARandomIdx][0];
+    }
+    else    // pick int *
+    {
+        if(randomStream.nextIntRange(2) === 0)  // dereferenced pointer
+        {
+            this.answerChoices[0].value = cppPAVars[cppPAPointers[cppPARandomIdx][1]][1];
+            this.answerChoices[1].value = cppPAVars[cppPAPointers[(cppPARandomIdx+1)%4][1]][1];
+            this.answerChoices[2].value = cppPAVars[cppPAPointers[(cppPARandomIdx+2)%4][1]][1];
+            this.answerChoices[3].value = (randomStream.nextIntRange(2)===0?cppPAVars[cppPAPointers[(cppPARandomIdx+3)%4][1]][1]:"a memory address");
+
+            cppPAQuestion += "(*" + cppPAPointers[cppPARandomIdx][0] + ")";
+        }
+        else    // pointer value (an address)
+        {
+            this.answerChoices[0].value = "a memory address";
+            this.answerChoices[1].value = cppPAVars[cppPAPointers[cppPARandomIdx][1]][1];
+            this.answerChoices[2].value = cppPAVars[cppPAPointers[(cppPARandomIdx+1)%4][1]][1];
+            this.answerChoices[3].value = cppPAVars[cppPAPointers[(cppPARandomIdx+2)%4][1]][1];
+
+            cppPAQuestion += cppPAPointers[cppPARandomIdx][0];
+        }
+    }
+
+    cppPAQuestion += "?</p>";
+
+    randomStream.shuffle(this.answerChoices);
 
     //Find the correct answer
     this.correctIndex = 0;
@@ -162,7 +201,7 @@ function cppPointerAssignmentQuestion(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-        var questionText = "<p>Convert " + this.a.value + " from " + this.a.base + " to " + this.b.base + ".</p>";
+        var questionText = cppPAQuestion;
 
         questionText += "<p><strong>a) </strong>"
             + this.answerChoices[0].value + "<br><strong>b) </strong>"
@@ -183,6 +222,5 @@ function cppPointerAssignmentQuestion(randomStream)
     this.formatAnswerHTML = function () {
         return String.fromCharCode(this.correctIndex + 97); //0 = 'a', 1 = 'b', 2 = 'c', etc...
     };
-
 }
 
