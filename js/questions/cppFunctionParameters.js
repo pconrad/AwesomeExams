@@ -106,6 +106,8 @@ function cppFunctionParametersA(randomStream)
 
 }
 
+
+
 function cppFunctionParametersB(randomStream) {
     var parameterPassTypes =
         [
@@ -119,8 +121,7 @@ function cppFunctionParametersB(randomStream) {
     /////// choose all the random values for this problem
     var funName = cppGetRandomId(randomStream, randomStream.nextIntRange(3));
     var funParamPassTypeIndex = randomStream.nextIntRange(4);
-    var funParamPassTypeIndex = randomStream.nextIntRange(4);
-    console.log("funParamPassTypeIndex is " + funParamPassTypeIndex + "; should be 0-3");
+
     var mainVarName = cppGetRandomId(randomStream, 3);
     var mainVarValue;
     var mainVarFinalValue;
@@ -161,7 +162,7 @@ function cppFunctionParametersB(randomStream) {
     if (useFunReturnValue === 0)
         funReturnValue = randomStream.nextIntRange(2);
 
-    var program = '#include iostream>;\n\n';
+    var program = '#include &lt;iostream>;\n\n';
 
     /////// build fun
     program += returnTypes[funReturnTypeIndex] + " " + funName + "(int ";
@@ -215,7 +216,7 @@ function cppFunctionParametersB(randomStream) {
     if(funParamPassTypeIndex === 3)
     {
         program += "  int " + mainVarName + "[] = { " + mainVarValue[0] + ", " + mainVarValue[1] +
-            ", " + mainVarValue[2] + "};\n";
+            ", " + mainVarValue[2] + " };\n";
         program += "  int sz = 3;\n";
     }
     else
@@ -223,16 +224,17 @@ function cppFunctionParametersB(randomStream) {
         program += "  int " + mainVarName + " = " + mainVarValue + ";\n";
         // TODO: add fake sz definition if 2nd parameter engaged
     }
+    program += "\n";
 
     if((mainVarAssignedToReturn === 1) && (funReturnTypeIndex === 1))
-        program += "  " + mainVarName + " = " + funName + "(int ";
+        program += "  " + mainVarName + " = " + funName + "(";
     else
-        program += "  " + funName + "(int ";
+        program += "  " + funName + "(";
     switch (funParamPassTypeIndex)
     {
-        case 1:
-            program += "&";
-            break;
+//        case 1:
+//            program += "&";
+//            break;
         case 2:
             program += "*";
             break;
@@ -249,7 +251,7 @@ function cppFunctionParametersB(randomStream) {
     else
         program += "  std::cout << " + mainVarName + "[1] << std::endl;";
 
-    program += "\n\nreturn 0;\n}";
+    program += "\n\n  return 0;\n}";
 
     if(funParamPassTypeIndex === 3)
         this.answerChoices = [
@@ -270,10 +272,19 @@ function cppFunctionParametersB(randomStream) {
             { value: mainVarValue, flag: false}
         ];
 
-    randomStream.shuffle(this.answerChoices);
+    //randomStream.shuffle(this.answerChoices);
 
-    this.correctIndex = randomStream.nextIntRange(4);
-    this.answerChoices[this.correctIndex][3] = true;
+    //this.correctIndex = randomStream.nextIntRange(4);
+    //this.answerChoices[this.correctIndex][3] = true;
+
+    for(var ii = 0; ii < 4; ++ii)
+    {
+        if(this.answerChoices[ii].flag == true)
+        {
+            this.correctIndex = ii;
+            break;
+        }
+    }
 
     this.formatQuestion = function(format) {
         switch (format) {
@@ -310,8 +321,10 @@ function cppFunctionParametersB(randomStream) {
 
 function cppFunctionParametersQuestion(randomStream)
 {
+/*
     if(randomStream.nextIntRange(3) == 0)
         return new cppFunctionParametersA(randomStream);
     else
+*/
         return new cppFunctionParametersB(randomStream);
 }
