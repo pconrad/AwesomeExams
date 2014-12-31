@@ -43,7 +43,7 @@ function cppArgcArgvQuestion(randomStream)
     var distractor2;
     var distractor3;
 
-    argumentList[0] = commandName;
+    argumentList[0] = "./" + commandName;
     for(var argci1 = 1; argci1 < argumentCount; ++argci1)
     {
         argumentList[argci1] = commandName;
@@ -60,7 +60,7 @@ function cppArgcArgvQuestion(randomStream)
             {value: (randomStream.nextIntRange(2)===0?argumentCount-2:argumentCount+2), flag: false} ];
 
         argcQuestion = "<p>What is the value of argc after the following command is typed?</p><pre>";
-        argcQuestion += "./" + argumentList[0];
+        argcQuestion += /*"./" +*/ argumentList[0];
         for(var argci2 = 1; argci2 < argumentCount; ++argci2)
             argcQuestion += " " + argumentList[argci2];
         argcQuestion += "</pre>";
