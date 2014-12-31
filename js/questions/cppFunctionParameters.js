@@ -1,40 +1,7 @@
-CppRandomNames =
-{
-    one: ["foo","bar","baz","fiddle","faddle","bim","bam","quux","snork","snap"],
-    two: ["squish","squash","smoot","spiffle","splin","squal","spork","smop","smick","smock"],
-    three: ["blarp","squeeble","blurgle","podiddle","tulopulop","porskidor","swamwam"],
-    four: ["MOOP","Moop","mooP","MooP","mOOp","moop","minx","mox","mole","moof","moog"]
-};
-RandomReturnTypes = ["int", "float", "double", "string"];
-
-function cppGetRandomId(randomStream, num)
-{//getRandomId
-    var id;
-
-    switch(num){
-        case 0:
-            id = CppRandomNames.one[randomStream.nextIntRange(CppRandomNames.one.length)];
-            break;
-        case 1:
-            id = CppRandomNames.two[randomStream.nextIntRange(CppRandomNames.two.length)];
-            break;
-        case 2:
-            id = CppRandomNames.three[randomStream.nextIntRange(CppRandomNames.three.length)];
-            break;
-        case 3:
-            id = CppRandomNames.four[randomStream.nextIntRange(CppRandomNames.four.length)];
-            break;
-        default:
-            break;
-    }
-
-    return id;
-}
-
-function getRandomReturnType(randomStream)
-{
-    return RandomReturnTypes[randomStream.nextIntRange(4)];
-}
+// TODO: from file:///home/jasen/code/AwesomeNextSteps/html/quiz.html?seed=&questionType=cppFunctionParameters&showQuestions=yes&showKey=yes&showJSON=no&jsonString=%7B%22version%22%3A0.1%2C%22title%22%3A%22%22%2C%22quiz%22%3A%5B%7B%22question%22%3A%22cppFunctionParameters%22%2C%22repeat%22%3A%225%22%7D%5D%7D
+// question 2: passing pointer problem has correct answer in answer list twice
+// question 4: pass-by-reference correct answer is incorrect, unchanged from initial value
+// question 5: pass array problem does not specify which array element gets printed, correct answer appears twice
 
 function cppFunctionParametersA(randomStream)
 {
