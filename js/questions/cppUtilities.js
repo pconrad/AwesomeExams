@@ -1,10 +1,10 @@
 CppRandomNames =
-{
-    one: ["foo","bar","baz","fiddle","faddle","bim","bam","quux","snork","snap"],
-    two: ["squish","squash","smoot","spiffle","splin","squal","spork","smop","smick","smock"],
-    three: ["blarp","squeeble","blurgle","podiddle","tulopulop","porskidor","swamwam"],
-    four: ["MOOP","MooP","mOOp","mooP","Moop","moop","minx","mox","mole","moof","moog"]
-};
+[
+    ["foo","bar","baz","fiddle","faddle","bim","bam","quux","snork","snap"],
+    ["squish","squash","smoot","spiffle","splin","squal","spork","smop","smick","smock"],
+    ["blarp","squeeble","blurgle","podiddle","tulopulop","porskidor","swamwam"],
+    ["MOOP","MooP","mOOp","mooP","Moop","moop","minx","mox","mole","moof","moog"]
+];
 CppRandomTypes = [ "int", "double", "bool", "void" ];
 CppBoolComparisons = [ "==", "!=", ">", "<", ">=", "<=" ];
 RandomReturnTypes = ["int", "float", "double", "string"];
@@ -14,7 +14,7 @@ function getRandomReturnType(randomStream)
     return RandomReturnTypes[randomStream.nextIntRange(4)];
 }
 
-function cppGenerateRandomValue(randomStream, num)
+function cppGenerateRandomValue(randomStream, num)  // 0: integer, 1: double, 2: boolean
 {
     switch(num)
     {
@@ -29,7 +29,7 @@ function cppGenerateRandomValue(randomStream, num)
 
 function cppGetRandomId(randomStream, num)
 {
-    var id;
+/*    var id;
 
     switch(num){
         case 0:
@@ -47,6 +47,6 @@ function cppGetRandomId(randomStream, num)
         default:
             break;
     }
-
-    return id;
+*/
+    return CppRandomNames[num][randomStream.nextIntRange(CppRandomNames[num].length)];
 }
