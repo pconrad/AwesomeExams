@@ -1,6 +1,7 @@
-QUnit.module("cppUtilities");
+var rs = RandomStream(determineSeed("0"));
+
+//QUnit.module("cppUtilities");
 QUnit.test("getRandomReturnType returns an expected value", function(assert) {
-  var rs = RandomStream(determineSeed("0x0"));
   assert.ok(rs != undefined, "able to instance RandomStream");
   assert.equal(rs.nextIntRange(2), -1, "RandomStream works in test");
   var ret = getRandomReturnType(rs);
@@ -9,7 +10,7 @@ QUnit.test("getRandomReturnType returns an expected value", function(assert) {
     ret === "string", "returned expected return type");
 });
 
-QUnit.module("cppAppropriateVariabes");
+//QUnit.module("cppAppropriateVariabes");
 QUnit.test("test", function(assert) {
   var rs = RandomStream(determineSeed("0x0"));
   var q = cppAppropriateVariablesQuestion(rs);
@@ -17,7 +18,7 @@ QUnit.test("test", function(assert) {
   assert.equals(q.formatQuestionsHTML, "", "quiz is correct");
 });
 
-QUnit.module("cppArgcArgv");
+//QUnit.module("cppArgcArgv");
 QUnit.test("test", function(assert) {
   var rs = RandomStream(determineSeed("0x0"));
   var q = cppArgcArgvQuestion(rs);
@@ -25,7 +26,7 @@ QUnit.test("test", function(assert) {
   assert.equals(q.formatQuestionsHTML, "", "quiz is correct");
 });
 
-QUnit.module("cppBooleanEval");
+//QUnit.module("cppBooleanEval");
 QUnit.test("test", function(assert) {
   var rs = RandomStream(determineSeed("0x0"));
   var q = cppBooleanEval(rs);
@@ -33,7 +34,7 @@ QUnit.test("test", function(assert) {
   assert.equals(q.formatQuestionsHTML, "", "quiz is correct");
 });
 
-QUnit.module("cppFunctionOverloading");
+//QUnit.module("cppFunctionOverloading");
 QUnit.test("test", function(assert) {
   var rs = RandomStream(determineSeed("0x0"));
   var q = cppFunctionOverloading(rs);
@@ -41,7 +42,7 @@ QUnit.test("test", function(assert) {
   assert.equals(q.formatQuestionsHTML, "", "quiz is correct");
 });
 
-QUnit.module("cppFunctionParameters");
+//QUnit.module("cppFunctionParameters");
 QUnit.test("test", function(assert) {
   var rs = RandomStream(determineSeed("0x0"));
   var q = cppFunctionParameters(rs);
@@ -49,7 +50,7 @@ QUnit.test("test", function(assert) {
   assert.equals(q.formatQuestionsHTML, "", "quiz is correct");
 });
 
-QUnit.module("cppPointerAssignment");
+//QUnit.module("cppPointerAssignment");
 QUnit.test("test", function(assert) {
   var rs = RandomStream(determineSeed("0x0"));
   var q = cppPointerAssignment(rs);
