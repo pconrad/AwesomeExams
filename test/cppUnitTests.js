@@ -1,78 +1,64 @@
-//var rs = RandomStream(determineSeed("0x0"));
-
-//QUnit.module("cppUtilities");
-
-QUnit.module( "cppUtilities", {
+QUnit.module( "Project Awesome C++ question unit/regression tests", {
   setup: function( assert ) {
+    this.rs = new RandomStream(determineSeed("0x0"));
+
+    assert.ok(this.rs != undefined, "instance RandomStream in module setup");
+    assert.equal(this.rs.nextIntRange(2), 1, "expected results from RandomStream in module setup");
   }, teardown: function( assert ) {
-    assert.ok( true, "teardown successful" );
+    //assert.ok( true, "teardown successful" );
   }
 });
 
-QUnit.test("getRandomReturnType returns an expected value", function(assert) {
-  var rs = new RandomStream(determineSeed("0x0"));
-  assert.ok(rs != undefined, "able to instance RandomStream");
-  assert.equal(rs.nextIntRange(2), 1, "RandomStream works in test");
-  var ret = getRandomReturnType(rs);
+QUnit.test("cppUtilities", function(assert) {
+  assert.ok(this.rs != undefined, "instance RandomStream");
 
+  var ret = getRandomReturnType(this.rs);
   assert.ok(ret === "int" || ret === "float" || ret === "double" ||
-    ret === "string", "returned expected return type");
+    ret === "string", "return expected return type");
+
+
+
 });
 
-//QUnit.module("cppAppropriateVariabes");
-QUnit.test("cppAppropriateVariablesQuestion returns expected question", function(assert) {
-  var rs = new RandomStream(determineSeed("0x0"));
-  assert.ok(rs != undefined, "able to instance RandomStream");
-  //var q = cppAppropriateVariablesQuestion(rs);
-  var q = new CppApproVar(rs);
+QUnit.test("cppAppropriateVariablesQuestion", function(assert) {
+  var q = new CppApproVar(this.rs);
 
-  assert.ok(q != undefined, "instanced questions" + JSON.stringify(q));
-  //var result = q.foo();
-  //assert.equal(result, 1, "Test simple function " + result);
+  assert.ok(q != undefined, "instance a question");
+  assert.equal(q.formatQuestionHTML(), "<p>Which type will store the following statement or literal?</p><pre>24 < 35.39</pre><p><strong>a) </strong>int<br><strong>b) </strong>double<br><strong>c) </strong>char<br><strong>d) </strong>bool</p>", "quiz is correct");
+});
+
+QUnit.test("cppArgcArgv", function(assert) {
+  var q = new cppArgcArgvQuestion(this.rs);
+
+  assert.ok(q != undefined, "instance a question");
+  assert.equal(q.formatQuestionHTML(), "<p>What is the value of argv[2][7] after the following command is typed?</p><pre>./mole blarp squeeble blurgle smop</pre><p><strong>a) </strong>undefined<br><strong>b) </strong>l<br><strong>c) </strong>p<br><strong>d) </strong>e</p>", "quiz is correct");
+});
+
+
+QUnit.test("cppBooleanEval", function(assert) {
+  var q = new cppBooleanEvalQuestion(this.rs);
+
+  assert.ok(q != undefined, "instance a question");
+  assert.equal(q.formatQuestionHTML(), "<p>What is the final value of 'answer'?</p><pre>bool mole = true;\nbool moop = false;\nint answer;\nif(mole != moop)\n  answer = 91;\nelse\n  answer = 61;\n</pre><p><strong>a) </strong>false<br><strong>b) </strong>91<br><strong>c) </strong>true<br><strong>d) </strong>61</p>", "quiz is correct");
+});
+
+QUnit.test("cppFunctionOverloading", function(assert) {
+  var q = new cppFunctionOverloadingQuestion(this.rs);
+
+  assert.ok(q != undefined, "instance a question");
+  assert.equal(q.formatQuestionHTML(), "<p>Which function signature belongs to the function that is called?</p><pre>int squeeble = 77;\nbool bim = false;\ndouble squish = 76.18;\nbool blurgle = false;\nbool squash = true;\n\nsnork(squash, squeeble, bim, squish, blurgle);</pre><p><strong>a) </strong>void snork(bool spiffle, int blurgle, int baz, double squal, bool tulopulop);<br><strong>b) </strong>bool snork(bool spiffle, bool blurgle, bool baz, double squal, bool tulopulop);<br><strong>c) </strong>int snork(double spiffle, int blurgle, bool baz, double squal, bool tulopulop);<br><strong>d) </strong>int snork(bool spiffle, int blurgle, bool baz, double squal, bool tulopulop);</p>", "quiz is correct");
+});
+
+QUnit.test("cppFunctionParameters", function(assert) {
+  var q = new cppFunctionParametersQuestion(this.rs);
+
+  assert.ok(q != undefined, "instance a question");
   assert.equal(q.formatQuestionHTML(), "", "quiz is correct");
 });
 
-//QUnit.module("cppArgcArgv");
-QUnit.test("test", function(assert) {
-  var rs = new RandomStream(determineSeed("0x0"));
-  assert.ok(rs != undefined, "able to instance RandomStream");
-  var q = cppArgcArgvQuestion(rs);
+QUnit.test("cppPointerAssignment", function(assert) {
+  var q = new cppPointerAssignmentQuestion(this.rs);
 
-  assert.equal(q.formatQuestionsHTML, "", "quiz is correct");
-});
-
-//QUnit.module("cppBooleanEval");
-QUnit.test("test", function(assert) {
-  var rs = new RandomStream(determineSeed("0x0"));
-  assert.ok(rs != undefined, "able to instance RandomStream");
-  var q = cppBooleanEval(rs);
-
-  assert.equal(q.formatQuestionsHTML, "", "quiz is correct");
-});
-
-//QUnit.module("cppFunctionOverloading");
-QUnit.test("test", function(assert) {
-  var rs = new RandomStream(determineSeed("0x0"));
-  assert.ok(rs != undefined, "able to instance RandomStream");
-  var q = cppFunctionOverloading(rs);
-
-  assert.equal(q.formatQuestionsHTML, "", "quiz is correct");
-});
-
-//QUnit.module("cppFunctionParameters");
-QUnit.test("test", function(assert) {
-  var rs = new RandomStream(determineSeed("0x0"));
-  assert.ok(rs != undefined, "able to instance RandomStream");
-  var q = cppFunctionParameters(rs);
-
-  assert.equal(q.formatQuestionsHTML, "", "quiz is correct");
-});
-
-//QUnit.module("cppPointerAssignment");
-QUnit.test("test", function(assert) {
-  var rs = new RandomStream(determineSeed("0x0"));
-  assert.ok(rs != undefined, "able to instance RandomStream");
-  var q = cppPointerAssignment(rs);
-
-  assert.equal(q.formatQuestionsHTML, "", "quiz is correct");
+  assert.ok(q != undefined, "instance a question");
+  assert.equal(q.formatQuestionHTML(), "<p>Based on the following code:</p><pre>int snork = 29;\nint smop = 15;\nint blarp = 91;\nint minx = 19;\nint *faddle = &snork;\nint *spiffle = &smop;\nint *blurgle = &blarp;\nint *mOOp = &minx;\n\nminx = 20;\nsnork = 47;\n(*faddle) = 82;\nfaddle = mOOp;\nsmop = 2;\n</pre>what is the value of smop?</p><p><strong>a) </strong>20<br><strong>b) </strong>91<br><strong>c) </strong>2<br><strong>d) </strong>82</p>", "quiz is correct");
 });
