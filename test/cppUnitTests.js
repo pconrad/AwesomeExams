@@ -1,4 +1,4 @@
-var rs = RandomStream(determineSeed("0"));
+var rs = RandomStream(determineSeed("0x0"));
 
 //QUnit.module("cppUtilities");
 QUnit.test("getRandomReturnType returns an expected value", function(assert) {
