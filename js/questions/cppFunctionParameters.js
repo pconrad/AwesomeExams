@@ -83,343 +83,210 @@ function cppFunctionParametersB(randomStream)
             ["passing an array", "[]", 1]
         ];
 
-    ///// Generate randomness of the question
-    // called function
-    var calledFunReturnsIntNotVoid = randomStream.nextIntRange(2);
-    var calledFunName = cppGetRandomId(randomStream, randomStream.nextIntRange(3));
-    var calledFunParameterName1 = cppGetRandomId(randomStream, 3);
-    var calledFunParameterName2 = calledFunParameterName1;
-    while(calledFunParameterName2 == calledFunParameterName1)
-        calledFunParameterName2 = cppGetRandomId(randomStream, 3);
-    var calledFunUses2ndParameter;
-    var calledFunMultiplier = randomStream.nextIntRange(10);
-    var calledFunAdder = randomStream.nextIntRange(10);
-    var calledFunCalculatedValue;
-    var calledFunReturnValueIndex; // for pass array problems
-    var calledFunReturnValue;
-    var calledFunReturnsTrueFalseNeither = randomStream.nextIntRange(3) - 1;    // returns 1=true 0=false -1=neither
+    // initialize sections of code to write
+    var mainFun = "";
+    var calledFun = "";
 
-    // main function
-    var mainVarName = calledFunParameterName1;
-    while(mainVarName == calledFunParameterName1)
-        mainVarName = cppGetRandomId(randomStream, 3);
-    var mainVarInitialValue;// = 2 + randomStream.nextIntRange(97);
-    var mainVarFinalValue;// = mainVarInitialValue;
-    var mainVarRedHerringName = mainVarName;
-    while(mainVarRedHerringName == mainVarName)
-        mainVarRedHerringName = cppGetRandomId(randomStream, 3);
-    var mainExpectsIntReturnNotVoid = randomStream.nextIntRange(2);    // TODO: if called doesn't return int, error
-
-    /// decisions
-    this.answerChoices = [ /*
-        { value: 0, flag: true},
-        { value: 1, flag: false},
-        { value: 2, flag: false},
-        { value: 3, flag: false} */
-    ];
-
-    // pass by...
-    var passParameterByIndex = randomStream.nextIntRange(4);
-    if(passParameterByIndex === 3 || randomStream.nextIntRange(4) ===0) // needs 2nd param or red herring
-        calledFunUses2ndParameter = 1;
+    // make all the decisions about how the program will be arranged
+    var passTypeIndex = randomStream.nextIntRange(4);
+    var doesCalledFunHave2ndParameter; // if passTypeIndex == 3, this must be true
+    if(passTypeIndex === 3)
+        doesCalledFunHave2ndParameter = true;
     else
-        calledFunUses2ndParameter = 0;
+        doesCalledFunHave2ndParameter = cppGenerateRandomValue(randomStream, 2);
+    var doesCalledFunReturn = cppGenerateRandomValue(randomStream, 2);
+    var doesMainStoreReturn; // if doesCalledFunReturn == false, this must be false too
+    if(!doesCalledFunReturn)
+        doesMainStoreReturn = false;
+    else
+        doesMainStoreReturn = cppGenerateRandomValue(randomStream, 2);
+    var calledFunMultiplier = randomStream.nextIntRange(10) + 1;
+    var calledFunAdder = randomStream.nextIntRange(10) + 1;
+    var calledFunEvaluatedValue;
+    var calledFunEvaluatedArrayIndex;
 
-    // what called function returns vs. what main expects
-    if(calledFunReturnsIntNotVoid && mainExpectsIntReturnNotVoid)
-    {   // mainVarFinalValue will become returned value (calledFunReturnValue)
-        // possible answers: *0, 1*, original value, *modified value*, memory address(pointer), error
-
-        // if passed in array, pick random value from final array to possibly return
-        if(passParameterByIndex === 3)
-        {
-            calledFunCalculatedValue = [];
-            mainVarInitialValue = [ randomStream.nextIntRange(13),
-                randomStream.nextIntRange(13),
-                randomStream.nextIntRange(13) ];
-            for(var i = 0; i < 3; ++i)
-                calledFunCalculatedValue[i] = mainVarInitialValue[i] * calledFunMultiplier + calledFunAdder;
-            calledFunReturnValueIndex = randomStream.nextIntRange(3);
-            calledFunCalculatedValue = calledFunCalculatedValue[calledFunReturnValueIndex];
-        }
-        // otherwise calculate value that might be returned
-        else
-        {
-            mainVarInitialValue = randomStream.nextIntRange(13);
-            calledFunCalculatedValue = mainVarInitialValue * calledFunMultiplier + calledFunAdder;
-        }
-
-        // does called fun return a variable value or succeed/fail 1/0?
-        if(calledFunReturnsTrueFalseNeither !== -1)
-            calledFunReturnValue = calledFunReturnsTrueFalseNeither;
-        else
-            calledFunReturnValue = calledFunCalculatedValue;
-
-        // set returned value to main final value
-        mainVarFinalValue = calledFunReturnValue;
-
-        // TODO: could return pointer instead of dereferenced pointer
-        // TODO: if returning 0/1, calculated value MUST be a distractor
-
-        this.answerChoices = [
-         { value: mainVarFinalValue, flag: true},
-         { value: (mainVarFinalValue===0?mainVarInitialValue:0), flag: false}, // 0 or orig value
-         { value: (mainVarFinalValue===1?randomStream.nextIntRange(97)+2:1), flag: false}, // 1 or random
-         { value: (randomStream.nextIntRange(2)===1?"an error":"a memory address"),
-             flag: false}  // error or unmodified
-        ];
-    }
-    else if(!calledFunReturnsIntNotVoid && mainExpectsIntReturnNotVoid)
-    {   // this is an error condition
-        // possible answers: 0, 1, original value, modified value, memory address(pointer), *error*
-        // if passed in array, pick random value from final array to possibly return
-        if(passParameterByIndex === 3)
-        {
-            calledFunCalculatedValue = [];
-            mainVarInitialValue = [ randomStream.nextIntRange(13),
-                randomStream.nextIntRange(13),
-                randomStream.nextIntRange(13) ];
-            for(var i = 0; i < 3; ++i)
-                calledFunCalculatedValue[i] = mainVarInitialValue[i] * calledFunMultiplier + calledFunAdder;
-            calledFunReturnValueIndex = randomStream.nextIntRange(3);
-            calledFunCalculatedValue = calledFunCalculatedValue[calledFunReturnValueIndex];
-        }
-        // otherwise calculate value that might be returned
-        else
-        {
-            mainVarInitialValue = randomStream.nextIntRange(13);
-            calledFunCalculatedValue = mainVarInitialValue * calledFunMultiplier + calledFunAdder;
-        }
-
-        // if passed in array, return random value from final array
-        var cppDoBoolAnswer = randomStream.nextIntRange(2);
-        this.answerChoices = [
-         { value: "an error", flag: true},
-         { value: (cppDoBoolAnswer===1?0:mainVarInitialValue), flag: false},
-         { value: (cppDoBoolAnswer===1?1:calledFunCalculatedValue), flag: false},
-         { value: (cppDoBoolAnswer===1?calledFunCalculatedValue:"a memory address"), flag: false}
-        ];
-
-    }
-    else if(calledFunReturnsIntNotVoid && !mainExpectsIntReturnNotVoid)
-    {   // called function returns value that is ignored by main
-        // possible answers: 0, 1, *original value*, modified value, memory address(pointer), error
-        // if passed in array, return random value from final array
-        if(passParameterByIndex === 3)
-        {
-            calledFunCalculatedValue = [];
-            mainVarInitialValue = [ randomStream.nextIntRange(13),
-                randomStream.nextIntRange(13),
-                randomStream.nextIntRange(13) ];
-            for(var i = 0; i < 3; ++i)
-                calledFunCalculatedValue[i] = mainVarInitialValue[i] * calledFunMultiplier + calledFunAdder;
-            calledFunReturnValueIndex = randomStream.nextIntRange(3);
-            calledFunCalculatedValue = calledFunCalculatedValue[calledFunReturnValueIndex];
-        }
-        // otherwise calculate value that might be returned
-        else
-        {
-            mainVarInitialValue = randomStream.nextIntRange(13);
-            calledFunCalculatedValue = mainVarInitialValue * calledFunMultiplier + calledFunAdder;
-        }
-
-        // does called fun return a variable value or succeed/fail 1/0?
-        if(calledFunReturnsTrueFalseNeither !== -1)
-            calledFunReturnValue = calledFunReturnsTrueFalseNeither;
-        else
-            calledFunReturnValue = calledFunCalculatedValue;
-
-        // reference/pointer will change value
-        if(passParameterByIndex === 2 || passParameterByIndex === 3)
-        {
-            mainVarFinalValue = calledFunCalculatedValue;
-        }
-        else    // value is never change, final value is initial value
-        {
-            mainVarFinalValue = mainVarInitialValue;
-        }
-
-        var cppIgnoredMemOrError = [ "an error", "a memory address" ];
-        randomStream.shuffle(cppIgnoredMemOrError);
-        this.answerChoices = [
-            { value: mainVarFinalValue, flag: true},
-            { value: (mainVarFinalValue===mainVarInitialValue?0:calledFunCalculatedValue), flag: false},
-            { value: (mainVarFinalValue===mainVarInitialValue?1:cppIgnoredMemOrError[0]), flag: false},
-            { value: cppIgnoredMemOrError[1], flag: false}
-        ];
+    // set some initial values
+    var mainVarName1; var mainVarName2;
+    var mainVarVal1; var mainVarVal2;
+    var calledFunArgName1; var calledFunArgName2;
+    var mainReturnStorageName;
+    mainVarName1 = cppGetRandomId(randomStream, 0);
+    mainVarName2 = cppGetRandomId(randomStream, 1);
+    if(passTypeIndex === 3)
+    {
+        mainVarVal1 = [ (randomStream.nextIntRange(10) + 2),
+            (randomStream.nextIntRange(10) + 2), (randomStream.nextIntRange(10) + 2) ];
+        mainVarVal2 = 3;
     }
     else
-    {   // nothing returned, nothing expected
-        // possible answers: 0, 1, *original value*, *modified value*, memory address(pointer), error
-        // if passed in array, return random value from final array
-        if(passParameterByIndex === 3)
-        {
-            calledFunCalculatedValue = [];
-            mainVarInitialValue = [ randomStream.nextIntRange(13),
-                randomStream.nextIntRange(13),
-                randomStream.nextIntRange(13) ];
-            for(var i = 0; i < 3; ++i)
-                calledFunCalculatedValue[i] = mainVarInitialValue[i] * calledFunMultiplier + calledFunAdder;
-            calledFunReturnValueIndex = randomStream.nextIntRange(3);
-            calledFunCalculatedValue = calledFunCalculatedValue[calledFunReturnValueIndex];
-        }
-        // otherwise calculate value that might be returned
-        else
-        {
-            mainVarInitialValue = randomStream.nextIntRange(13);
-            calledFunCalculatedValue = mainVarInitialValue * calledFunMultiplier + calledFunAdder;
-        }
-
-        // does called fun return a variable value or succeed/fail 1/0?
-        if(calledFunReturnsTrueFalseNeither !== -1)
-            calledFunReturnValue = calledFunReturnsTrueFalseNeither;
-        else
-            calledFunReturnValue = calledFunCalculatedValue;
-
-        // reference/pointer will change value
-        if(passParameterByIndex === 2 || passParameterByIndex === 3)
-        {
-            mainVarFinalValue = calledFunCalculatedValue;
-        }
-        else    // value is never change, final value is initial value
-        {
-            mainVarFinalValue = mainVarInitialValue;
-        }
-        var cppDontCareMemOrError = [ "an error", "a memory address" ];
-        randomStream.shuffle(cppDontCareMemOrError);
-// TODO: these sometimes don't include the correct answer
-        this.answerChoices = [
-            { value: mainVarFinalValue, flag: true},
-            { value: (mainVarFinalValue===mainVarInitialValue?0:calledFunCalculatedValue), flag: false},
-            { value: (mainVarFinalValue===mainVarInitialValue?1:cppDontCareMemOrError[0]), flag: false},
-            { value: cppDontCareMemOrError[1], flag: false}
-        ];
-    }
-
-    // randomize all possible distractor answers, pick first 3, push correct, re-randomize (use arr.slice())
-    //randomStream.shuffle(this.answerChoices);
-
-    for(var ii = 0; ii < this.answerChoices.length; ++ii)
-        if(this.answerChoices[ii].flag == true)
-            this.correctIndex = ii;
-
-    ///// write out the program
-    var program = "";   // initialize program
-    program += "#include &lt;iostream>\n\n";
-
-    // called function
-    program += (calledFunReturnsIntNotVoid===1?"int ":"void ") + calledFunName;
-    program += "(int " +
-        (parameterPassTypes[passParameterByIndex][2]===-1?parameterPassTypes[passParameterByIndex][1]:"") +
-        calledFunParameterName1 +
-        (parameterPassTypes[passParameterByIndex][2]===1?parameterPassTypes[passParameterByIndex][1]:"");
-    if(calledFunUses2ndParameter === 1)
     {
-        program += ", int " + calledFunParameterName2;
+        mainVarVal1 = randomStream.nextIntRange(10) + 2;
+        mainVarVal2 = randomStream.nextIntRange(10) + 2;
     }
-    program += ")\n{\n";
+    calledFunArgName1 = cppGetRandomId(randomStream, 2);
+    calledFunArgName2 = cppGetRandomId(randomStream, 3);
 
-    if(passParameterByIndex === 3)  // create an array algorithm
+    mainReturnStorageName = calledFunArgName2;
+    do
     {
-        program += "  for(int i = 0; i < " + calledFunParameterName2 + "; i++)\n";
-        program += "    " + calledFunParameterName1 + "[i] = " + calledFunParameterName1 + "[i] * " +
-            calledFunMultiplier + " + " + calledFunAdder + ";\n\n";
-    }
-    else    // create a single value algorithm
+        mainReturnStorageName = cppGetRandomId(randomStream, 3);
+    } while(mainReturnStorageName === calledFunArgName2)
+
+    if(passTypeIndex === 3)
     {
-        program += "  " +
-            (passParameterByIndex===2?"(*":"") +
-            calledFunParameterName1 +
-            (passParameterByIndex===2?")":"") +
-            " = " +
-            (passParameterByIndex===2?"(*":"") +
-            calledFunParameterName1 +
-            (passParameterByIndex===2?")":"") +
-            " * " +
-            calledFunMultiplier + " + " + calledFunAdder + ";\n";
+        calledFunEvaluatedValue = mainVarVal1;
+        calledFunEvaluatedValue.map(function(element) {
+           return element * calledFunMultiplier + calledFunAdder;
+        });
+        calledFunEvaluatedArrayIndex = randomStream.nextIntRange(3);
     }
-
-    if(calledFunReturnsIntNotVoid === 1)
-    {
-        program += "\n  return ";
-        if(calledFunReturnsTrueFalseNeither === -1)
-        {
-            if(passParameterByIndex === 3)
-            {
-                program += calledFunParameterName1 + "[" + calledFunReturnValueIndex + "];\n";
-            }
-            else
-            {
-                program += calledFunParameterName1 + ";\n";
-            }
-        }
-        else
-        {
-            program += calledFunReturnsTrueFalseNeither + ";\n";
-        }
-    }
-
-    program += "}\n\n";
-
-    // Write the main function
-    program += "int main()\n{\n";
-    program += "  int " + mainVarName;
-    if(passParameterByIndex === 3)
-        program += "[]";
-    program += " = " + (passParameterByIndex===3?"[ ":"") + mainVarInitialValue +
-        (passParameterByIndex===3?" ]":"") + ";\n";
-    if(calledFunUses2ndParameter === 1)
-    {
-        program += "  int " + mainVarRedHerringName + " = ";
-        if(passParameterByIndex === 3)
-            program += "3;\n";
-        else
-            program += (randomStream.nextIntRange(13)+1) + ";\n";
-    }
-
-    if(mainExpectsIntReturnNotVoid === 1)
-        program += "  " + mainVarName + " = ";
     else
-        program += "  ";
-    program += calledFunName + "(" + (passParameterByIndex===3?"&":"") + mainVarName;
-    if(calledFunUses2ndParameter === 1)
-        program += ", " + mainVarRedHerringName;
-    program += ");\n\n";
+    {
+        calledFunEvaluatedValue = mainVarVal1 * calledFunMultiplier + calledFunAdder;
+    }
 
-    program += "  std::cout << " + mainVarName + " << std::endl;\n\n";
-    program += "  return 0;\n}";
+    // write main() function
+    mainFun += "int main()\n{\n";
+    if(passTypeIndex === 3)
+    {
+        mainFun += "  int " + mainVarName1 + "[] = [ " + mainVarVal1.join(", ") + " ];\n";
+    }
+    else
+    {
+        mainFun += "  int " + mainVarName1 + " = " + mainVarVal1 + ";\n";
+    }
 
-    this.formatQuestion = function(format) {
-        switch (format) {
-            case "HTML": return this.formatQuestionHTML();
+    if(doesCalledFunHave2ndParameter)
+        mainFun += "  int " + mainVarName2 + " = " + mainVarVal2 + ";\n";
+
+    mainFun += "  int " + mainReturnStorageName + ";\n";
+
+    mainFun += "\n";
+    if(doesMainStoreReturn)
+        mainFun += "  " + mainReturnStorageName + " = ";
+    else
+        mainFun += "  ";
+
+    mainFun += "fun(" + mainVarName1 +
+        (doesCalledFunHave2ndParameter ? ", " + mainVarName2 : "") +
+        ");\n\n";
+    mainFun += "  std:: cout << " + (doesMainStoreReturn ? mainReturnStorageName : mainVarName1) +
+        " << std::endl;\n\nreturn 0;\n}\n";
+
+    // write called function
+    calledFun += "#include &lt;iostream>\n\n";
+    calledFun += (doesCalledFunReturn ? "int " : "void ") + "fun(" +
+        (passTypeIndex === 1 ? "&" : (passTypeIndex === 2 ? "*" : "")) +
+        calledFunArgName1 + (passTypeIndex === 3 ? "[]" : "") +
+        (doesCalledFunHave2ndParameter ? ", " + calledFunArgName2 : "") + ")\n";
+
+    var usingArg1;
+    if(passTypeIndex === 2)
+        usingArg1 = "(*" + calledFunArgName1 + ")";
+    else
+        usingArg1 = calledFunArgName1;
+
+    if(passTypeIndex === 3)
+    {
+        calledFun += "  for(int i = 0; i < " + calledFunArgName2 +" ++i)\n" +
+            "    " + calledFunArgName1 + "[i] = " + calledFunArgName1 + "[i] * " + calledFunMultiplier +
+            " + " + calledFunAdder + ";\n";
+    }
+    else
+    {
+        calledFun += "  " + usingArg1 + " = " + usingArg1 + " * " + calledFunMultiplier +
+        " + " + calledFunAdder + ";\n";
+    }
+
+    // TODO: if passTypeIndex is 1 or 2 and called returns, have chance where it returns 1 or 0
+    if(doesCalledFunReturn)
+    {
+        calledFun += "  return ";
+        if(passTypeIndex === 3)
+            calledFun += calledFunArgName1 + "[" + calledFunEvaluatedArrayIndex + "];\n";
+        else
+            calledFun += calledFunArgName1 + ";\n";
+    }
+
+    calledFun += "}\n\n";
+
+    /* TODO: determine value of variable printed out
+        - if main stores called fun return, we print that
+        - if not stored
+            - if called by value it'll be the original value
+            - if called by pointer/reference it'll be the changed value
+            - if an array, print the element in the index calledFunEvaluatedArrayIndex
+     */
+
+    var correctAnswer;
+    var redHerrings = [];
+
+    // determine correct answer
+    if(doesMainStoreReturn)
+    {
+        correctAnswer = calledFunEvaluatedValue;
+    }
+    else if(passTypeIndex === 0)
+    {
+        correctAnswer = mainVarVal1;
+    }
+    else if(passTypeIndex === 1 || passTypeIndex === 2)
+    {
+        correctAnswer = calledFunEvaluatedValue;
+    }
+    else if(passTypeIndex === 3)
+    {
+        correctAnswer = calledFunEvaluatedValue[calledFunEvaluatedArrayIndex];
+    }
+    correctAnswer = correctAnswer.toString();
+
+    // generate red herrings
+    if(correctAnswer !== 0)
+        redHerrings.push("0");
+    if(correctAnswer !== mainVarVal1)
+        redHerrings.push(mainVarVal1.toString());
+    redHerrings.push("an error");
+    redHerrings.push("a memory address");
+    if(passTypeIndex === 3)
+    {
+        for(var x in calledFunEvaluatedValue)
+        {
+            if(x !== correctAnswer)
+                redHerrings.push(x.toString());
         }
-        return "unknown format";
-    };
 
-    this.formatQuestionHTML = function () {
-        var questionText = "<p>What is the output of the following program?</p>" +
-            "<pre>" + program + "</pre>";
-
-        questionText += "<p><strong>a) </strong>"
-            + this.answerChoices[0].value + "<br><strong>b) </strong>"
-            + this.answerChoices[1].value + "<br><strong>c) </strong>"
-            + this.answerChoices[2].value + "<br><strong>d) </strong>"
-            + this.answerChoices[3].value + "</p>";
-
-        return questionText;
-    };
-
-    this.formatAnswer = function(format) {
-        switch (format) {
-            case "HTML": return this.formatAnswerHTML();
+        for(var x in mainVarVal1)
+        {
+            if(x !== correctAnswer)
+                redHerrings.push(x.toString());
         }
-        return "unknown format";
-    };
+    }
+    else
+    {
+        if(correctAnswer !== calledFunEvaluatedValue)
+            redHerrings.push(calledFunEvaluatedValue.toString());
+    }
+    while(redHerrings.length < 3)
+    {
+        var newHerring = (randomStream.nextIntRange(97) + 2).toString();
+        if(newHerring === correctAnswer)
+            continue;
+        for(var y in redHerrings)   // random herring isn't already a herring?
+        {
+            if(y === newHerring)
+                continue;
+        }
+        redHerrings.push(newHerring);
+    }
 
-    this.formatAnswerHTML = function () {
-        return String.fromCharCode(this.correctIndex+97); //0 = 'a', 1 = 'b', 2 = 'c', etc...
-    };
+    // TODO: shuffle redHerring and pull the first 3 with slice() to fill answerChoices
 
+    this.answerChoices = [];
+    this.correctIndex = -1;
+    this.formatQuestion = undefined;
+    this.formatQuestionHTML = undefined;
+    this.formatAnswer = undefined;
+    this.formatAnswerHTML = undefined;
 }
 
 function cppFunctionParametersQuestion(randomStream)
