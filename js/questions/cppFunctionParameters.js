@@ -201,7 +201,7 @@ function cppFunctionParametersB(randomStream)
     // TODO: if passTypeIndex is 1 or 2 and called returns, have chance where it returns 1 or 0
     if(doesCalledFunReturn)
     {
-        calledFun += "  return ";
+        calledFun += "\n  return ";
         if(passTypeIndex === 3)
             calledFun += calledFunArgName1 + "[" + calledFunEvaluatedArrayIndex + "];\n";
         else
@@ -238,13 +238,27 @@ function cppFunctionParametersB(randomStream)
     {
         correctAnswer = calledFunEvaluatedValue[calledFunEvaluatedArrayIndex];
     }
+    else
+    {
+        alert("unable to determine correctAnswer");
+        correctAnswer = "error, ya'll";
+    }
     correctAnswer = correctAnswer.toString();
 
     // generate red herrings
     if(correctAnswer !== 0)
         redHerrings.push("0");
     if(correctAnswer !== mainVarVal1)
-        redHerrings.push(mainVarVal1.toString());
+    {
+        if(passTypeIndex === 3)
+        {
+            redHerrings.push(mainVarVal1[calledFunEvaluatedArrayIndex].toString());
+        }
+        else
+        {
+            redHerrings.push(mainVarVal1.toString());
+        }
+    }
     redHerrings.push("an error");
     redHerrings.push("a memory address");
     if(passTypeIndex === 3)
@@ -264,29 +278,90 @@ function cppFunctionParametersB(randomStream)
     else
     {
         if(correctAnswer !== calledFunEvaluatedValue)
-            redHerrings.push(calledFunEvaluatedValue.toString());
+        {
+            if(passTypeIndex === 3)
+            {
+                redHerrings.push(calledFunEvaluatedValue[calledFunEvaluatedArrayIndex].toString());
+            }
+            else
+            {
+                redHerrings.push(calledFunEvaluatedValue.toString());
+            }
+        }
+
     }
+    // darn, i have to fill it with weak red herrings
     while(redHerrings.length < 3)
     {
+        var canInsert = true;
         var newHerring = (randomStream.nextIntRange(97) + 2).toString();
+
         if(newHerring === correctAnswer)
             continue;
+
         for(var y in redHerrings)   // random herring isn't already a herring?
         {
             if(y === newHerring)
-                continue;
+                canInsert = false;
         }
-        redHerrings.push(newHerring);
+
+        if(canInsert)
+            redHerrings.push(newHerring);
     }
 
     // TODO: shuffle redHerring and pull the first 3 with slice() to fill answerChoices
+    randomStream.shuffle(redHerrings);
+    redHerrings = redHerrings.slice(0, 3);
 
-    this.answerChoices = [];
+    this.answerChoices = [
+        {value: correctAnswer, flag: true},
+        {value: redHerrings[0], flag: false},
+        {value: redHerrings[1], flag: false},
+        {value: redHerrings[2], flag: false},
+    ];
+    randomStream.shuffle(this.answerChoices);
+
     this.correctIndex = -1;
-    this.formatQuestion = undefined;
-    this.formatQuestionHTML = undefined;
-    this.formatAnswer = undefined;
-    this.formatAnswerHTML = undefined;
+    for(var i = 0; i < this.answerChoices.length; ++i)
+    {
+        if(this.answerChoices[i].flag === true)
+        {
+            this.correctIndex = i;
+            break;
+        }
+    }
+
+    this.formatQuestion = function(format) {
+        switch (format) {
+            case "HTML": return this.formatQuestionHTML();
+        }
+        return "unknown format";
+    };
+
+    this.formatQuestionHTML = function () {
+        var questionText = "<p>What is the output of this program?</p>" +
+            "<pre>" + calledFun + mainFun + "</pre>";
+
+        // TODO: if value is an array (passTypeIndex === 3) need to get element
+        questionText += "<p><strong>a) </strong>"
+        + this.answerChoices[0].value + "<br><strong>b) </strong>"
+        + this.answerChoices[1].value + "<br><strong>c) </strong>"
+        + this.answerChoices[2].value + "<br><strong>d) </strong>"
+        + this.answerChoices[3].value + "</p>";
+
+        return questionText;
+    };
+
+    this.formatAnswer = function(format) {
+        switch (format) {
+            case "HTML": return this.formatAnswerHTML();
+        }
+        return "unknown format";
+    };
+
+    this.formatAnswerHTML = function () {
+        return String.fromCharCode(this.correctIndex+97); //0 = 'a', 1 = 'b', 2 = 'c', etc...
+    };
 }
 
 function cppFunctionParametersQuestion(randomStream)
