@@ -10,12 +10,20 @@ QUnit.module( "Project Awesome C++ question unit tests", {
 });
 
 QUnit.test("cppUtilities", function(assert) {
-  assert.ok(this.rs != undefined, "instance RandomStream");
 
-  var ret = getRandomReturnType(this.rs);
-  assert.ok(ret === "int" || ret === "float" || ret === "double" ||
-    ret === "string", "return expected return type");
+    for(var i = 0; i < CppRandomNames.length; ++i)
+    {
+        var b = cppGetRandomId(this.rs, i);
+        assert.ok(CppRandomNames[i].indexOf(b) != -1, "cppGetRandomId() list " + i + " returns expected value");
+    }
 
+    var a = cppGetRandomReturnType(this.rs);
+    assert.ok(CppRandomReturnTypes.indexOf(a) != -1, "cppGetRandomReturnType() returns expected return type");
 
-
+    var c = cppGenerateRandomValue(this.rs, 0);
+    assert.ok((c >= 0) && (c < 100), "cppGenerateRandomValue() Integer returns expected value");
+    c = cppGenerateRandomValue(this.rs, 1);
+    assert.ok(c == parseFloat(c).toString(), "cppGenerateRandomValue() Double returns expected value");
+    c = cppGenerateRandomValue(this.rs, 2);
+    assert.ok(["true", "false"].indexOf(c) != -1, "cppGenerateRandomValue() Boolean returns expected value");
 });

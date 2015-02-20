@@ -13,9 +13,9 @@ function cppFunctionParametersA(randomStream)
             ["passing an array", "[]", 1]
         ];
 
-    var retType = getRandomReturnType(randomStream);
+    var retType = cppGetRandomReturnType(randomStream);
     var funcName = cppGetRandomId(randomStream, randomStream.nextIntRange(3));
-    var paramType = getRandomReturnType(randomStream);
+    var paramType = cppGetRandomReturnType(randomStream);
     var paramName = cppGetRandomId(randomStream, 3);
 
     this.answerChoices = [

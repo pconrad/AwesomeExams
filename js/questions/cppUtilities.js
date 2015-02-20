@@ -7,16 +7,16 @@ CppRandomNames =
 ];
 CppRandomTypes = [ "int", "double", "bool", "void" ];
 CppBoolComparisons = [ "==", "!=", ">", "<", ">=", "<=" ];
-RandomReturnTypes = ["int", "float", "double", "string"];
+CppRandomReturnTypes = ["int", "float", "double", "string"];
 
 function cppGetRandomId(randomStream, num)
 {
     return CppRandomNames[num][randomStream.nextIntRange(CppRandomNames[num].length)];
 }
 
-function getRandomReturnType(randomStream)
+function cppGetRandomReturnType(randomStream)
 {
-    return RandomReturnTypes[randomStream.nextIntRange(4)];
+    return CppRandomReturnTypes[randomStream.nextIntRange(4)];
 }
 
 function cppGenerateRandomValue(randomStream, num)  // 0: integer, 1: double, 2: boolean
