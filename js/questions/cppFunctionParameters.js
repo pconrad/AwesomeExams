@@ -94,7 +94,8 @@ function cppFunctionParametersB(randomStream)
         doesCalledFunHave2ndParameter = true;
     else
         doesCalledFunHave2ndParameter = cppGenerateRandomValue(randomStream, 2);
-    var doesCalledFunReturn = cppGenerateRandomValue(randomStream, 2);
+    var doesCalledFunReturn = false; //cppGenerateRandomValue(randomStream, 2);
+    // TODO: main always seems to store the return
     var doesMainStoreReturn; // if doesCalledFunReturn == false, this must be false too
     if(!doesCalledFunReturn)
         doesMainStoreReturn = false;
@@ -145,6 +146,9 @@ function cppFunctionParametersB(randomStream)
         calledFunEvaluatedValue = mainVarVal1 * calledFunMultiplier + calledFunAdder;
     }
 
+
+
+
     // write main() function
     mainFun += "int main()\n{\n";
     if(passTypeIndex === 3)
@@ -173,12 +177,15 @@ function cppFunctionParametersB(randomStream)
     mainFun += "  std:: cout << " + (doesMainStoreReturn ? mainReturnStorageName : mainVarName1) +
         " << std::endl;\n\nreturn 0;\n}\n";
 
+
+
+
     // write called function
     calledFun += "#include &lt;iostream>\n\n";
     calledFun += (doesCalledFunReturn ? "int " : "void ") + "fun(" +
         (passTypeIndex === 1 ? "&" : (passTypeIndex === 2 ? "*" : "")) +
         calledFunArgName1 + (passTypeIndex === 3 ? "[]" : "") +
-        (doesCalledFunHave2ndParameter ? ", " + calledFunArgName2 : "") + ")\n";
+        (doesCalledFunHave2ndParameter ? ", " + calledFunArgName2 : "") + ")\n{\n";
 
     var usingArg1;
     if(passTypeIndex === 2)
@@ -210,21 +217,24 @@ function cppFunctionParametersB(randomStream)
 
     calledFun += "}\n\n";
 
-    /* TODO: determine value of variable printed out
-        - if main stores called fun return, we print that
-        - if not stored
-            - if called by value it'll be the original value
-            - if called by pointer/reference it'll be the changed value
-            - if an array, print the element in the index calledFunEvaluatedArrayIndex
-     */
 
+
+
+    // TODO: if called doesn't return or main doesn't store on pass by array, need an index for correct answer
     var correctAnswer;
     var redHerrings = [];
 
     // determine correct answer
     if(doesMainStoreReturn)
     {
-        correctAnswer = calledFunEvaluatedValue;
+        if(passTypeIndex === 3)
+        {
+            correctAnswer = calledFunEvaluatedValue[calledFunEvaluatedArrayIndex];
+        }
+        else
+        {
+            correctAnswer = calledFunEvaluatedValue;
+        }
     }
     else if(passTypeIndex === 0)
     {
@@ -246,7 +256,7 @@ function cppFunctionParametersB(randomStream)
     correctAnswer = correctAnswer.toString();
 
     // generate red herrings
-    if(correctAnswer !== 0)
+    if(correctAnswer != 0)
         redHerrings.push("0");
     if(correctAnswer !== mainVarVal1)
     {
@@ -265,28 +275,21 @@ function cppFunctionParametersB(randomStream)
     {
         for(var x in calledFunEvaluatedValue)
         {
-            if(x !== correctAnswer)
+            if(x != correctAnswer)
                 redHerrings.push(x.toString());
         }
 
         for(var x in mainVarVal1)
         {
-            if(x !== correctAnswer)
+            if(x != correctAnswer)
                 redHerrings.push(x.toString());
         }
     }
     else
     {
-        if(correctAnswer !== calledFunEvaluatedValue)
+        if(correctAnswer != calledFunEvaluatedValue)
         {
-            if(passTypeIndex === 3)
-            {
-                redHerrings.push(calledFunEvaluatedValue[calledFunEvaluatedArrayIndex].toString());
-            }
-            else
-            {
-                redHerrings.push(calledFunEvaluatedValue.toString());
-            }
+            redHerrings.push(calledFunEvaluatedValue.toString());
         }
 
     }
@@ -296,12 +299,12 @@ function cppFunctionParametersB(randomStream)
         var canInsert = true;
         var newHerring = (randomStream.nextIntRange(97) + 2).toString();
 
-        if(newHerring === correctAnswer)
+        if(newHerring == correctAnswer)
             continue;
 
         for(var y in redHerrings)   // random herring isn't already a herring?
         {
-            if(y === newHerring)
+            if(y == newHerring)
                 canInsert = false;
         }
 
@@ -309,10 +312,13 @@ function cppFunctionParametersB(randomStream)
             redHerrings.push(newHerring);
     }
 
-    // TODO: shuffle redHerring and pull the first 3 with slice() to fill answerChoices
     randomStream.shuffle(redHerrings);
     redHerrings = redHerrings.slice(0, 3);
 
+
+
+
+    // setup object
     this.answerChoices = [
         {value: correctAnswer, flag: true},
         {value: redHerrings[0], flag: false},
@@ -342,7 +348,6 @@ function cppFunctionParametersB(randomStream)
         var questionText = "<p>What is the output of this program?</p>" +
             "<pre>" + calledFun + mainFun + "</pre>";
 
-        // TODO: if value is an array (passTypeIndex === 3) need to get element
         questionText += "<p><strong>a) </strong>"
         + this.answerChoices[0].value + "<br><strong>b) </strong>"
         + this.answerChoices[1].value + "<br><strong>c) </strong>"
