@@ -40,12 +40,12 @@ Ditto with the startAdvanced.html, which provides the ability to make a quiz fro
  * `startAdvanced.html` which is a slightly more advanced (but still lousy) UI from which a quiz can be generated
 
 * `js` contains these files and directories:
- * `bits.js`
- * `interpretJSON.js`
- * `questions`
- * `questionTypes.js`
- * `quiz.js`
- * `random.js`
- * `utils.js`
+ * `bits.js` contains JavaScript methods for bitwise and shift operators on numbers that are larger than 32-bits.
+ * `interpretJSON.js` contains JavaScript code to read in a QuizJSON object and return an array of question objects.
+ * `questions` contains JavaScript files that describe different quiz question types.
+ * `questionTypes.js` contains the locations of the available quiz question types.
+ * `quiz.js` contains utility methods required to build a quiz.
+ * `random.js` contains JavaScript for generating reproducable random numbers based on a given seed.
+ * `utils.js` contains various JavaScript utility methods.
 
 
