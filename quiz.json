@@ -1,0 +1,25 @@
+{
+	"version" : 0.1,
+	"title" : "Example QuizJSON",
+	"quiz" : [
+    	{ 
+        	"question": "orderOfOperations", 
+        	"parameters": {"numOperators": 2},
+        	"repeat": 5
+    	},
+    	{
+        	"chooseK": 5, 
+        	"items": [
+            	{"question": "changeOfBase", "repeat": 5},
+           		{"question": "operandsAndOperators", "repeat": 5}
+        	]
+    	},
+		{
+			"shuffle": true,
+			"items": [
+				{"question": "pythonStringSlice", "repeat": 3},
+				{"question": "pythonProgramOutput", "repeat": 3}
+			]
+		}   
+	]
+}

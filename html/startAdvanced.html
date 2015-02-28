@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+
+<!-- Authors: Phill Conrad, Evan Crook, Kevin Malta-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>The Beginning of the Next Steps of Project Awesome.</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script src="../purl/purl.js"></script>
+    <script src="../js/questions/cppFunctionParameters.js"></script>
+    <script src="../js/questions/cppAppropriateVariables.js"></script>
+    <script src="../js/questions/cppBooleanEval.js"></script>
+    <script src="../js/questions/cppArgcArgv.js"></script>
+    <script src="../js/questions/cppFunctionOverloading.js"></script>
+    <script src="../js/questions/cppPointerAssignment.js"></script>
+    <script src="../js/questions/orderOfOperations.js"></script>
+    <script src="../js/questions/changeOfBase.js"></script>
+    <script src="../js/questions/operandsAndOperators.js"></script>
+    <script src="../js/questions/pythonProgramOutput.js"></script>
+    <script src="../js/questions/pythonStringSlice.js"></script>
+    <script src="../js/questions/symbolicLogic.js"></script>
+    <script src="../js/questions/CvariableType.js"></script>
+    <script src="../js/questions/strings.js"></script>
+    <script src="../js/questions/binHexOctDec.js"></script>
+    <script src="../js/questionTypes.js"></script>
+    
+    <script>
+        
+    $(document).ready(function(){
+        addOptionForEachQuestionType($(".questionType"));
+    });
+
+   </script>
+    
+    
+    <style>
+      #jsontextarea {font-size:120%;}
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <h1>AwesomeNextSteps Advanced Quiz Builder</h1>
+        <p>The Beginning of the Next Steps of Project Awesome.</p>
+    </header>
+ 
+    <div id="setupdiv" style="float:left; margin:0px 50px"> 
+    <h3>Set up your quiz:</h3>
+        
+    <!-- Dynamically addable select options -->
+    <div id="div_questions">
+        <div class="div_question">
+            Question type: <select class="questionType" ></select>
+            Number of these: <input type="number" min="0" class="repeat" ></input>
+        </div>
+    </div>
+    <div id="div_addbutton">
+        <input type="button" onclick="addQuestion()" value="Add More Questions..." />
+    </div>  
+
+    <br> <input type="button" onclick="makeQuizJSON()" value="Build JSON" /> <br>
+    <p>Or, if you don't want to deal with JSON, try the <a href="./start.html">simple interface</a> instead.</p>
+    </div>
+	
+    <div id="jsondiv" style="float:left; margin:0px 50px">
+    <form id="quizbuilder" action="quiz.html" method="get">
+        Enter a seed (in hexadecimal) for this quiz.
+        (If none is provided, one will be generated randomly.) <br>
+        Seed: <input type="text" name="seed"> <br>
+
+        Quiz Title: <input type="text" id="quizTitle"> <br>
+        
+        <p>Paste in some JSON that describes the quiz you want, or build it using the interface to the left. <br> </p>
+        <textarea rows="10" cols="50" id="jsontextarea" name="jsonString"></textarea>
+        <br> <br>
+
+        <p>Show questions:
+        <select name="showQuestions" value="yes">
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+        </select> <br>
+
+        Show answer key:
+        <select name="showKey" value="yes">
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+        </select> <br>
+
+        Show JSON:
+        <select name="showJSON" value="yes">
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+        </select> <br>
+        </p>
+
+        <button type="submit">Get Quiz</button>
+    </form>
+    </div>
+    
+    <script>
+    //Called by the "Build JSON" button
+    //Use the values of all present question-type-select fields / number inputs
+    //to build QuizJSON corresponding to the quiz they specify; and put it in the text area.
+    function makeQuizJSON(){
+
+		var quiz = [];
+        
+        //Grab each div_question within div_questions
+		$("#setupdiv #div_questions .div_question").each(function(){
+            
+            //Get the values of the inputs within it
+            var questionType = $(this).find(".questionType").val();
+            var repeat = $(this).find(".repeat").val();
+            
+            //Make a question object out of them and add it
+            var questionObject = {"question":questionType,"repeat":repeat};
+            if(questionObject.repeat > 0)
+                quiz.push(questionObject);
+        });
+
+		//Build and stringify a valid QuizJSON object
+		var quizObject = {};
+		quizObject.version = 0.1;
+		quizObject.title = $("#quizTitle").val();
+		quizObject.quiz = quiz;
+		var jsonString = JSON.stringify(quizObject);
+
+	    $("#jsontextarea").val(jsonString);
+	}
+        
+    //Called when the "Add More Questions..." button is clicked
+    //Adds a new dropdown select and number input below the existing ones
+    function addQuestion() {
+                
+        //Create elements
+        var questionDiv = $("<div>",{"class":"div_question"});
+        var questionTypeSelect = $("<select></select>",{"class":"questionType"});
+        var numberSelect = $("<input></input>",{"class":"repeat","type":"number","min":"0"});
+        
+        //Auto-populate and bind updater
+        addOptionForEachQuestionType(questionTypeSelect);
+        
+        //Unify and add
+        questionDiv.append("Question type: ").append(questionTypeSelect);
+        questionDiv.append(" Number of these: ").append(numberSelect);
+        questionDiv.appendTo("#div_questions");      
+    }
+    
+    </script>
+    
+</body>
+
+</html>

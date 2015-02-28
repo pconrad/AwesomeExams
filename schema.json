@@ -1,0 +1,97 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title" : "QuizJSON",
+    "description" : "The top-level QuizJSON object.",
+    "type" : "Object",
+
+    "properties" : {
+        
+        "version": {
+            "type" : "number",
+            "description" : "Represents the version of the software this QuizJSON is compatible with."
+        },
+
+        "title": {
+	        "type" : "string",
+            "description" : "Allows the user to give the quiz a title that will be displayed when it is rendered (as HTML, latex, whatever)"
+        },
+
+        "quiz": {
+            "type" : "array",
+            "description" : "An array of generator objects (question generators, chooseK, etc)."
+        }
+    },
+
+    "required" : ["version","quiz"]
+}
+
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title" : "Question",
+    "description" : "An object to generate multiple-choice questions.",
+    "type" : "Object",
+
+    "properties" : {
+        
+        "questionType": {
+            "type" : "string",
+            "description" : "Question type (order of operations, etc)"
+        },
+
+        "parameters": {
+            "type" : "object",
+            "description" : "An object to store parameters for the question-generating function"
+        },
+
+        "repeat": {
+            "type" : "number",
+            "description" : "Number of times to repeat this question type (default is 1)"
+        }
+    },
+
+    "required" : ["questionType"]
+}
+
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title" : "ChooseK",
+    "description" : "An object to generate a group of n objects/questions and then choose k of n at random.",
+    "type" : "Object",
+    "properties" : {
+        
+        "chooseK": {
+            "type" : "number",
+            "description" : "Specify the number of questions to choose.",
+            "minimum" : 1
+        },
+
+        "items": {
+            "type" : "array",
+            "description" : "An array of items to perform the function on.",
+            "items" : {"type" : "object"},
+            "minItems" : 1
+        }
+    }
+}
+
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title" : "Shuffle",
+    "description" : "An object to shuffle a group of objects/questions",
+    "type" : "Object",
+    "properties" : {
+        
+        "shuffle": {
+            "type" : "number",
+            "description" : "Allows you to choose k questions at random from an array.",
+            "minimum" : 1
+        },
+
+        "items": {
+            "type" : "array",
+            "description" : "An array of items to perform the function on.",
+            "items" : {"type" : "object"},
+            "minItems" : 1
+        }
+    }
+}

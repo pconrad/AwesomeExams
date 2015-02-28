@@ -1,0 +1,123 @@
+
+<!doctype html>
+<html>
+
+<!-- Authors: Phill Conrad, Evan Crook, Kevin Malta-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>The Beginning of the Next Steps of Project Awesome.</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script src="../js/questions/orderOfOperations.js"></script>
+    <script src="../js/questions/cppFunctionParameters.js"></script>
+    <script src="../js/questions/cppAppropriateVariables.js"></script>
+    <script src="../js/questions/cppBooleanEval.js"></script>
+    <script src="../js/questions/cppArgcArgv.js"></script>
+    <script src="../js/questions/cppFunctionOverloading.js"></script>
+    <script src="../js/questions/cppPointerAssignment.js"></script>
+    <script src="../js/questions/changeOfBase.js"></script>
+    <script src="../js/questions/operandsAndOperators.js"></script>
+    <script src="../js/questions/pythonProgramOutput.js"></script>
+    <script src="../js/questions/pythonStringSlice.js"></script>
+    <script src="../js/questions/symbolicLogic.js"></script>
+    <script src="../js/questions/CvariableType.js"></script>
+    <script src="../js/questions/strings.js"></script>
+    <script src="../js/questions/binHexOctDec.js"></script>
+    <script src="../js/questionTypes.js"></script>
+
+    <script>
+
+    $(document).ready(function(){
+        addOptionForEachQuestionType($("#questionType"));
+    });
+
+   </script>
+</head>
+
+<body>
+
+    <header>
+        <h1>AwesomeNextSteps Simple Quiz Builder</h1>
+        <p>The Beginning of the Next Steps of Project Awesome.</p>
+    </header>
+
+    <!-- This is a "Landing" page, where the quiz can be set up -->
+    <!-- After setup, it will request quiz.html where the actual quiz is generated -->
+    <!-- We can also request other pages that will generate LaTEX from here as well -->
+
+    <p>
+    <h2>Set up your quiz:</h2>
+    
+    <form id="setup" name="setup" action="quiz.html">
+        Enter a seed (in hexadecimal) for this quiz.
+        (If none is provided, one will be generated randomly.) <br>
+        Seed: <input type="text" name="seed"> <br> <br>
+
+        Quiz Title: <input type="text" id="quizTitle"> <br> <br>
+
+        <p>Now design the quiz you want by selecting the question type and number of questions. Or for more complex quizzes, try the <a href="startAdvanced.html">JSON Quiz Builder</a>.</p>
+
+	<!-- This drop down menu is popualted by a call to "addOptionForEachQuestionType"
+	     and the questionTypes are defined in js/questionTypes.js -->
+        <select name="questionType" id="questionType"></select>
+
+        <p>Select the number of questions you wish your quiz to have. <br>
+        Number of questions:
+
+        <select id="numQuestions">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+        </select> </p>
+
+        <p>Show questions:
+        <select name="showQuestions" value="yes">
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+        </select></p>
+
+        <p>Show answer key:
+        <select name="showKey" value="yes">
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+        </select></p>
+
+        <input name="showJSON" type="hidden" value="no" />
+
+        <input id="jsonStringField" name="jsonString" type="hidden" />
+    </form>
+
+    <br> <br>
+    <input type="button" value="Get Quiz" onclick="makeQuizJSON()">
+
+    </p>
+
+    <script>
+    function makeQuizJSON(){
+
+        //Grab numQuestions and questionType, make quizJSON out of them, stringify.
+        var num = $('#numQuestions').val();
+        var type = $('#questionType').val();
+
+        var quizDescriptor = 
+        {"version":0.1,
+        "title": $("#quizTitle").val(),
+        "quiz":[{"question":type,"repeat":num}]
+        } 
+        var jsonString = JSON.stringify(quizDescriptor);
+
+        //Put that into a hidden field and submit the form, so it gets into the URL properly.
+        //(is there a better way to do this? I don't know things)
+        $("#jsonStringField").val(jsonString);
+        $("#setup").submit();  
+    }
+    </script>
+
+</body>
+
+</html>

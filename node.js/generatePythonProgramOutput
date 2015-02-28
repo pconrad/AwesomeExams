@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+
+// generatePythonProgramOutput
+//  To generate a random pythonProgramOutput question, run as:
+//     ./generatePythonProgramOutput -q seed 
+//  To generate what project awesome *thinks* the answer is, run as:
+//     ./generatePythonProgramOutput -a seed 
+//  You can then test the "generated" answer against ground truth
+//   by running the output of ./generatePythonProgramOutput -q seed through Python,
+//   and comparing that with the "generated" answer.
+
+var args = process.argv.slice(2);
+
+if ( args.length != 2 || ( args[0] != "-a" && args[0] != "-q" ) ) {
+   console.log("Usage: one of these:");
+   console.log("  For question: generatePythonProgramOutput -q seed");
+   console.log("  For answer: generatePythonProgramOutput -a seed");
+   process.exit(1);
+}
+
+var fs = require('fs');
+eval(fs.readFileSync('../js/questions/pythonProgramOutput.js')+'');
+eval(fs.readFileSync('../js/bits.js')+'');
+eval(fs.readFileSync('../js/random.js')+'');
+
+var randomStream = new RandomStream(args[1]);
+var questionFunc = pythonProgramOutputQuestion;
+var questions = new questionFunc(randomStream)
+
+if (args[0]=="-q") {
+ console.log(questions.programString)
+} else if (args[0] == "-a") {
+ console.log(questions.correctAnswer);
+ // console.log("stub");
+}
+
