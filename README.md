@@ -24,6 +24,20 @@ Ditto with the startAdvanced.html, which provides the ability to make a quiz fro
 
 # The Directories
 
+* 'html' contains html files for a very basic user interface for debugging the Project Awesome question generating modules.  
+* 'js' contains the JavaScript files that form the core Project Awesome functionality in its current state  
+* 'LICENSE' self-explanatory  
+* 'purl' subdirectory for the purl submodule (its own repo), a separate project that provides access to URL parameters
+* 'README.md' the file you are now reading    
+* 'test' subdirectory with HTML and js for supporting testing.
+* 'latex  
+* 'node.js  
+* 'quiz.json  
+* 'schema.json
+
+
+# More detail on each directory
+
 * `html` contains these html files:
  * `quiz.html` which is an html file that gets "called" from start.html, or startAdvanced.html with URL params to generate a quiz.
  * `start.html` which is a simple UI (lousy) from which a quiz can be generated
@@ -36,6 +50,5 @@ Ditto with the startAdvanced.html, which provides the ability to make a quiz fro
  * 'questionTypes.js'
  * 'quiz.js'
  * 'random.js'
- * 'try-node'
  * 'utils.js'
 
