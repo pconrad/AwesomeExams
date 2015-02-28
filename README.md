@@ -31,8 +31,7 @@ Ditto with the startAdvanced.html, which provides the ability to make a quiz fro
 * `README.md` the file you are now reading    
 * `test` subdirectory with HTML and js for supporting testing.
 * `node.js` contains scripts for testing certain question types against ground truth. For example, for questions that generate Python code and ask "what is the output", a script in this directory generate the Python, runs it, and compares the actual result printed against Project Awesome's calculated answer.
-* `quiz.json`  
-* `schema.json`
+* `schema` contains `quiz.json`, an example of a quiz built using the JSON schema format and `schema.json`, the description of the JSON schema.
 
 
 # More detail on each directory
