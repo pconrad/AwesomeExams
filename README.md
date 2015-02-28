@@ -24,15 +24,15 @@ Ditto with the startAdvanced.html, which provides the ability to make a quiz fro
 
 # The Directories
 
-* 'html' contains html files for a very basic user interface for debugging the Project Awesome question generating modules.  
-* 'js' contains the JavaScript files that form the core Project Awesome functionality in its current state  
-* 'LICENSE' self-explanatory  
-* 'purl' subdirectory for the purl submodule (its own repo), a separate project that provides access to URL parameters
-* 'README.md' the file you are now reading    
-* 'test' subdirectory with HTML and js for supporting testing.
-* 'node.js  
-* 'quiz.json  
-* 'schema.json
+* `html` contains html files for a very basic user interface for debugging the Project Awesome question generating modules.  
+* `js` contains the JavaScript files that form the core Project Awesome functionality in its current state  
+* `LICENSE` self-explanatory  
+* `purl` subdirectory for the purl submodule (its own repo), a separate project that provides access to URL parameters
+* `README.md` the file you are now reading    
+* `test` subdirectory with HTML and js for supporting testing.
+* `node.js` contains scripts for testing certain question types against ground truth. For example, for questions that generate Python code and ask "what is the output", a script in this directory generate the Python, runs it, and compares the actual result printed against Project Awesome's calculated answer.
+* `quiz.json`  
+* `schema.json`
 
 
 # More detail on each directory
@@ -43,11 +43,11 @@ Ditto with the startAdvanced.html, which provides the ability to make a quiz fro
  * `startAdvanced.html` which is a slightly more advanced (but still lousy) UI from which a quiz can be generated
 
 * `js` contains these files and directories:
- * 'bits.js'
- * 'interpretJSON.js'
- * 'questions'
- * 'questionTypes.js'
- * 'quiz.js'
- * 'random.js'
- * 'utils.js'
+ * `bits.js`
+ * `interpretJSON.js`
+ * `questions`
+ * `questionTypes.js`
+ * `quiz.js`
+ * `random.js`
+ * `utils.js`
 
