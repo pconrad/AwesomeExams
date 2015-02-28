@@ -30,7 +30,6 @@ Ditto with the startAdvanced.html, which provides the ability to make a quiz fro
 * 'purl' subdirectory for the purl submodule (its own repo), a separate project that provides access to URL parameters
 * 'README.md' the file you are now reading    
 * 'test' subdirectory with HTML and js for supporting testing.
-* 'latex  
 * 'node.js  
 * 'quiz.json  
 * 'schema.json
