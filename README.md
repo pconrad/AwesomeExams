@@ -3,37 +3,18 @@ AwesomeNextSteps
 
 The next steps towards Project Awesome
 
-# Things you need to know!
+# Remember the submodules
 
-* Project Awesome uses submodules
-** Submodules are "repos inside repos"--essentially "symbolic links" to other repos containing libraries that this project depends on.
+* Project Awesome uses submodules (currently just purl)
+ * Submodules are "repos inside repos"--essentially "symbolic links" to other repos containing libraries that this project depends on.
 * So, after you clone this repo, always do this first:
-** git submodule init
-** git submodule update
+ * git submodule init
+ * git submodule update
 * Those two commands populate the subdirectories with the submodule contents.
 
+# The Directories
 
-# What's new?
-
-We will start RIGHT from the beginning with
-
-* multiple output formats in mind---HTML, Moodle XML.
-* everything generated from a seed
-
-
-# What will be our first exercise?
-
-Let's go with material from CMPSC8.
-
-Let's look through the old exams here:
-
-* http://www.cs.ucsb.edu/~pconrad/cs8/09M/exams/E01/actualExam/ 
-* http://www.cs.ucsb.edu/~pconrad/cs8/09M/exams/E02/CS8_09M_E02.html
-* etc...
-
-Start from 
-
-* http://www.cs.ucsb.edu/~pconrad/cs8
-* https://foo.cs.ucsb.edu/8wiki
-* etc...
-
+* `html` contains 
+* `quiz.html` which is an html file that gets "called" from start.html, or startAdvanced.html with URL params to generate a quiz.
+* `start.html` which is a simple UI (lousy) from which a quiz can be generated
+* `startAdvanced.html` which is a slightly more advanced (but still lousy) UI from which a quiz can be generated
