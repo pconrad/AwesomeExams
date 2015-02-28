@@ -12,6 +12,16 @@ The next steps towards Project Awesome
  * git submodule update
 * Those two commands populate the subdirectories with the submodule contents.
 
+# Actually making a quiz
+
+To actually see a quiz, start in either start.html or startAdvanced.html:
+* http://www.cs.ucsb.edu/~pconrad/github/AwesomeNextSteps/html/start.html
+* http://www.cs.ucsb.edu/~pconrad/github/AwesomeNextSteps/html/startAdvanced.html
+
+The start.html is a simple UI that was never intended for anything other than programmer testing of Project Awesome modules.   Before this thing is a viable product for use by faculty or students, it needs to be replace with something more humane.
+
+Ditto with the startAdvanced.html, which provides the ability to make a quiz from a JSON description.
+
 # The Directories
 
 * `html` contains these html files:
@@ -19,6 +29,13 @@ The next steps towards Project Awesome
  * `start.html` which is a simple UI (lousy) from which a quiz can be generated
  * `startAdvanced.html` which is a slightly more advanced (but still lousy) UI from which a quiz can be generated
 
-To actually see a quiz, start in either start.html or startAdvanced.html:
-* http://www.cs.ucsb.edu/~pconrad/github/AwesomeNextSteps/html/start.html
-* http://www.cs.ucsb.edu/~pconrad/github/AwesomeNextSteps/html/startAdvanced.html
+* `js` contains these files and directories:
+ * 'bits.js'
+ * 'interpretJSON.js'
+ * 'questions'
+ * 'questionTypes.js'
+ * 'quiz.js'
+ * 'random.js'
+ * 'try-node'
+ * 'utils.js'
+
