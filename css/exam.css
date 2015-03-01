@@ -1,0 +1,180 @@
+/* exam.css  P. Conrad, UD 03/08/2007 */
+
+
+
+
+h1 {text-align:center;}
+h1 span.subhead {font-size: 0.8em;}
+
+
+  #pointCount {font-weight: bold;}
+  .pageBreakBefore {
+       /* NO not if using jquery thingy
+	  to put page-numbers on top... page-break-before:always; padding-top: 30px;} */
+   }
+
+  #container * .pageBreakBefore {
+    page-break-before: always; padding-top: 30px;
+  }
+
+  
+
+  ol li ol li {list-style-type:lower-alpha;}
+   ol li ol li ol li {list-style-type: lower-roman;}
+  pre, span.lightBorder {border-style:solid; border-width: 1px; border-color: #999999; }
+  pre.inputPre, span.inputPre {border-style:ridge; border-width: 3px; border-color: #999999;}
+  
+  pre.widePre {width:auto;}
+  table {border-width:thin; border-style:solid; border-color:#333333;}
+  
+  tr.odd {background-color:#CCCCCC;}
+  
+  pre.smallerPre {font-size: 0.8em; width:auto;}
+
+
+
+table.sectionTable {font-size: 120%;}
+table.sectionTable tr td { padding:0.75em;}
+
+table.outputTable tr td {text-align:left;}
+
+table.outputTable tr td pre {text-align:left; font-size:110%; width:auto; background-color: #eef; margin-left:1em; margin-right:1em;}
+
+
+
+/*ul.examVersion { display: inline; }
+ul.examVersion li { display: inline; padding: 1px; margin: 1px; }*/
+
+ul.examVersion { display: none; }
+ul.examVersion li { display: none;}
+
+.answer { color: #000099; background-color: #FFFFCC; font-family:"Lucida Handwriting", Chalkboard, "Comic Sans MS", monospace; font-size: 105%;}
+
+
+.circledAnswer { border: 5px solid #663300; }
+.circledAnswerWithBorder { border: 5px solid #663300; }
+.circledAnswerNoBorder {border: none;}
+
+.shuffle {background-color:#DEF6CB; color: #006600;}
+
+  .grading {font-size: 80%; color: #333; font-family:"Arial Narrow", Arial, "Helvetica Light", Helvetica, sans-serif;}
+
+
+.controls table tr td { 
+     border: solid black 1px;
+     background-color: pink;
+     font-family: sans-serif;
+     font-size: 24px;
+     padding:4px;
+     }
+     
+@media print {
+  .controls{display:none;}
+  #container{display:none;}
+  body { margin-left:0px;  margin-right: 0px; padding-right:0px; padding-left: 0px; 
+       width: 100%; font-size: 14px;}
+  #container { width: 90%; margin-left:auto; margin-right:auto; }
+  body * p { font-size: 14px; }
+  body * li { font-size: 14px; }
+
+}
+  
+/* the padding-right on the container seems to be what affects the margin when
+   printing from safari */
+  
+#container {padding-left:2em; padding-right:8em; margin-right:0em;}
+
+
+  table.selectEm tr td {font-size: 3.0em; padding-left:0.75em; padding-right:0.75em;}
+  table.selectEm {border-style: none;}
+  table.withLines tr td {border:thin #000000 solid;}
+    table.withLines tr th {border:thin #000000 solid;}
+.instructions {font-family: Verdana, Arial, Helvetica, sans-serif}
+.cellVerticallyCentered {vertical-align:middle; }
+table.blankTable { border: solid white 0px; }
+
+
+table.fractionTable { border: none; }
+table.fractionTable tr td { border: none; }
+
+
+code {white-space:pre;}
+
+.nobreak {white-space:nowrap;}
+
+table.preTable1 tr td pre {width:15em; font-size: 110%; border:none;}
+
+pre.noborder { border:none; font-size:80%;}
+
+table.rotatedTable { border: none;}
+
+table.rotatedTable * th {
+
+ /* for firefox, safari, chrome, etc. */
+-webkit-transform: rotate(-90deg);
+-moz-transform: rotate(-90deg);
+
+ padding: 1em;
+ 
+}
+
+
+table.rotatedTable * td {
+
+ padding-top: 19em;
+ padding-left: 14em;
+ border: thin black solid;
+}
+
+
+table.rotatedTable * td.corner {
+
+ padding-top: 5em;
+ padding-left: 1em;
+ border: none;
+}
+
+
+table.widerCodeListing  tr td {padding-top:0.5em; padding-bottom:0.5em; padding-left:2em; padding-right:4em;}
+
+table#incorrectRecursiveFunction  tr td {padding-top:0.5em; padding-bottom:0.5em; padding-left:0.5em; padding-right:1em;}
+
+table tr td.lineNum {color:#999; font-style:italic; font-size:80%; padding-right: 1em;}
+
+table tr th {padding-top: 1em;}
+
+* ul li { list-style: disc;}
+
+ol li ol li ul li { list-style: disc;}
+
+p.medAns {margin-top:11em;}
+p.shortAns {margin-top:10em;}
+
+
+ol.alphaList li { list-style-type: lower-alpha;}
+
+
+
+table.initialsTable tr th { font-size: 10pt; font-family: Arial Narrow,sans-serif; line-height: 80%; padding: 2px; padding-bottom: 20px;}
+table.initialsTable tr td { font-size: 9pt; font-family: Arial Narrow, sans-serif; line-height: 80%; padding: 2px; padding-bottom: 20px;}
+
+.faintInstructions { font-size: 9pt !important; font-family:Arial Narrow, sans-serif; color:#555;  line-height: 90%; vertical-align:top; padding-top: 1pt; padding-left: 3pt; padding-right: 4pt; }
+
+td.blackRight {border-right: 4px black solid;}
+
+
+.radixQuestions ol li {padding-bottom:3em;}
+
+.argcArgvQuestions ol li {padding-bottom:3em;}
+
+.whatTypeQuestions ol li {padding-bottom:10px;}
+
+div.examNumber { page-break-before: always;  width: 99%; }
+
+div.examNumber { font-weight: bold; margin-bottom: 1em; border:none; }
+  
+table.pageHeaderTable { border-style: none;  width: 98%;  }
+
+hr.pageHeader { margin-top: 1px; margin-bottom-1px; padding-top: 1px; padding-bottom: 1px;}
+
+  td.bigPageNum { font-size: 40px; "Arial Black", Gadget, sans-serif; font-weigt: bold;} 
