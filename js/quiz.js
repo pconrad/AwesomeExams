@@ -3,7 +3,6 @@
 function Quiz(seed,quizDescriptor)
 {
     this.seed = seed;
-
     this.jsonObject = quizDescriptor;
 
     this.randomStream = new RandomStream(seed);

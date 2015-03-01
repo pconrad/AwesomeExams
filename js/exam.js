@@ -115,35 +115,18 @@ $(document.body).ready(function () {
 			     var theJson = $(this).data("awesome-json");
 			     console.log(".awesome n= " + n + 
 					 " sequence=" + sequence + " json=" + theJson);
-			     var radixQuestions=buildRadixQuiz(sequence,10,2);
-			     $(this).append(radixQuestions);
+			     var thisQuiz = new Quiz(sequence,json);
+			     $(this).append(thisQuiz.formatQuestionsHTML +
+                               "<div class='answerKey'>" +
+					    thisQuiz.formatAnswersHTML +
+					    "</div>");
 			 });
-
-		     $(this).find(".argcArgvQuestions").each( function (n) {
-			     console.log("argcArgvQuestions n= " + n + " sequence=" + sequence);
-			     $(this).append(buildArgcArgv(sequence,4,2));
-			 });
-		 
-		 $(this).find(".forLoopQuestions").each( function (n) {
-		     console.log("forLoopQuestions n= " + n + " sequence=" + sequence);
-		     $(this).append(buildForLoopQuestions(sequence,4));
-		 });
-
-		     $(this).find(".whatTypeQuestions").each( function (n) {
-			     console.log("whatTypeQuestions n= " + n + " sequence=" + sequence);
-			     $(this).append(buildWhatType(sequence,2));
-			 });
-
 
 		 $(this).find(".pageBreakBefore").each( function(n) {
 		     var theHTML = generatePageHeader(sequence, n+1);
 		     console.log("pageBreakBefore n= " + n + " sequence=" + sequence);
 		     console.log("pageBreakBefore, theHTML=" + theHTML);
 		     $(this).before(theHTML);
-/*			     $(this).before( $('<div/>', { class: 'examNumber',
-					     text: 'Exam #' + sequence + ' Page: ' + (n+1)
-					     + " Name: _____________________________________",
-					     })); */
                              $(this).before($('<hr/>', {class: 'pageHeader'}));
 
 		      }); 
