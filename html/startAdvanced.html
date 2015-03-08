@@ -130,6 +130,7 @@
 		quizObject.title = $("#quizTitle").val();
 		quizObject.quiz = quiz;
 		var jsonString = JSON.stringify(quizObject);
+        jsonString = jsonString.replace(/"/g, "'");
 
 	    $("#jsontextarea").val(jsonString);
 	}

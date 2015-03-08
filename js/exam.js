@@ -84,6 +84,24 @@ $(document.body).ready(function () {
 	var startExamNum = parseInt(url.param("start"));
 	var examCount = parseInt(url.param("count"));
 
+    $(".pa-question").each( function() {
+        var pa_params = $(this).data("pa-params");
+        pa_params = pa_params.replace(/'/g, '"');
+        var showPts = true; //$(this).data("pa-showPts") == "true"; TODO: don't hardcode true, figure out who comparison failing
+        var pts = $(this).data("pa-pts");
+        var ptsString = null;
+
+        if(showPts)
+        {
+            ptsString = "(" + pts + (pts == "1" ? "pt" : "pts") + ")";
+        }
+
+        var quizJson = JSON.parse(pa_params);
+        var quiz = new Quiz(startExamNum, quizJson);
+
+        $(this).html((showPts ? ptsString : "") + quiz.formatQuestionsHTML() + "<br>" + quiz.formatAnswersHTML());
+    });
+
 	$(".showAnswerKey").click(function(){
 		ec.showAnswerKey();
 	    });
