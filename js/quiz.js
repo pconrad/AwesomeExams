@@ -23,7 +23,7 @@ var Quiz = function Quiz(seed,quizDescriptor)
     this.formatAnswersHTML = function() {
         var text = "";
         for(var i=0; i<this.questions.length; i++)
-            text += "<strong>" + (i+1) + ". </strong>" + this.questions[i].formatAnswer("HTML") + "<br>";
+            text += "<div class='pa-question-answer'><strong>Answer " + this.questions[i].formatAnswer("HTML") + "</strong></div>";
         return text;
     }
 
