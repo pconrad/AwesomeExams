@@ -1,3 +1,12 @@
+function formatPts(pts) {
+    if (pts == 0)
+	return "";
+    if (pts == 1)
+	return "(1 pt) ";
+
+    return "(" + pts + " pts) ";
+}
+
 function randIntBetweenInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };

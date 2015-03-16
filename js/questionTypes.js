@@ -16,7 +16,7 @@ var questionTypes = {
 "CvariableType":         {"f": CvariableTypeQuestion,       title: "C Variable Type"},
 "cStrings":              {"f": cStringsQuestion,            title: "C Strings"},
 "pyStrings":             {"f": pyStringsQuestion,           title: "Python Strings"},
-"binHexOctDec":          {"f": binHexOctDec,                title: "Bin Hex Oct Dec"}
+"binHexOctDec":          {"f": binHexOctDecQuestion,        title: "Bin Hex Oct Dec"}
 };
 
 function addOptionForEachQuestionType(e) {

@@ -20,7 +20,7 @@ function Quiz(seed,quizDescriptor)
 
     //Create a string that is a list of all the questions
     this.formatQuestionsExam = function() {
-
+	console.log("this.questions=" + JSON.stringify(this.questions));
 	if (this.questions.length == 1) {
             return this.questions[0].formatQuestion("HTML");
 	}

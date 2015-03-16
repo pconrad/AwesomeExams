@@ -150,10 +150,17 @@ $(document.body).ready(function () {
 		console.log(".pa-question n= " + n + 
 			    " sequence=" + sequence + " json=" + theJson);
 		var thisQuiz = new Quiz(sequence,JSON.parse(theJson));
-		$(this).append(thisQuiz.formatQuestionsExam() +
-                               "<div class='answer'>" +
-			       thisQuiz.formatAnswersExam() +
-			       "</div>");
+
+		var questionText = ( "formatQuestionsExam" in thisQuiz)  ?
+					thisQuiz.formatQuestionsExam() :
+					thisQuiz.formatQuestionsHTML() ;
+
+		var answerText = ( "formatAnswersExam" in thisQuiz)  ?
+					thisQuiz.formatAnswersExam() :
+					thisQuiz.formatAnswersHTML() ;
+                                    
+
+		$(this).append ( questionText +   "<div class='answer'>" + answerText + "</div>");
 	    });
 	    
 	    $(this).find(".pageBreakBefore").each( function(n) {
