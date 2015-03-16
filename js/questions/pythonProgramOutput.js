@@ -197,7 +197,7 @@ function getRandomVariable (randomStream)
 }
 
 //function PythonProgramGenerator2FuncAndPrint(randomStream)
-function pythonProgramOutputA(randomStream)
+function pythonProgramOutputA(randomStream, params)
 {
 	//var programString = '';
         var variable = {};
@@ -265,7 +265,7 @@ function pythonProgramOutputA(randomStream)
    
 };
 
-function pythonProgramOutputB(randomStream)
+function pythonProgramOutputB(randomStream, params)
 {
 	//var programString = '';
         var variable1 = {};
@@ -339,7 +339,7 @@ function pythonProgramOutputB(randomStream)
    
 };
 
-function pythonProgramOutputC(randomStream)
+function pythonProgramOutputC(randomStream, params)
 {
   //var programString = '';
         var variable1 = {};
@@ -419,15 +419,15 @@ function pythonProgramOutputC(randomStream)
 };
 
 
-function pythonProgramOutputQuestion(randomStream)
+function pythonProgramOutputQuestion(randomStream, params)
 {
   switch(randomStream.nextIntRange(3))
   {
     case 0:
-      return new pythonProgramOutputA(randomStream)
+      return new pythonProgramOutputA(randomStream, params)
     case 1:
-      return new pythonProgramOutputB(randomStream)
+      return new pythonProgramOutputB(randomStream, params)
     case 2:
-      return new pythonProgramOutputC(randomStream)
+      return new pythonProgramOutputC(randomStream, params)
   }
 }

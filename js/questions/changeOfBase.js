@@ -1,5 +1,4 @@
-
-function changeOfBaseQuestion(randomStream)
+function changeOfBaseQuestion(randomStream, params)
 {
 
     var number = randomStream.nextIntRange(240)+15;

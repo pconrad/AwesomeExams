@@ -1,5 +1,10 @@
-function cppArgcArgvQuestion(randomStream)
+function cppArgcArgvQuestion(randomStream, params)
 {
+    this.pts = 0;
+    if (params.hasOwnProperty('pts')) {
+	this.pts = params.pts;
+    }
+
     var argcQuestion;
     var commandName = cppGetRandomId(randomStream, randomStream.nextIntRange(4));
     var argumentCount = 3 + randomStream.nextIntRange(3);
@@ -118,7 +123,7 @@ function cppArgcArgvQuestion(randomStream)
     }
 
     this.formatQuestion = function(format) {
-
+	
         switch (format) {
             case "HTML": return this.formatQuestionHTML();
         }
@@ -126,7 +131,8 @@ function cppArgcArgvQuestion(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-        var questionText = argcQuestion;
+        var questionText = formatPts(this.pts);
+        questionText += argcQuestion;
 
         questionText += "<p><strong>a) </strong>"
             + this.answerChoices[0].value + "<br><strong>b) </strong>"

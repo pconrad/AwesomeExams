@@ -113,8 +113,15 @@ function cppGenerateBoolAnswer(randomStream)
     }
 }
 
-function CppApproVar(randomStream)
-{
+function CppApproVar(randomStream, params) {
+
+    console.log("CppApproVar randomStream=" + JSON.stringify(randomStream) + " params=" + JSON.stringify(params));
+
+    this.pts=0;
+    if ('pts' in params) {
+	this.pts = params.pts;	
+    }
+
     var testVarTypes = [ "int", "double", "char", "bool" ];
     var typeAnswer;
 
@@ -127,26 +134,27 @@ function CppApproVar(randomStream)
 
     typeAnswer = randomStream.nextIntRange(4);
 
-    var typeQuestion;
+    this.typeQuestion = "<p>" + formatPts(this.pts);
+
     // 2 types of question
     if(randomStream.nextIntRange(2) === 0) // given statement, choose type
     {
-        typeQuestion = "<p>Which type will store the following statement or literal?</p><pre>";
+        this.typeQuestion != "Which type will store the following statement or literal?</p><pre>";
         switch(typeAnswer)
         {
             case 0:
-                typeQuestion += cppGenerateIntAnswer(randomStream);
+                this.typeQuestion += cppGenerateIntAnswer(randomStream);
                 break;
             case 1:
-                typeQuestion += cppGenerateDoubleAnswer(randomStream);
+                this.typeQuestion += cppGenerateDoubleAnswer(randomStream);
                 break;
             case 2:
-                typeQuestion += cppGenerateCharAnswer(randomStream);
+                this.typeQuestion += cppGenerateCharAnswer(randomStream);
                 break;
             default:
-                typeQuestion += cppGenerateBoolAnswer(randomStream);
+                this.typeQuestion += cppGenerateBoolAnswer(randomStream);
         }
-        typeQuestion += "</pre>";
+        this.typeQuestion += "</pre>";
 
         this.answerChoices = [
             { value: testVarTypes[0], flag: false },
@@ -159,7 +167,7 @@ function CppApproVar(randomStream)
     }
     else // given type, choose statement
     {
-        typeQuestion = "<p>Which statement or literal is of the following type?</p><pre>" +
+        this.typeQuestion = "Which statement or literal is of the following type?</p><pre>" +
             testVarTypes[typeAnswer] + "</pre>";
 
         this.answerChoices = [
@@ -182,7 +190,9 @@ function CppApproVar(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-        var questionText = typeQuestion;
+
+
+        var questionText = this.typeQuestion;
 
         questionText += "<p><strong>a) </strong>"
             + this.answerChoices[0].value + "<br><strong>b) </strong>"
@@ -207,7 +217,7 @@ function CppApproVar(randomStream)
 }
 
 
-function cppAppropriateVariablesQuestion(randomStream)
+function cppAppropriateVariablesQuestion(randomStream,params)
 {
-    return new CppApproVar(randomStream);
+    return new CppApproVar(randomStream,params);
 }

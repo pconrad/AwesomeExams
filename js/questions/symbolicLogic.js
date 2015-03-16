@@ -1,6 +1,5 @@
 //Parameter randomStream should be an instance of the RandomStream class.
-function symbolicLogicQuestion(randomStream)
-{
+function symbolicLogicQuestion(randomStream, params) {
     // Bool Operator classes, for doing quick generation and execution boolean expressions.
     // Vector is associative array of bool values to be tested (used for building answer key)
     

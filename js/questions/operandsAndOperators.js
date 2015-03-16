@@ -1,5 +1,5 @@
 //Parameter randomStream should be an instance of the RandomStream class.
-function operandsAndOperatorsQuestion(randomStream)
+function operandsAndOperatorsQuestion(randomStream, params)
 {
     /////////
     //Setup//

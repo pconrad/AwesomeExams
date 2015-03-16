@@ -20,11 +20,13 @@ function radixDesc(radix, randomStream)
 
 }
 
-function binHexOctDec(randomStream)
-{
+function binHexOctDecQuestion(randomStream, params) {
 
-
-
+    var pts=0;
+    if ('pts' in params) {
+	this.pts = params.pts;	
+    }
+    
    var conversions = [ {fromRad: 10, toRad: 2, minVal: 0, maxVal: 255},
                        {fromRad: 2, toRad: 10, minVal: 0, maxVal: 255},
                        {fromRad: 2, toRad: 8, minVal: 0, maxVal: 511 },
@@ -63,7 +65,9 @@ function binHexOctDec(randomStream)
     };
 
     this.formatQuestionHTML = function () {
-	    var questionText = "<p>Convert " + from + " from " + fromDesc + " to " + toDesc + ".</p>";
+	var questionText = "<p>"
+	questionText += formatPts(this.pts);
+	questionText += "Convert " + from + " from " + fromDesc + " to " + toDesc + ".</p>";
         return questionText;
     };
 

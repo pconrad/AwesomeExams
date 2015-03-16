@@ -1,5 +1,5 @@
 
-function pythonStringSliceQuestion(randomStream) {
+function pythonStringSliceQuestion(randomStream, params) {
     var nameArray = ["Malibu", "Ventura", "Goleta", "Lompoc", "Oxnard", "Montecido", "Camarillo", "Moorpark"];
 
     this.name = nameArray[randomStream.nextIntRange(nameArray.length)];

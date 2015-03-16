@@ -3,7 +3,7 @@
 // question 4: pass-by-reference correct answer is incorrect, unchanged from initial value
 // question 5: pass array problem does not specify which array element gets printed, correct answer appears twice
 
-function cppFunctionParametersA(randomStream)
+function cppFunctionParametersA(randomStream, params)
 {
     var parameterPassTypes =
         [
@@ -73,7 +73,7 @@ function cppFunctionParametersA(randomStream)
 
 }
 
-function cppFunctionParametersB(randomStream)
+function cppFunctionParametersB(randomStream, params)
 {
     var parameterPassTypes =
         [
@@ -369,12 +369,12 @@ function cppFunctionParametersB(randomStream)
     };
 }
 
-function cppFunctionParametersQuestion(randomStream)
+function cppFunctionParametersQuestion(randomStream, params)
 {
 /*
     if(randomStream.nextIntRange(3) === 0)
-        return new cppFunctionParametersA(randomStream);
+        return new cppFunctionParametersA(randomStream, params);
     else
 */
-        return new cppFunctionParametersB(randomStream);
+        return new cppFunctionParametersB(randomStream, params);
 }

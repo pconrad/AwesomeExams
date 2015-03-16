@@ -35,7 +35,7 @@ function setAdd(set, item) {
     return false;
 }
 
-function cStringsQuestion(randomStream) {
+function cStringsQuestion(randomStream, params) {
     this.choices = [];
     this.dummylength = randomStream.nextIntRange(256) + 256;
     this.choices.push(this.dummylength);
