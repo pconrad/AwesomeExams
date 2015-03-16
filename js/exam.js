@@ -129,7 +129,7 @@ $(document.body).ready(function () {
 	    
 	    for (var i=startExamNum; i<startExamNum+examCount; i++) { 
 		$(this).clone()
-		    .removeAttr("id").
+		    .removeAttr("id")
 		    .addClass("containerCopy")
 		    .data("sequence",i)
 		    .appendTo("#containerCopies");
