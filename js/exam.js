@@ -1,4 +1,4 @@
-var QUESTION_COUNT = 1;
+
 
 function ExamContext() {
     
@@ -90,60 +90,6 @@ function updateAwesomeQuestions(seed)
 
 }
 
-// data-pa-params="{'version':0.1,'title':'beef','quiz':[{'question':'cppBooleanEval','repeat':'1'}]}"
-function makeQuestionJsonString(questionType)
-{
-    var questionObject = "[{'question':'" + questionType + "','repeat':'1'}]";
-    var qStr = "{'version':0.1,'title':'Awesome Question','quiz':" + questionObject + "}";
-
-    return qStr;
-}
-
-function insertHtmlQuestion()//li, ta)
-{
-    console.log("Button beep");
-    //$(li).html($(ta).value());
-}
-
-function addHtmlQuestion()
-{
-    $(".theQuestions").append('<li class="html-question html-question' + QUESTION_COUNT + ' pageBreakBefore" data-pa-showPts="true" data-pa-pts="10">');
-
-    $(".html-question" + QUESTION_COUNT).html(
-        "<textarea id='textarea-html-question" + QUESTION_COUNT + "' rows='10' cols='50'>Enter question HTML here</textarea><br>" +
-        "<button id='button-html-question" + QUESTION_COUNT + "' type='button'>Insert question</button>"
-    );
-
-    var b = $(".button-html-question" + QUESTION_COUNT);
-    if(b === [])
-    {
-        console.log("Couldn't find the button.");
-    }
-        //.click(insertHtmlQuestion);
-    //    function() {
-    //    var liId = '#html-question' + QUESTION_COUNT;
-    //    var taId = '#textarea-html-question' + QUESTION_COUNT;
-    //    insertHtmlQuestion(liId, taId);
-    //});
-
-    QUESTION_COUNT++;
-}
-
-function addAwesomeQuestion()
-{
-    var url = purl(); //Parse the current URL using the purl library
-    var seed = parseInt(url.param("start"));
-
-    var qJsonString = makeQuestionJsonString($('#awesomeQuestionType').val());
-    $(".theQuestions").append('<li class="pa-question pa-question' + QUESTION_COUNT + ' pageBreakBefore" data-pa-params="'+ qJsonString +'" data-pa-showPts="true" data-pa-pts="10">');
-
-    qJsonString = qJsonString.replace(/'/g, '"');
-    var qJson = JSON.parse(qJsonString);
-    var question = new Quiz(seed, qJson);
-
-    $(".pa-question" + (QUESTION_COUNT++)).html("(10 pst) " + question.formatQuestionsHTML() + "<br>" + question.formatAnswersHTML());
-}
-
 function showHideAnswers()
 {
     $(".pa-question-answer").each( function()
@@ -182,14 +128,17 @@ $(document.body).ready(function () {
 	    console.log("startExamNum=" + startExamNum + " examCount=" + examCount); 
 	    
 	    for (var i=startExamNum; i<startExamNum+examCount; i++) { 
-		$(this).clone().removeAttr("id").addClass("containerCopy").data("sequence",i).appendTo("#containerCopies");
+		$(this).clone()
+		    .removeAttr("id").
+		    .addClass("containerCopy")
+		    .data("sequence",i)
+		    .appendTo("#containerCopies");
 	    }
 	});
 	$(".containerCopy").each( function(k) {
 	    var sequence = $(this).data("sequence");
 	    console.log(".containerCopy k=" + k + " sequence=" + sequence);
-	    
-	    
+	    	    
 	    $(this).find("ol.theQuestions li").each( function(i) {
 		console.log("setting questionNum to " + (i+1));
 		$(this).data("questionNum",i+1);
