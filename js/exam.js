@@ -27,7 +27,7 @@ function ExamContext() {
 		    $(this).removeClass("circledAnswer");
 		});
 	    // toggle the state, and the inner text of the button
-	    ec.answerKeyVisible = false;
+	    this.answerKeyVisible = false;
 	    $(".showAnswerKey").each(function (i) {
 		    $(this).text("show answer key");
 		});	    
@@ -41,7 +41,7 @@ function ExamContext() {
 		    $(this).addClass("circledAnswerWithBorder");
 		    $(this).removeClass("circledAnswerNoBorder");
 		});
-	    ec.answerKeyVisible = true;
+	    this.answerKeyVisible = true;
 	    $(".showAnswerKey").each(function (i) {
 		    $(this).text("hide answer key");
 		});
@@ -75,7 +75,7 @@ function ExamContext() {
 
 }
 
-function updateAwesomeQuestions(seed)
+/* function updateAwesomeQuestions(seed)
 {
     $(".pa-question").each( function() {
         var pa_params = $(this).data("pa-params");
@@ -88,7 +88,7 @@ function updateAwesomeQuestions(seed)
         $(this).html((showPts ? ptsString : "") + quiz.formatQuestionsHTML() + "<br>" + quiz.formatAnswersHTML());
     });
 
-}
+} */
 
 function showHideAnswers()
 {
@@ -150,9 +150,9 @@ $(document.body).ready(function () {
 		console.log(".pa-question n= " + n + 
 			    " sequence=" + sequence + " json=" + theJson);
 		var thisQuiz = new Quiz(sequence,JSON.parse(theJson));
-		$(this).append(thisQuiz.formatQuestionsHTML() +
-                               "<div class='answerKey'>" +
-			       thisQuiz.formatAnswersHTML() +
+		$(this).append(thisQuiz.formatQuestionsExam() +
+                               "<div class='answer'>" +
+			       thisQuiz.formatAnswersExam() +
 			       "</div>");
 	    });
 	    

@@ -18,15 +18,43 @@ function Quiz(seed,quizDescriptor)
         return text;
     }
 
-    //Create a string that is a list of all the answers
-    this.formatAnswersHTML = function() {
-        var text = "";
+    //Create a string that is a list of all the questions
+    this.formatQuestionsExam = function() {
+
+	if (this.questions.length == 1) {
+            return this.questions[0].formatQuestion("HTML");
+	}
+	// else 
+        var text = "<ol>";
         for(var i=0; i<this.questions.length; i++)
-            text += "<strong>" + (i+1) + ". </strong>" + this.questions[i].formatAnswer("HTML") + "<br>";
-        return text;
+            text += "<li>" + this.questions[i].formatQuestion("HTML") + "</li>";
+        return text + "</ol>";
     }
 
+
+    //Create a string that is a list of all the answers
+    this.formatAnswersHTML = function() { var text = ""; for(var i=0;
+    i<this.questions.length; i++) text += "<strong>" + (i+1) +
+    ". </strong>" + this.questions[i].formatAnswer("HTML") + "<br>";
+    return text; }
+
+    //Create a string that is a list of all the questions
+    this.formatAnswersExam = function() {
+
+	if (this.questions.length == 1) {
+            return this.questions[0].formatAnswer("HTML");
+	}
+	// else 
+        var text = "<ol>";
+        for(var i=0; i<this.questions.length; i++)
+            text += "<li>" + this.questions[i].formatAnswer("HTML") + "</li>";
+        return text + "</ol>";
+    }
+
+
     this.key = this.formatAnswersHTML();
+
+    this.keyExam = this.formatAnswersExam();
 }
 
 function buildQuiz() {
