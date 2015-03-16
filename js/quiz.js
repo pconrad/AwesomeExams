@@ -1,6 +1,6 @@
 //quiz.js -- handles the generation of the Quiz from a QuizDescriptor and a Seed,
 //and the rendering of it as HTML
-function Quiz(seed,quizDescriptor)
+var Quiz = function Quiz(seed,quizDescriptor)
 {
     this.seed = seed;
     this.jsonObject = quizDescriptor;
@@ -14,7 +14,8 @@ function Quiz(seed,quizDescriptor)
     this.formatQuestionsHTML = function() {
         var text = "";
         for(var i=0; i<this.questions.length; i++)
-            text += "<h3>Question " + (i+1) + ":</h3>" + this.questions[i].formatQuestion("HTML") + "<br>";
+            // text += "<h3>Question " + (i+1) + ":</h3>" + this.questions[i].formatQuestion("HTML") + "<br>"; TODO: modified to use Awesome questions in exams
+            text += this.questions[i].formatQuestion("HTML") + "<br>";
         return text;
     }
 
@@ -22,7 +23,7 @@ function Quiz(seed,quizDescriptor)
     this.formatAnswersHTML = function() {
         var text = "";
         for(var i=0; i<this.questions.length; i++)
-            text += "<strong>" + (i+1) + ". </strong>" + this.questions[i].formatAnswer("HTML") + "<br>";
+            text += "<div class='pa-question-answer'><strong>Answer " + this.questions[i].formatAnswer("HTML") + "</strong></div>";
         return text;
     }
 
