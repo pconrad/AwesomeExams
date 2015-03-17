@@ -1,5 +1,4 @@
-function cppGenerateIntAnswer(randomStream)
-{
+function cppGenerateIntAnswer(randomStream) {
     if(randomStream.nextIntRange(2) === 0)
         return "" + randomStream.nextIntRange(99);
     else
@@ -139,9 +138,8 @@ function CppApproVar(randomStream, params) {
     // 2 types of question
     if(randomStream.nextIntRange(2) === 0) // given statement, choose type
     {
-        this.typeQuestion != "Which type will store the following statement or literal?</p><pre>";
-        switch(typeAnswer)
-        {
+        this.typeQuestion += "Choose the type that would be appropriate for the following expression or literal: <code>";
+        switch(typeAnswer) {
             case 0:
                 this.typeQuestion += cppGenerateIntAnswer(randomStream);
                 break;
@@ -154,7 +152,7 @@ function CppApproVar(randomStream, params) {
             default:
                 this.typeQuestion += cppGenerateBoolAnswer(randomStream);
         }
-        this.typeQuestion += "</pre>";
+        this.typeQuestion += "</code></p>";
 
         this.answerChoices = [
             { value: testVarTypes[0], flag: false },
@@ -163,12 +161,12 @@ function CppApproVar(randomStream, params) {
             { value: testVarTypes[3], flag: false }
         ];
         this.answerChoices[typeAnswer].flag = true;
-        //randomStream.shuffle(this.answerChoices);
+        randomStream.shuffle(this.answerChoices);
     }
     else // given type, choose statement
     {
-        this.typeQuestion = "Which statement or literal is of the following type?</p><pre>" +
-            testVarTypes[typeAnswer] + "</pre>";
+        this.typeQuestion += "Choose the expression or literal that is of the following type: <code>" +
+            testVarTypes[typeAnswer] + "</code></p>";
 
         this.answerChoices = [
             { value: cppGenerateIntAnswer(randomStream), flag: (typeAnswer===0) },
@@ -176,11 +174,10 @@ function CppApproVar(randomStream, params) {
             { value: cppGenerateCharAnswer(randomStream), flag: (typeAnswer===2) },
             { value: cppGenerateBoolAnswer(randomStream), flag: (typeAnswer===3) }
         ];
-        //randomStream.shuffle(this.answerChoices);
+        randomStream.shuffle(this.answerChoices);
     }
 
     this.correctIndex = typeAnswer;
-    //this.answerChoices[this.correctIndex][3] = true;
 
     this.formatQuestion = function(format) {
         switch (format) {
